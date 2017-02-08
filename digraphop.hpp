@@ -93,7 +93,7 @@ class Tarjan
                 finished = (w == v);
             } while (!finished);
             fPartition.insert(cycle);
-            if ((cycle.size() > 1) || fGraph.connected(v, v)) {
+            if ((cycle.size() > 1) || fGraph.areConnected(v, v)) {
                 fCycleCount++;
             }
         }

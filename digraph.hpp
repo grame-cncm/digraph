@@ -86,7 +86,7 @@ protected:
         }
 
         // tests if two nodes are connected
-        bool connected(const N& n1, const N& n2, int& d) const
+        bool areConnected(const N& n1, const N& n2, int& d) const
         {
             auto c = fConnections.at(n1);
             auto q = c.find(n2);
@@ -99,10 +99,10 @@ protected:
         }
 
         // tests if two nodes are connected
-        bool connected(const N& n1, const N& n2) const
+        bool areConnected(const N& n1, const N& n2) const
         {
             int d;
-            return connected(n1,n2,d);
+            return areConnected(n1,n2,d);
         }
 
     };
@@ -116,7 +116,7 @@ public:
     {
         fContent->add(n);
     }
-    
+
     void connect(const N& n1, const N& n2, int d=0)
     {
         fContent->connect(n1,n2,d);
@@ -131,13 +131,13 @@ public:
         return fContent->connections(n);
     }
 
-    bool connected(const N& n1, const N& n2, int& d) const
+    bool areConnected(const N& n1, const N& n2, int& d) const
     {
-        return fContent->connected(n1,n2,d);
+        return fContent->areConnected(n1,n2,d);
     }
-    bool connected(const N& n1, const N& n2) const
+    bool areConnected(const N& n1, const N& n2) const
     {
-        return fContent->connected(n1,n2);
+        return fContent->areConnected(n1,n2);
     }
 
     friend bool operator < (const digraph& p1, const digraph& p2)
