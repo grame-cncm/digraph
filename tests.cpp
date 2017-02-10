@@ -10,7 +10,7 @@
 
 using namespace digraph;
 
-void test0()
+void test0(ostream& ss)
 {
 
     digraph<char> g;
@@ -31,10 +31,31 @@ void test0()
     g.connect('H','E');
     g.connect('H','H',1);
 
-    cout << "test0 : g = " << g << endl;
+    ss << "g = " << g;
 }
 
-void test1()
+string res0() 
+{
+    return "g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, G-1->F, H->E, H->G, H-1->H}";
+}
+
+bool check0()
+{
+    stringstream ss;
+    test0(ss);
+    bool ok = (0 == ss.str().compare(res0()));
+    if (ok) {
+        cout << "test0 OK " << ss.str() << endl;
+    } else {
+        cout << "test0 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res0() << endl;
+    }
+    return ok;
+}
+
+
+void test1(ostream& ss)
 {
     digraph<char> g;
     g.connect('A','B');
@@ -54,22 +75,38 @@ void test1()
     g.connect('H','E');
     g.connect('H','H');
 
-    cout << "teste1: g = " << g << endl;
-
+    ss << "Tarjan partition of g = ";
     Tarjan<char> tarj(g);
     for (const auto& cycle : tarj.partition()) {
-        cout << "group{ ";
+        ss << "group{ ";
         for (const auto& n : cycle) {
-            cout << n << " ";
+            ss << n << " ";
         }
-        cout << "}" << endl;
+        ss << "} ";
     }
-
-    cout << "number of cycles " << tarj.cycles() << endl;
-
 }
 
-void test2()
+string res1() 
+{
+    return "Tarjan partition of g = group{ A B C } group{ D E } group{ F G } group{ H } ";
+}
+
+bool check1()
+{
+    stringstream ss;
+    test1(ss);
+    bool ok = (0 == ss.str().compare(res1()));
+    if (ok) {
+        cout << "test1 OK " << ss.str() << endl;
+    } else {
+        cout << "test1 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res1() << endl;
+    }
+    return ok;
+}
+
+void test2(ostream& ss)
 {
     digraph<char> g;
     g.connect('A','B');
@@ -89,10 +126,27 @@ void test2()
     g.connect('H','E');
     g.connect('H','H',1);
 
-    //digraph<supernode<char>*> sg = supergraph(g);
-    digraph<digraph<char>> sg(graph2dag(g));
-    cout << "test2 : graph g      : " << g << endl;
-    cout << "test2 : super dag sg : " << sg << endl;
+    ss << "dag of g = " << graph2dag(g);
+}
+
+string res2() 
+{
+    return "dag of g = Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph {H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}";
+}
+
+bool check2()
+{
+    stringstream ss;
+    test2(ss);
+    bool ok = (0 == ss.str().compare(res2()));
+    if (ok) {
+        cout << "test2 OK " << ss.str() << endl;
+    } else {
+        cout << "test2 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res2() << endl;
+    }
+    return ok;
 }
 
 void test3()

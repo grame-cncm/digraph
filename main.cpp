@@ -18,8 +18,10 @@ int main(int argc, const char* argv[])
     // insert code here...
     cout << "Tests de la librairie digraph\n";
 
-    //test0();
-    test7();
+    bool r = true;
+    r &= check0();
+    r &= check1();
+    r &= check2();
 
-    return 0;
+    return (r) ? 0 : -1;
 }

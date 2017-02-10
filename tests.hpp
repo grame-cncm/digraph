@@ -9,13 +9,25 @@
 #ifndef tests_hpp
 #define tests_hpp
 
-#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <sstream>
+
 #include "digraph.hpp"
 #include "digraphop.hpp"
+//
+void test0(ostream& cout);
+string res0();
+bool check0();
+//
+void test1(ostream& cout);
+string res1();
+bool check1();
 
-void test0();
-void test1();
-void test2();
+void test2(ostream& ss);
+string res2();
+bool check2();
+
 void test3();
 void test4();
 void test5();

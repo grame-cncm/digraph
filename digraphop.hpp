@@ -28,8 +28,8 @@ namespace digraph
 
 //===========================================================
 //===========================================================
-// Partition a graph into strongly connected components
-// USAGE : Tarjan<N> t(mygraph); t.partition()
+// Partitions a graph into strongly connected components
+// USAGE : Tarjan<N> t(mygraph); ...t.partition()...
 //===========================================================
 //===========================================================
 
@@ -37,13 +37,12 @@ template <typename N>
 class Tarjan
 {
     // Additional information associated to each node
+    // during the visit
     struct tarjanAux {
-        bool fVisited;
-        bool fStacked;
-        int fNum1;
-        int fNum2;
-
-        tarjanAux() : fVisited(false), fStacked(false), fNum1(0), fNum2(0) {}
+        bool fVisited = false;
+        bool fStacked = false;
+        int fNum1 = 0;
+        int fNum2 = 0;
     };
 
     const digraph<N>& fGraph;
@@ -302,9 +301,10 @@ inline digraph<M> mapnodes(const digraph<N>& g, function<M(const N&)> foo)
 
 //===========================================================
 //===========================================================
-// mapconnections(foo) : transfoms a graph by applying the
-// function keep to each connection. If keep returns true
-// the connection is maintained, otherwise it is removed.
+// mapconnections(g, keep) -> g' : transfoms a graph by
+// applying the function keep to each connection. If keep
+// returns true the connection is maintained, otherwise it
+// is removed.
 //===========================================================
 //===========================================================
 
