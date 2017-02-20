@@ -14,22 +14,19 @@ void test0(ostream& ss)
 {
 
     digraph<char> g;
-    g.add('A','B');
-    g.add('B','C',1);
-    g.add('C','A');
-
-    g.add('D','B');
-    g.add('D','C');
-    g.add('D','E',1);
-    g.add('E','D');
-    g.add('E','F');
-
-    g.add('F','G');
-    g.add('G','F',1);
-
-    g.add('H','G');
-    g.add('H','E');
-    g.add('H','H',1);
+    g.add('A','B')
+    .add('B','C',1)
+    .add('C','A')
+    .add('D','B')
+    .add('D','C')
+    .add('D','E',1)
+    .add('E','D')
+    .add('E','F')
+    .add('F','G')
+    .add('G','F',1)
+    .add('H','G')
+    .add('H','E')
+    .add('H','H',1);
 
     ss << "g = " << g;
 }
@@ -45,7 +42,7 @@ bool check0()
     test0(ss);
     bool ok = (0 == ss.str().compare(res0()));
     if (ok) {
-        cout << "test0 OK " << ss.str() << endl;
+        cout << "test0 OK " << endl;
     } else {
         cout << "test0 FAIL " << endl;
         cout << "We got     " << ss.str() << endl;
@@ -58,22 +55,20 @@ bool check0()
 void test1(ostream& ss)
 {
     digraph<char> g;
-    g.add('A','B');
-    g.add('B','C');
-    g.add('C','A');
+    g.add('A','B')
+    .add('B','C')
+    .add('C','A')
+    .add('D','B')
+    .add('D','C')
+    .add('D','E')
+    .add('E','D')
+    .add('E','F')
+    .add('F','G')
+    .add('G','F')
+    .add('H','G')
+    .add('H','E')
+    .add('H','H');
 
-    g.add('D','B');
-    g.add('D','C');
-    g.add('D','E');
-    g.add('E','D');
-    g.add('E','F');
-
-    g.add('F','G');
-    g.add('G','F');
-
-    g.add('H','G');
-    g.add('H','E');
-    g.add('H','H');
 
     ss << "Tarjan partition of g = ";
     Tarjan<char> tarj(g);
@@ -97,7 +92,7 @@ bool check1()
     test1(ss);
     bool ok = (0 == ss.str().compare(res1()));
     if (ok) {
-        cout << "test1 OK " << ss.str() << endl;
+        cout << "test1 OK " << endl;
     } else {
         cout << "test1 FAIL " << endl;
         cout << "We got     " << ss.str() << endl;
@@ -109,22 +104,20 @@ bool check1()
 void test2(ostream& ss)
 {
     digraph<char> g;
-    g.add('A','B');
-    g.add('B','C',1);
-    g.add('C','A');
+    g.add('A','B')
+    .add('B','C',1)
+    .add('C','A')
+    .add('D','B')
+    .add('D','C')
+    .add('D','E',1)
+    .add('E','D')
+    .add('E','F')
+    .add('F','G')
+    .add('G','F',1)
+    .add('H','G')
+    .add('H','E')
+    .add('H','H',1);
 
-    g.add('D','B');
-    g.add('D','C');
-    g.add('D','E',1);
-    g.add('E','D');
-    g.add('E','F');
-
-    g.add('F','G');
-    g.add('G','F',1);
-
-    g.add('H','G');
-    g.add('H','E');
-    g.add('H','H',1);
 
     ss << "dag of g = " << graph2dag(g);
 }
@@ -140,7 +133,7 @@ bool check2()
     test2(ss);
     bool ok = (0 == ss.str().compare(res2()));
     if (ok) {
-        cout << "test2 OK " << ss.str() << endl;
+        cout << "test2 OK " << endl;
     } else {
         cout << "test2 FAIL " << endl;
         cout << "We got     " << ss.str() << endl;
@@ -149,118 +142,48 @@ bool check2()
     return ok;
 }
 
-void test3()
-{
-    digraph<char> g;
-    g.add('A','B');
-    g.add('B','C',1);
-    g.add('C','A');
 
-    g.add('D','B');
-    g.add('D','C');
-    g.add('D','E',1);
-    g.add('E','D');
-    g.add('E','F');
-
-    g.add('F','G');
-    g.add('G','F',1);
-
-    g.add('H','G');
-    g.add('H','E');
-    g.add('H','H',1);
-
-    digraph<digraph<char>> gg;
-    gg.add(g,g,10);
-    cout << "test3 digraph " << gg << endl;
-}
-
-void test4()
-{
-
-    digraph<char> k;
-    k.add('A','B');
-    k.add('C','B');
-    k.add('D','B');
-    k.add('A','E');
-    k.add('B','E');
-    cout << "test4, graph k      : " << k << endl;
-}
-
-void test5()
-{
-    std::cout << "test 5" << std::endl;
-    digraph<char> g;
-    g.add('A','B');
-    g.add('B','C',1);
-    g.add('C','A');
-
-    g.add('D','B');
-    g.add('D','C');
-    g.add('D','E',1);
-    g.add('E','D');
-    g.add('E','F');
-
-    g.add('F','G');
-    g.add('G','F',1);
-
-    g.add('H','G');
-    g.add('H','E');
-    g.add('H','H',1);
-
-    digraph<char> h(g);
-    digraph<char> k(h);
-
-    cout << "test5 k = " << k << endl;
-}
-
-
-void test6(ostream& cout)
+void test3(ostream& cout)
 {
 
     digraph<char> g;
-    g.add('A','B');
-    g.add('B','C',1);
-    g.add('C','A');
-
-    g.add('D','B');
-    g.add('D','C');
-    g.add('D','E',1);
-    g.add('E','D');
-    g.add('E','F');
-
-    g.add('F','G');
-    g.add('G','F',1);
-
-    g.add('H','G');
-    g.add('H','E');
-    g.add('H','H',1);
+    g.add('A','B')
+    .add('B','C',1)
+    .add('C','A')
+    .add('D','B')
+    .add('D','C')
+    .add('D','E',1)
+    .add('E','D')
+    .add('E','F')
+    .add('F','G')
+    .add('G','F',1)
+    .add('H','G')
+    .add('H','E')
+    .add('H','H',1);
 
     auto h1 = cut(g, 64);	// cut vectorsize connections
     auto h2 = graph2dag(h1);	// find cycles
     auto h3 = mapnodes<digraph<char>,digraph<char>>(h2, [](const digraph<char>& g)->digraph<char> { return cut(g,1); });
-/*  cout << "test6: g = " << g << endl;
-    cout << "     : h1= " << h1 << endl;
-    cout << "     : h2= " << h2 << endl;
-*/    cout << "test6: h3= " << h3;
+    cout << "test3: h3= " << h3;
 }
 
 
-string res6() 
+string res3() 
 {
-    return "test6: h3= Graph {Graph {D, E->D}->Graph {F->G, G}, Graph {D, E->D}->Graph {A->B, B, C->A}, Graph {F->G, G}, Graph {A->B, B, C->A}, Graph {H}->Graph {D, E->D}, Graph {H}->Graph {F->G, G}}";
+    return "test3: h3= Graph {Graph {D, E->D}->Graph {F->G, G}, Graph {D, E->D}->Graph {A->B, B, C->A}, Graph {F->G, G}, Graph {A->B, B, C->A}, Graph {H}->Graph {D, E->D}, Graph {H}->Graph {F->G, G}}";
 }
 
-bool check6()
+bool check3()
 {
     stringstream ss;
-    test6(ss);
-    bool ok = (0 == ss.str().compare(res6()));
+    test3(ss);
+    bool ok = (0 == ss.str().compare(res3()));
     if (ok) {
-        cout << "test6 OK \"" << ss.str() <<'"' << endl;
+        cout << "test3 OK " << endl;
     } else {
-        cout << "test6 FAIL " << endl;
+        cout << "test3 FAIL " << endl;
         cout << "We got     \"" << ss.str() <<'"' << endl;
-        cout << "instead of \"" << res6() <<'"' << endl;
+        cout << "instead of \"" << res3() <<'"' << endl;
     }
     return ok;
 }
@@ -270,22 +193,19 @@ void test7()
 {
 
     digraph<char> g;
-    g.add('A','B');
-    g.add('B','C',1);
-    g.add('C','A');
-
-    g.add('D','B');
-    g.add('D','C');
-    g.add('D','E',1);
-    g.add('E','D');
-    g.add('E','F');
-
-    g.add('F','G');
-    g.add('G','F',1);
-
-    g.add('H','G');
-    g.add('H','E');
-    g.add('H','H',1);
+    g.add('A','B')
+    .add('B','C',1)
+    .add('C','A')
+    .add('D','B')
+    .add('D','C')
+    .add('D','E',1)
+    .add('E','D')
+    .add('E','F')
+    .add('F','G')
+    .add('G','F',1)
+    .add('H','G')
+    .add('H','E')
+    .add('H','H',1);
 
     auto h = graph2dag(g);		// on fait un dag dont les noeuds sont les cycles du graphe g
     auto p = parallelize(h);	//

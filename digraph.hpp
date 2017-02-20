@@ -116,14 +116,16 @@ public:
 
     // build the graph
 
-    void add(N n)
+    digraph& add(N n)
     {
         fContent->add(n);
+        return *this;
     }
 
-    void add(const N& n1, const N& n2, int d=0)
+    digraph&  add(const N& n1, const N& n2, int d=0)
     {
         fContent->add(n1,n2,d);
+        return *this;
     }
 
     // query the graph
