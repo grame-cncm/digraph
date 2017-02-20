@@ -58,7 +58,9 @@ protected:
             (void) fConnections[n];	// make sure we have an empty set of connections for n
         }
 
-        // Add the nodes n1 and n2 and the connection (n1 -d-> n2) to the graph
+        // Add the nodes n1 and n2 and the connection (n1 -d-> n2) to the graph. 
+        // If a connection (n1 -d'-> n2) already exists, the connection is updated 
+        // with the min(d,d')
         void add(const N& n1, const N& n2, int d=0)
         {
             add(n1);
