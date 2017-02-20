@@ -161,14 +161,12 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
     }
 
     // compute the connections between the supernodes
-    for (const N& n1 : g.nodes()) {
+    for (const auto& n1 : g.nodes()) {
         digraph<N> sn1(M[n1]);
         for (const auto& c : g.connections(n1)) {
             digraph<N> sn2(M[c.first]);
             if (sn1 == sn2) {
                 // the connection is inside the same supernode
-                // we only keep 0-delay connections
-                //if (c.second == 0) sn1.add(n1,c.first,c.second);
                 sn1.add(n1, c.first, c.second);
             } else {
                 // the connection is between supernodes
