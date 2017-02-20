@@ -168,11 +168,11 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
             if (sn1 == sn2) {
                 // the connection is inside the same supernode
                 // we only keep 0-delay connections
-                //if (c.second == 0) sn1.connect(n1,c.first,c.second);
-                sn1.connect(n1, c.first, c.second);
+                //if (c.second == 0) sn1.add(n1,c.first,c.second);
+                sn1.add(n1, c.first, c.second);
             } else {
                 // the connection is between supernodes
-                sg.connect(sn1, sn2, c.second);
+                sg.add(sn1, sn2, c.second);
             }
         }
     }
@@ -293,7 +293,7 @@ inline digraph<M> mapnodes(const digraph<N>& g, function<M(const N&)> foo)
     // copy the connections
     for (const auto& n : g.nodes()) {
         for (const auto& cnx : g.connections(n)) {
-            r.connect(cache[n], cache[cnx.first], cnx.second);
+            r.add(cache[n], cache[cnx.first], cnx.second);
         }
     }
     return r;
@@ -316,7 +316,7 @@ inline digraph<N> mapconnections(const digraph<N>& G, function<bool(const N&, co
         R.add(n);
         for (const auto& c : G.connections(n)) {
             if (keep(n, c.first, c.second)) {
-                R.connect(n, c.first, c.second);
+                R.add(n, c.first, c.second);
             }
         }
     }

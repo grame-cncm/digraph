@@ -28,10 +28,13 @@ void test2(ostream& ss);
 string res2();
 bool check2();
 
+void test6(ostream& ss);
+string res6();
+bool check6();
+
 void test3();
 void test4();
 void test5();
-void test6();
 void test7();
 
 #endif /* tests_hpp */

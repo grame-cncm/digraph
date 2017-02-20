@@ -59,7 +59,7 @@ protected:
         }
 
         // Add the nodes n1 and n2 and the connection (n1 -d-> n2) to the graph
-        void connect(const N& n1, const N& n2, int d=0)
+        void add(const N& n1, const N& n2, int d=0)
         {
             add(n1);
             add(n2);
@@ -117,9 +117,9 @@ public:
         fContent->add(n);
     }
 
-    void connect(const N& n1, const N& n2, int d=0)
+    void add(const N& n1, const N& n2, int d=0)
     {
-        fContent->connect(n1,n2,d);
+        fContent->add(n1,n2,d);
     }
 
     const std::set<N>& nodes() const
