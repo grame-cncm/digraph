@@ -47,10 +47,10 @@ protected:
         std::map<N, std::map<N,int>>	fConnections; 	// {(ni -d-> nj),...}
 
     public:
-
-//		internalgraph() { std::cout << "create internalgraph " << this << std::endl; }
-//		~internalgraph() { std::cout << "delete internalgraph " << this << std::endl; }
-
+#if 0
+        internalgraph() { std::cout << "create internalgraph " << this << std::endl; }
+        ~internalgraph() { std::cout << "delete internalgraph " << this << std::endl; }
+#endif
         // Add the node n to the graph
         void add(N n)
         {
@@ -112,6 +112,8 @@ protected:
 public:
     digraph() : fContent(new internalgraph) {}
 
+    // build the graph
+
     void add(N n)
     {
         fContent->add(n);
@@ -121,6 +123,8 @@ public:
     {
         fContent->add(n1,n2,d);
     }
+
+    // query the graph
 
     const std::set<N>& nodes() const
     {
@@ -139,6 +143,8 @@ public:
     {
         return fContent->areConnected(n1,n2);
     }
+
+    // compare graphs for maps and other containers
 
     friend bool operator < (const digraph& p1, const digraph& p2)
     {
