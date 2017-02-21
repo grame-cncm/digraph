@@ -21,7 +21,7 @@ int main(int argc, const char* argv[])
     r &= check0();
     r &= check1();
     r &= check2();
-    r &= check3();
+    //r &= check3();
 
     return (r) ? 0 : -1;
 }
