@@ -1,4 +1,5 @@
-# Digraph library
+# Digraph library [![Build Status](https://travis-ci.org/grame-cncm/digraph.svg?branch=master)](https://travis-ci.org/grame-cncm/digraph) 
+
 **Digraph** is a very simple, template-based directed graph library. It is not designed to be general, but to suit the needs of the Faust compiler. 
 
 It is made of two files:
