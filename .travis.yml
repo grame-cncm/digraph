@@ -1,17 +1,6 @@
 os: linux
-dist: xenial
+dist: trusty
 language: cpp
-
-matrix:
-  include:
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-6
-      env: CXX=g++-6
 
 branches:
   only:
