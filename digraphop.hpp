@@ -22,8 +22,6 @@
 #include "digraph.hpp"
 
 using namespace std;
-namespace digraph
-{
 
 
 //===========================================================
@@ -415,6 +413,6 @@ inline ostream& operator<<(ostream& file, const vector<N>& V)
     }
     return file << "}";
 }
-}
+
 
 #endif /* digraphop_hpp */

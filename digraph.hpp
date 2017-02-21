@@ -19,8 +19,6 @@
 #include <stack>
 #include <memory>
 
-namespace digraph
-{
 
 //===========================================================
 // digraph : a directed graph, a set of nodes f type N and a
@@ -160,7 +158,6 @@ public:
     }
 };
 
-}
 
 
 #endif /* digraph_hpp */

@@ -8,7 +8,6 @@
 
 #include "tests.hpp"
 
-using namespace digraph;
 
 void test0(ostream& ss)
 {
