@@ -241,17 +241,17 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
 //===========================================================
 
 template <typename N>
-inline list<N> serialize(const digraph<N>& g)
+inline vector<N> serialize(const digraph<N>& g)
 {
     //------------------------------------------------------------------------
     // visit : a local function (simulated using a lambda) to visit a graph
     // g : the graph
     // n : the node
     // V : set of already visited nodes
-    // S : serialized list of nodes
+    // S : serialized vector of nodes
     //------------------------------------------------------------------------
-    typedef function<void(const digraph<N> &g, const N& n, set<N> &V, list<N> &S)> Visitfun;
-    Visitfun visit = [&visit](const digraph<N>& g, const N &n, set<N>& V, list<N>& S) {
+    typedef function<void(const digraph<N> &g, const N& n, set<N> &V, vector<N> &S)> Visitfun;
+    Visitfun visit = [&visit](const digraph<N>& g, const N &n, set<N>& V, vector<N>& S) {
         if (V.find(n) == V.end()) {
             V.insert(n);
             for (const auto& p : g.connections(n)) {
@@ -261,7 +261,7 @@ inline list<N> serialize(const digraph<N>& g)
         }
     };
 
-    list<N> S;
+    vector<N> S;
     set<N> 	V;
     for (const N& n : g.nodes()) {
         visit(g, n, V, S);

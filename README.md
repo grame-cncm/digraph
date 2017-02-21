@@ -73,13 +73,15 @@ Transforms the input graph into a sequence of parallel nodes
 
 	parallelize(digraph<N>) -> vector<vector<N>>
 	
-The input graph must be a dag.
+NOTE : The input graph must be a dag.
 
 ### Serialize
 
-Transforms the input graph into a list of nodes
+Transforms the input graph into a sequence of nodes
 
-	serialize(digraph<N>) -> list<N>
+	serialize(digraph<N>) -> vector<N>
+	
+NOTE : The input graph must be a dag.
 	
 ### Map nodes
 Transfoms the input graph by applying a function to each node. The connections are preserved. 
