@@ -1,4 +1,4 @@
-os: linux
+sudo: false
 dist: trusty
 language: cpp
 
