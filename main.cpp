@@ -15,7 +15,6 @@ using namespace std;
 
 int main(int argc, const char* argv[])
 {
-    // insert code here...
     cout << "Tests digraph library\n";
 
     bool r = true;
