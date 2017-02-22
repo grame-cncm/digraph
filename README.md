@@ -45,14 +45,14 @@ Once you have a node you can iterate over its connections. To access the connect
 ## Algorithms and Operations on digraphs
 
 ### Partition
-A partitions a digraph into strongly connected components can be obtained using the Tarjan class.
+A partition of a digraph into strongly connected components can be obtained using the Tarjan class.
 
 	Tarjan<N> t(mygraph); 
 	...t.partition()...
 
 The Tarjan class has essentially two methods:
 
-- `partition()` return the partition of the graph in strongly connected components. The result is a set of set on nodes.  Each set of nodes represent a strongly connected component of the graph.
+- `partition()` returns the partition of the graph into strongly connected components. The result is a set of set on nodes.  Each set of nodes represent a strongly connected component of the graph.
 - `cycles()` returns the number of cycles of the graph.
 
 ### Number of cycles
@@ -62,27 +62,24 @@ The function `cycles(mygraph)` return the number of cycles of a graph. It uses i
 	
 
 ### Direct acyclic graph of graphes
-The function `graph2dag(mygraph)` transfoms a graph into a direct acyclic graph (DAG) of graphs:
+The function `graph2dag(mygraph)` transfoms a graph into a direct acyclic graph (DAG):
 
  	graph2dag(digraph<N>) -> digraph<digraph<N>>
  
-The nodes of the resulting dag are themselves graphs representing the strongly connected components of the input graph.
+The nodes of the resulting DAG are themselves graphs representing the strongly connected components of the input graph.
 
 ### Parallelize
 
-Transforms the input graph into a sequence of parallel nodes
+Provided the input graph is a DAG,  `parallelize(mygraph)` transforms the input graph into a sequence of parallel nodes
 
 	parallelize(digraph<N>) -> vector<vector<N>>
 	
-NOTE : The input graph must be a dag.
-
 ### Serialize
 
-Transforms the input graph into a sequence of nodes
+Provided the input graph is a DAG, `serialize(mygraph)` transforms the input graph into a sequence of nodes
 
 	serialize(digraph<N>) -> vector<N>
 	
-NOTE : The input graph must be a dag.
 	
 ### Map nodes
 Transfoms the input graph by applying a function to each node. The connections are preserved. 
