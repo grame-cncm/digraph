@@ -400,4 +400,16 @@ inline ostream& operator<<(ostream& file, const vector<N>& V)
     return file << "}";
 }
 
+//===========================================================
+//===========================================================
+// file << pair : print a pair on a stream
+//===========================================================
+//===========================================================
+
+template <typename N, typename M>
+inline ostream& operator<<(ostream& file, const pair<N, M>& V)
+{
+    return file << "pair {" << V.first << ", " << V.second << "}";
+}
+
 #endif /* digraphop_hpp */
