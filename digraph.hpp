@@ -14,11 +14,10 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <set>
 #include <map>
-#include <stack>
 #include <memory>
-
+#include <set>
+#include <stack>
 
 //===========================================================
 // digraph : a directed graph, a set of nodes f type N and a
@@ -27,24 +26,21 @@
 // to represent the time dependency between computations.
 //===========================================================
 
-template<typename N>
+template <typename N>
 class digraph
 {
-
-protected:
-
+   protected:
     //--------------------------------------------------------------------------
     // Real/internal structure of a graph. A graph is a set of nodes
     // and a set of connections between theses nodes. These connections
     // have an integer value attached.
     class internalgraph
     {
-    private:
+       private:
+        std::set<N> fNodes;                          // {n1,n2,...}
+        std::map<N, std::map<N, int>> fConnections;  // {(ni -d-> nj),...}
 
-        std::set<N>						fNodes;			// {n1,n2,...}
-        std::map<N, std::map<N,int>>	fConnections; 	// {(ni -d-> nj),...}
-
-    public:
+       public:
 #if 0
         internalgraph() { std::cout << "create internalgraph " << this << std::endl; }
         ~internalgraph() { std::cout << "delete internalgraph " << this << std::endl; }
@@ -53,23 +49,23 @@ protected:
         void add(N n)
         {
             fNodes.insert(n);
-            (void) fConnections[n];	// make sure we have an empty set of connections for n
+            (void)fConnections[n];  // make sure we have an empty set of connections for n
         }
 
-        // Add the nodes n1 and n2 and the connection (n1 -d-> n2) to the graph. 
-        // If a connection (n1 -d'-> n2) already exists, the connection is updated 
+        // Add the nodes n1 and n2 and the connection (n1 -d-> n2) to the graph.
+        // If a connection (n1 -d'-> n2) already exists, the connection is updated
         // with the min(d,d')
-        void add(const N& n1, const N& n2, int d=0)
+        void add(const N& n1, const N& n2, int d = 0)
         {
             add(n1);
             add(n2);
             auto& adj = fConnections[n1];
-            auto cnx = adj.find(n2);
+            auto  cnx = adj.find(n2);
             if (cnx != adj.end()) {
-                int& d1 = cnx->second;
+                int& d1        = cnx->second;
                 if (d < d1) d1 = d;
             } else {
-                adj[n2]=d;
+                adj[n2] = d;
             }
         }
 
@@ -80,7 +76,7 @@ protected:
         }
 
         // returns the connections of node n in the graph
-        const std::map<N,int>&	connections(const N& n)	const
+        const std::map<N, int>& connections(const N& n) const
         {
             return fConnections.at(n);
         }
@@ -102,15 +98,16 @@ protected:
         bool areConnected(const N& n1, const N& n2) const
         {
             int d;
-            return areConnected(n1,n2,d);
+            return areConnected(n1, n2, d);
         }
-
     };
 
     std::shared_ptr<internalgraph> fContent;
 
-public:
-    digraph() : fContent(new internalgraph) {}
+   public:
+    digraph() : fContent(new internalgraph)
+    {
+    }
 
     // build the graph
 
@@ -120,9 +117,9 @@ public:
         return *this;
     }
 
-    digraph&  add(const N& n1, const N& n2, int d=0)
+    digraph& add(const N& n1, const N& n2, int d = 0)
     {
-        fContent->add(n1,n2,d);
+        fContent->add(n1, n2, d);
         return *this;
     }
 
@@ -132,32 +129,30 @@ public:
     {
         return fContent->nodes();
     }
-    const std::map<N,int>& connections(const N& n) const
+    const std::map<N, int>& connections(const N& n) const
     {
         return fContent->connections(n);
     }
 
     bool areConnected(const N& n1, const N& n2, int& d) const
     {
-        return fContent->areConnected(n1,n2,d);
+        return fContent->areConnected(n1, n2, d);
     }
     bool areConnected(const N& n1, const N& n2) const
     {
-        return fContent->areConnected(n1,n2);
+        return fContent->areConnected(n1, n2);
     }
 
     // compare graphs for maps and other containers
 
-    friend bool operator < (const digraph& p1, const digraph& p2)
+    friend bool operator<(const digraph& p1, const digraph& p2)
     {
         return p1.fContent < p2.fContent;
     }
-    friend bool operator == (const digraph& p1, const digraph& p2)
+    friend bool operator==(const digraph& p1, const digraph& p2)
     {
         return p1.fContent == p2.fContent;
     }
 };
-
-
 
 #endif /* digraph_hpp */

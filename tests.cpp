@@ -8,31 +8,30 @@
 
 #include "tests.hpp"
 
-
 void test0(ostream& ss)
 {
-
     digraph<char> g;
-    g.add('A','B')
-    .add('B','C',1)
-    .add('C','A')
-    .add('D','B')
-    .add('D','C')
-    .add('D','E',1)
-    .add('E','D')
-    .add('E','F')
-    .add('F','G')
-    .add('G','F',1)
-    .add('H','G')
-    .add('H','E')
-    .add('H','H',1);
+    g.add('A', 'B')
+        .add('B', 'C', 1)
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E', 1)
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F', 1)
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H', 1);
 
     ss << "g = " << g;
 }
 
-string res0() 
+string res0()
 {
-    return "g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, G-1->F, H->E, H->G, H-1->H}";
+    return "g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, G-1->F, H->E, "
+           "H->G, H-1->H}";
 }
 
 bool check0()
@@ -50,24 +49,22 @@ bool check0()
     return ok;
 }
 
-
 void test1(ostream& ss)
 {
     digraph<char> g;
-    g.add('A','B')
-    .add('B','C')
-    .add('C','A')
-    .add('D','B')
-    .add('D','C')
-    .add('D','E')
-    .add('E','D')
-    .add('E','F')
-    .add('F','G')
-    .add('G','F')
-    .add('H','G')
-    .add('H','E')
-    .add('H','H');
-
+    g.add('A', 'B')
+        .add('B', 'C')
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E')
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F')
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H');
 
     ss << "Tarjan partition of g = ";
     Tarjan<char> tarj(g);
@@ -80,7 +77,7 @@ void test1(ostream& ss)
     }
 }
 
-string res1() 
+string res1()
 {
     return "Tarjan partition of g = group{ A B C } group{ D E } group{ F G } group{ H } ";
 }
@@ -103,27 +100,28 @@ bool check1()
 void test2(ostream& ss)
 {
     digraph<char> g;
-    g.add('A','B')
-    .add('B','C',1)
-    .add('C','A')
-    .add('D','B')
-    .add('D','C')
-    .add('D','E',1)
-    .add('E','D')
-    .add('E','F')
-    .add('F','G')
-    .add('G','F',1)
-    .add('H','G')
-    .add('H','E')
-    .add('H','H',1);
-
+    g.add('A', 'B')
+        .add('B', 'C', 1)
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E', 1)
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F', 1)
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H', 1);
 
     ss << "dag of g = " << graph2dag(g);
 }
 
-string res2() 
+string res2()
 {
-    return "dag of g = Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph {H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}";
+    return "dag of g = Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, "
+           "B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph "
+           "{H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}";
 }
 
 bool check2()
@@ -141,35 +139,35 @@ bool check2()
     return ok;
 }
 
-
 void test3(ostream& cout)
 {
-
     digraph<char> g;
-    g.add('A','B')
-    .add('B','C',1)
-    .add('C','A')
-    .add('D','B')
-    .add('D','C')
-    .add('D','E',1)
-    .add('E','D')
-    .add('E','F')
-    .add('F','G')
-    .add('G','F',1)
-    .add('H','G')
-    .add('H','E')
-    .add('H','H',1);
+    g.add('A', 'B')
+        .add('B', 'C', 1)
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E', 1)
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F', 1)
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H', 1);
 
-    auto h1 = cut(g, 64);	// cut vectorsize connections
-    auto h2 = graph2dag(h1);	// find cycles
-    auto h3 = mapnodes<digraph<char>,digraph<char>>(h2, [](const digraph<char>& g)->digraph<char> { return cut(g,1); });
+    auto h1 = cut(g, 64);     // cut vectorsize connections
+    auto h2 = graph2dag(h1);  // find cycles
+    auto h3 = mapnodes<digraph<char>, digraph<char>>(
+        h2, [](const digraph<char>& g) -> digraph<char> { return cut(g, 1); });
     cout << "test3: h3= " << h3;
 }
 
-
-string res3() 
+string res3()
 {
-    return "test3: h3= Graph {Graph {D, E->D}->Graph {F->G, G}, Graph {D, E->D}->Graph {A->B, B, C->A}, Graph {F->G, G}, Graph {A->B, B, C->A}, Graph {H}->Graph {D, E->D}, Graph {H}->Graph {F->G, G}}";
+    return "test3: h3= Graph {Graph {D, E->D}->Graph {F->G, G}, Graph {D, E->D}->Graph {A->B, B, "
+           "C->A}, Graph {F->G, G}, Graph {A->B, B, C->A}, Graph {H}->Graph {D, E->D}, Graph "
+           "{H}->Graph {F->G, G}}";
 }
 
 bool check3()
@@ -181,40 +179,37 @@ bool check3()
         cout << "test3 OK " << endl;
     } else {
         cout << "test3 FAIL " << endl;
-        cout << "We got     \"" << ss.str() <<'"' << endl;
-        cout << "instead of \"" << res3() <<'"' << endl;
+        cout << "We got     \"" << ss.str() << '"' << endl;
+        cout << "instead of \"" << res3() << '"' << endl;
     }
     return ok;
 }
 
-
 void test7()
 {
-
     digraph<char> g;
-    g.add('A','B')
-    .add('B','C',1)
-    .add('C','A')
-    .add('D','B')
-    .add('D','C')
-    .add('D','E',1)
-    .add('E','D')
-    .add('E','F')
-    .add('F','G')
-    .add('G','F',1)
-    .add('H','G')
-    .add('H','E')
-    .add('H','H',1);
+    g.add('A', 'B')
+        .add('B', 'C', 1)
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E', 1)
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F', 1)
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H', 1);
 
-    auto h = graph2dag(g);		// on fait un dag dont les noeuds sont les cycles du graphe g
-    auto p = parallelize(h);	//
-    auto s = serialize(h);	//
+    auto h = graph2dag(g);    // on fait un dag dont les noeuds sont les cycles du graphe g
+    auto p = parallelize(h);  //
+    auto s = serialize(h);    //
 
     cout << "test7:        g = " << g << endl;
     cout << "number of cycles: " << cycles(g) << endl;
-    cout << "0-cycles        : " << cycles(cut(g,1)) << endl;
+    cout << "0-cycles        : " << cycles(cut(g, 1)) << endl;
     cout << "graph2dag(g)    = " << h << endl;
     cout << "parallelize(h)  = " << p << endl;
     cout << "serialize(h)    = " << s << endl;
 }
-

@@ -9,20 +9,16 @@
  *******************************************************************************
  ******************************************************************************/
 
-
-
-
 #ifndef digraphop_hpp
 #define digraphop_hpp
 
 #include <iostream>
-#include <vector>
 #include <list>
+#include <vector>
 
 #include "digraph.hpp"
 
 using namespace std;
-
 
 //===========================================================
 //===========================================================
@@ -39,21 +35,21 @@ class Tarjan
     struct tarjanAux {
         bool fVisited = false;
         bool fStacked = false;
-        int fNum1 = 0;
-        int fNum2 = 0;
+        int  fNum1    = 0;
+        int  fNum2    = 0;
     };
 
     const digraph<N>& fGraph;
-    int fGroup;
-    stack<N> fStack;
+    int               fGroup;
+    stack<N>          fStack;
     map<N, tarjanAux> fAux;
     set<set<N>> fPartition;
-    int fCycleCount;
+    int         fCycleCount;
 
     // visit a specific node n of the graph
     void visit(const N& v)
     {
-        //cout << "start (first) visit of " << v << endl;
+        // cout << "start (first) visit of " << v << endl;
         auto& x = fAux[v];
         fStack.push(v);
         x.fStacked = true;
@@ -61,27 +57,27 @@ class Tarjan
         x.fNum1 = x.fNum2 = fGroup;
         ++fGroup;
 
-        //cout << "visit all nodes connected to " << v << endl;
+        // cout << "visit all nodes connected to " << v << endl;
         for (const auto& p : fGraph.connections(v)) {
-            //cout << "we have a connection " << v << "-" << p.second << "->" << p.first << endl;
+            // cout << "we have a connection " << v << "-" << p.second << "->" << p.first << endl;
             const N& w = p.first;
-            auto& y = fAux[w];
+            auto&    y = fAux[w];
             if (!y.fVisited) {
                 visit(w);
                 x.fNum2 = min(x.fNum2, y.fNum2);
             } else {
                 if (y.fStacked) {
-                    //cout << "the node " << w << " is already in the stack" << endl;
+                    // cout << "the node " << w << " is already in the stack" << endl;
                     x.fNum2 = min(x.fNum2, y.fNum1);
                 }
             }
         }
 
         if (x.fNum1 == x.fNum2) {
-            //cout << "the node " << v << " is the root of a cycle" << endl;
+            // cout << "the node " << v << " is the root of a cycle" << endl;
 
             set<N> cycle;
-            bool finished = false;
+            bool   finished = false;
             do {
                 const N& w = fStack.top();
                 fStack.pop();
@@ -94,10 +90,10 @@ class Tarjan
                 fCycleCount++;
             }
         }
-        //cout << "end (first) visit of " << v << endl;
+        // cout << "end (first) visit of " << v << endl;
     }
 
-public:
+   public:
     Tarjan(const digraph<N>& g) : fGraph(g), fGroup(0), fCycleCount(0)
     {
         for (const auto& n : fGraph.nodes()) {
@@ -118,7 +114,6 @@ public:
     }
 };
 
-
 //===========================================================
 //===========================================================
 // cycles:graph->int : counts the number of cycles
@@ -132,7 +127,6 @@ inline int cycles(const digraph<N>& g)
     Tarjan<N> T(g);
     return T.cycles();
 }
-
 
 //===========================================================
 //===========================================================
@@ -176,7 +170,6 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
     return sg;
 }
 
-
 //===========================================================
 //===========================================================
 //
@@ -189,23 +182,20 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
 template <typename N>
 inline vector<vector<N>> parallelize(const digraph<N>& g)
 {
-
     //-----------------------------------------------------------
     // Find the level of a node n -> {m1,m2,...} such that
     //		level(n -> {})			= 0
     //		level(n -> {m1,m2,...})	= 1 + max(level(mi))
     //-----------------------------------------------------------
-    typedef function<int (const digraph<N>& g, const N& n1, map<N, int>&)> Levelfun;
+    typedef function<int(const digraph<N>& g, const N& n1, map<N, int>&)> Levelfun;
 
-    Levelfun level = [&level](const digraph<N>& g, const N& n1, map<N, int>& levelcache)->int {
+    Levelfun level = [&level](const digraph<N>& g, const N& n1, map<N, int>& levelcache) -> int {
         auto p = levelcache.find(n1);
-        if (p != levelcache.end())
-        {
+        if (p != levelcache.end()) {
             return p->second;
         } else {
             int l = -1;
-            for (const auto& e : g.connections(n1))
-            {
+            for (const auto& e : g.connections(n1)) {
                 l = max(l, level(g, e.first, levelcache));
             }
             return levelcache[n1] = l + 1;
@@ -229,8 +219,6 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
     return v;
 }
 
-
-
 //===========================================================
 //===========================================================
 // serialize : transfoms a DAG into a sequence of nodes
@@ -248,8 +236,8 @@ inline vector<N> serialize(const digraph<N>& g)
     // V : set of already visited nodes
     // S : serialized vector of nodes
     //------------------------------------------------------------------------
-    typedef function<void(const digraph<N> &g, const N& n, set<N> &V, vector<N> &S)> Visitfun;
-    Visitfun visit = [&visit](const digraph<N>& g, const N &n, set<N>& V, vector<N>& S) {
+    typedef function<void(const digraph<N>& g, const N& n, set<N>& V, vector<N>& S)> Visitfun;
+    Visitfun visit = [&visit](const digraph<N>& g, const N& n, set<N>& V, vector<N>& S) {
         if (V.find(n) == V.end()) {
             V.insert(n);
             for (const auto& p : g.connections(n)) {
@@ -260,7 +248,7 @@ inline vector<N> serialize(const digraph<N>& g)
     };
 
     vector<N> S;
-    set<N> 	V;
+    set<N>    V;
     for (const N& n : g.nodes()) {
         visit(g, n, V, S);
     }
@@ -329,18 +317,16 @@ inline digraph<N> mapconnections(const digraph<N>& G, function<bool(const N&, co
 template <typename N>
 inline digraph<N> cut(const digraph<N>& G, int dm)
 {
-    return mapconnections<N>(G, [dm](const N &n1, const N &n2, int d) -> bool { return d < dm; });
+    return mapconnections<N>(G, [dm](const N& n1, const N& n2, int d) -> bool { return d < dm; });
 }
-
 
 /*******************************************************************************
 ********************************************************************************
 
-					VARIOUS PRINTING FUNCTIONS
+                                        VARIOUS PRINTING FUNCTIONS
 
  *******************************************************************************
  ******************************************************************************/
-
 
 //===========================================================
 //===========================================================
@@ -351,12 +337,12 @@ inline digraph<N> cut(const digraph<N>& G, int dm)
 template <typename N>
 inline ostream& operator<<(ostream& file, const digraph<N>& g)
 {
-    string sep = "";
-    bool hasnodes = false;
+    string sep      = "";
+    bool   hasnodes = false;
 
     file << "Graph {";
     for (const N& n : g.nodes()) {
-        hasnodes = true;
+        hasnodes    = true;
         bool hascnx = false;
         for (const auto& c : g.connections(n)) {
             hascnx = true;
@@ -413,6 +399,5 @@ inline ostream& operator<<(ostream& file, const vector<N>& V)
     }
     return file << "}";
 }
-
 
 #endif /* digraphop_hpp */
