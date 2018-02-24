@@ -6,7 +6,7 @@
 //  Copyright © 2017 Yann Orlarey. All rights reserved.
 //
 
-#include "tests.hpp"
+#include "tests.hh"
 
 void test0(ostream& ss)
 {

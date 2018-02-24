@@ -6,15 +6,15 @@
 //  Copyright © 2017 Yann Orlarey. All rights reserved.
 //
 
-#ifndef tests_hpp
-#define tests_hpp
+#ifndef tests_hh
+#define tests_hh
 
 #include <iostream>
 #include <sstream>
 #include <string>
 
-#include "digraph.hpp"
-#include "digraphop.hpp"
+#include "digraph.hh"
+#include "digraphop.hh"
 //
 void test0(ostream& cout);
 string res0();

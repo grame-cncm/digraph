@@ -9,14 +9,14 @@
  *******************************************************************************
  ******************************************************************************/
 
-#ifndef digraphop_hpp
-#define digraphop_hpp
+#ifndef digraphop_hh
+#define digraphop_hh
 
 #include <iostream>
 #include <list>
 #include <vector>
 
-#include "digraph.hpp"
+#include "digraph.hh"
 
 using namespace std;
 

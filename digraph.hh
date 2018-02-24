@@ -9,8 +9,8 @@
  *******************************************************************************
  ******************************************************************************/
 
-#ifndef digraph_hpp
-#define digraph_hpp
+#ifndef digraph_hh
+#define digraph_hh
 
 #include <stdio.h>
 #include <iostream>

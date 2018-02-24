@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <list>
-#include "tests.hpp"
+#include "tests.hh"
 
 using namespace std;
 
@@ -22,8 +22,6 @@ int main(int argc, const char* argv[])
     r &= check2();
     r &= check4();
     // r &= check3();
-
-    test4(cout);
 
     return (r) ? 0 : -1;
 }

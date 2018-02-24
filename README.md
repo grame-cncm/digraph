@@ -30,7 +30,6 @@ It is also possible to `add()` a whole graph with all its nodes and connections.
 
 Will add all the nodes and connections of `g2` into `g1`. If multiple connections between two nodes are created, only the connection with the smallest value is kept.
 
-
 Please note that the only way to modify a digraphs is by adding nodes and connections using the `add()` method.
 
 
