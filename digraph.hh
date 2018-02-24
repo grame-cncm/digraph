@@ -37,7 +37,7 @@ class digraph
     class internalgraph
     {
        private:
-        std::set<N> fNodes;                          // {n1,n2,...}
+        std::set<N>                   fNodes;        // {n1,n2,...}
         std::map<N, std::map<N, int>> fConnections;  // {(ni -d-> nj),...}
 
        public:
@@ -62,7 +62,7 @@ class digraph
             auto& adj = fConnections[n1];
             auto  cnx = adj.find(n2);
             if (cnx != adj.end()) {
-                int& d1        = cnx->second;
+                int& d1 = cnx->second;
                 if (d < d1) d1 = d;
             } else {
                 adj[n2] = d;
@@ -123,7 +123,7 @@ class digraph
         for (auto& n : g.nodes()) {
             add(n);
             for (auto& c : g.connections(n)) {
-                add(n,c.first,c.second);
+                add(n, c.first, c.second);
             }
         }
         return *this;

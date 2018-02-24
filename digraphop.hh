@@ -43,8 +43,8 @@ class Tarjan
     int               fGroup;
     stack<N>          fStack;
     map<N, tarjanAux> fAux;
-    set<set<N>> fPartition;
-    int         fCycleCount;
+    set<set<N>>       fPartition;
+    int               fCycleCount;
 
     // visit a specific node n of the graph
     void visit(const N& v)
@@ -138,8 +138,8 @@ inline int cycles(const digraph<N>& g)
 template <typename N>
 inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
 {
-    Tarjan<N> T(g);
-    map<N, digraph<N>> M;
+    Tarjan<N>           T(g);
+    map<N, digraph<N>>  M;
     digraph<digraph<N>> sg;
 
     // build the graph of supernodes
@@ -266,7 +266,7 @@ template <typename N, typename M>
 inline digraph<M> mapnodes(const digraph<N>& g, function<M(const N&)> foo)
 {
     digraph<M> r;
-    map<N, M> cache;
+    map<N, M>  cache;
     // create a new graph with the transformed nodes
     for (const auto& n1 : g.nodes()) {
         M n2 = foo(n1);

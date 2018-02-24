@@ -185,8 +185,6 @@ bool check3()
     return ok;
 }
 
-
-
 void test4(ostream& ss)
 {
     digraph<char> g1, g2, g3;
@@ -205,7 +203,6 @@ void test4(ostream& ss)
     // cout << "test4: g2= " << g2 << endl;
     // cout << "test4: g3= " << g3 << endl;
 }
-
 
 string res4()
 {
