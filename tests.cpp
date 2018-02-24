@@ -185,6 +185,48 @@ bool check3()
     return ok;
 }
 
+
+
+void test4(ostream& ss)
+{
+    digraph<char> g1, g2, g3;
+    g1.add('A', 'A', 2);
+    g1.add('A', 'D', 1);
+    g1.add('A', 'B', 0);
+
+    g2.add('A', 'B', 2);
+    g2.add('B', 'B', 1);
+    g2.add('A', 'C', 0);
+
+    g3.add(g1).add(g2);
+
+    ss << "test4: g3.add(g1).add(g2) = " << g3;
+    // cout << "test4: g1= " << g1 << endl;
+    // cout << "test4: g2= " << g2 << endl;
+    // cout << "test4: g3= " << g3 << endl;
+}
+
+
+string res4()
+{
+    return "test4: g3.add(g1).add(g2) = Graph {A-2->A, A->B, A->C, A-1->D, B-1->B, C, D}";
+};
+
+bool check4()
+{
+    stringstream ss;
+    test4(ss);
+    bool ok = (0 == ss.str().compare(res4()));
+    if (ok) {
+        cout << "test4 OK " << endl;
+    } else {
+        cout << "test4 FAIL " << endl;
+        cout << "We got     \"" << ss.str() << '"' << endl;
+        cout << "instead of \"" << res3() << '"' << endl;
+    }
+    return ok;
+}
+
 void test7()
 {
     digraph<char> g;

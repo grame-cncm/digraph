@@ -20,7 +20,10 @@ int main(int argc, const char* argv[])
     r &= check0();
     r &= check1();
     r &= check2();
+    r &= check4();
     // r &= check3();
+
+    test4(cout);
 
     return (r) ? 0 : -1;
 }

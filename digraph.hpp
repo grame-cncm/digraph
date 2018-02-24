@@ -117,6 +117,18 @@ class digraph
         return *this;
     }
 
+    // Add a graph with all its connections
+    digraph& add(const digraph& g)
+    {
+        for (auto& n : g.nodes()) {
+            add(n);
+            for (auto& c : g.connections(n)) {
+                add(n,c.first,c.second);
+            }
+        }
+        return *this;
+    }
+
     digraph& add(const N& n1, const N& n2, int d = 0)
     {
         fContent->add(n1, n2, d);
