@@ -90,7 +90,7 @@ Provided the input graph is a DAG, `serialize(mygraph)` transforms the input gra
 
 
 ### Map nodes
-Transfoms the input graph by applying a function to each node. The connections are preserved.
+Transforms the input graph by applying a function to each node. The connections are preserved.
 
 	mapnodes(digraph<N>, f:N->M) -> digraph<M>
 
