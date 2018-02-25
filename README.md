@@ -4,8 +4,8 @@
 
 It is made of two files:
 
-- `digraph.hpp` the digraph class
-- `digraphop.hpp` some operations on digraphs
+- `digraph.hh` the digraph class
+- `digraphop.hh` some operations on digraphs
 
 ## Building a digraph
 A **digraph** is a directed graph. It is composed of a set of nodes `{n_1,n_2,...}` and a set of connections (i.e. arrows) between these nodes `{(n_i -d-> n_j),...}`.
