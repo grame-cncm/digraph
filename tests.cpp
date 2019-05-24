@@ -70,9 +70,7 @@ void test1(ostream& ss)
     Tarjan<char> tarj(g);
     for (const auto& cycle : tarj.partition()) {
         ss << "group{ ";
-        for (const auto& n : cycle) {
-            ss << n << " ";
-        }
+        for (const auto& n : cycle) { ss << n << " "; }
         ss << "} ";
     }
 }
@@ -251,4 +249,6 @@ void test7()
     cout << "graph2dag(g)    = " << h << endl;
     cout << "parallelize(h)  = " << p << endl;
     cout << "serialize(h)    = " << s << endl;
+
+    dotfile(cout, g);
 }

@@ -22,6 +22,7 @@ int main(int argc, const char* argv[])
     r &= check2();
     r &= check4();
     // r &= check3();
+    test7();
 
     return (r) ? 0 : -1;
 }
