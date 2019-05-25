@@ -251,4 +251,5 @@ void test7()
     cout << "serialize(h)    = " << s << endl;
 
     dotfile(cout, g);
+    dotfile(cout, h);
 }

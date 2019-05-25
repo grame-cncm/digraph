@@ -15,6 +15,7 @@
 #include <functional>
 #include <iostream>
 #include <list>
+#include <sstream>
 #include <vector>
 
 #include "digraph.hh"
@@ -343,25 +344,32 @@ inline ostream& operator<<(ostream& file, const digraph<N>& g)
     return file << "}";
 }
 
+//===========================================================
+//===========================================================
+// dotfile() : print graph on a stream in .dot format
+//===========================================================
+//===========================================================
+
 template <typename N>
 inline ostream& dotfile(ostream& file, const digraph<N>& g)
 {
-    bool hasnodes = false;
-
     file << "digraph mygraph {" << endl;
     for (const N& n : g.nodes()) {
-        hasnodes    = true;
+        stringstream sn;
+        sn << '"' << n << '"';
         bool hascnx = false;
         for (const auto& c : g.connections(n)) {
+            stringstream sm;
+            sm << '"' << c.first << '"';
             hascnx = true;
             if (c.second == 0) {
-                file << "\t" << n << "->" << (c.first) << ";" << endl;
+                file << "\t" << sn.str() << "->" << sm.str() << ";" << endl;
             } else {
-                file << "\t" << n << "->" << (c.first) << " [label=\"" << c.second << "\"];"
+                file << "\t" << sn.str() << "->" << sm.str() << " [label=\"" << c.second << "\"];"
                      << endl;
             }
         }
-        if (!hascnx) { file << "\t" << n << ";" << endl; }
+        if (!hascnx) { file << "\t" << sn.str() << ";" << endl; }
     }
 
     return file << "}" << endl;
