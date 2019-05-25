@@ -12,6 +12,7 @@
 #ifndef digraphop_hh
 #define digraphop_hh
 
+#include <functional>
 #include <iostream>
 #include <list>
 #include <vector>
