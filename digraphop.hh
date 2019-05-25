@@ -346,7 +346,7 @@ inline ostream& operator<<(ostream& file, const digraph<N>& g)
 
 //===========================================================
 //===========================================================
-// dotfile() : print graph on a stream in .dot format
+// dotfile(file, graph) print graph on a stream in .dot format
 //===========================================================
 //===========================================================
 
