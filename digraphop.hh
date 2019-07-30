@@ -293,6 +293,39 @@ inline digraph<N> mapconnections(const digraph<N>& G, function<bool(const N&, co
 
 //===========================================================
 //===========================================================
+// splitgraph(G, left, L, R)
+//===========================================================
+//===========================================================
+
+/**
+ * @brief split a graph into two subgraphs L and R according to a predicate.
+ *
+ * @tparam N the type of nodes
+ * @param G the input graph
+ * @param left a node predicate, when true the node goes to L, otherwise to R
+ * @param L resulting graph of left nodes
+ * @param R resulting graph of right nodes
+ */
+template <typename N>
+void splitgraph(const digraph<N>& G, function<bool(const N&)> left, digraph<N>& L, digraph<N>& R)
+{
+    for (auto n : G.nodes()) {
+        if (left(n)) {
+            L.add(n);
+            for (const auto& c : G.connections(n)) {
+                if (left(c.first)) { L.add(n, c.first, c.second); }
+            }
+        } else {
+            R.add(n);
+            for (const auto& c : G.connections(n)) {
+                if (!left(c.first)) { R.add(n, c.first, c.second); }
+            }
+        }
+    }
+}
+
+//===========================================================
+//===========================================================
 // cut(g,d) -> g'
 // cuts all the connections of graph g of weight >= d
 //===========================================================
