@@ -30,7 +30,7 @@ It is also possible to `add()` a whole graph with all its nodes and connections.
 
 Will add all the nodes and connections of `g2` into `g1`. If multiple connections between two nodes are created, only the connection with the smallest value is kept.
 
-Please note that the only way to modify a digraphs is by adding nodes and connections using the `add()` method.
+Please note that the only way to modify a digraphs is by adding nodes and connections using the `add()` method. Digraphs are otherwise immutable, and all other transformation implies the creation of a new digraph.
 
 
 
@@ -51,11 +51,12 @@ Once you have a node you can iterate over its connections. To access the connect
 	}
 
 ## Algorithms and Operations on digraphs
+Please note that the following operations never modify the graphs used as arguments.
 
 ### Partition
-A partition of a digraph into strongly connected components can be obtained using the Tarjan class.
+A partition of a digraph into strongly connected components can be obtained using the Tarjan class, an implementation of [Robert Tarjan's algorithm](https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm)
 
-	Tarjan<N> t(mygraph);
+	Tarjan<N> t(const digraph<N>&);
 	...t.partition()...
 
 The Tarjan class has essentially two methods:
@@ -66,44 +67,48 @@ The Tarjan class has essentially two methods:
 ### Number of cycles
 The function `cycles(mygraph)` return the number of cycles of a graph. It uses internally `Tarjan`.
 
-	cycles(digraph<N>) -> int
+	cycles(const digraph<N>&) -> int
 
 
 ### Direct acyclic graph of graphes
-The function `graph2dag(mygraph)` transfoms a graph into a direct acyclic graph (DAG):
+The function `graph2dag(mygraph)` uses Tarjan to transform a graph into a direct acyclic graph (DAG):
 
- 	graph2dag(digraph<N>) -> digraph<digraph<N>>
+ 	graph2dag(const digraph<N>&) -> digraph<digraph<N>>
 
 The nodes of the resulting DAG are themselves graphs representing the strongly connected components of the input graph.
 
 ### Parallelize
 
-Provided the input graph is a DAG,  `parallelize(mygraph)` transforms the input graph into a sequence of parallel nodes
+Provided the input graph is a DAG, the function `parallelize()` transforms the input graph into a sequence of parallel nodes
 
-	parallelize(digraph<N>) -> vector<vector<N>>
+	parallelize(const digraph<N>&) -> vector<vector<N>>
 
 ### Serialize
 
-Provided the input graph is a DAG, `serialize(mygraph)` transforms the input graph into a sequence of nodes
+Provided the input graph is a DAG, the function `serialize()` transforms the input graph into a vector of nodes
 
-	serialize(digraph<N>) -> vector<N>
+	serialize(const digraph<N>&) -> vector<N>
 
 
 ### Map nodes
-Transforms the input graph by applying a function to each node. The connections are preserved.
+The function `mapnodes()` creates a copy of the input graph in which each node is transformed by the function `f()`. Existing connections in the input graph are preserved in the resulting graph.
 
-	mapnodes(digraph<N>, f:N->M) -> digraph<M>
+	mapnodes(const digraph<N>&, f:N->M) -> digraph<M>
 
 
 ### Map connections
-Transfoms the input graph by applying a filter function to each connection. If the function returns true, the connection is maintained, otherwise it
-is removed.
+The function `mapconnections()` creates a copy of the input graph in which only the connections that satisfy the predicate `f()` are kept. 
 
-	mapconnections(digraph<N>, f:(N,N,int)->bool) -> digraph<N>
+	mapconnections(const digraph<N>&, f:(N,N,int)->bool) -> digraph<N>
 
 ### Cut high-value connections
 
-Cuts all connections of the input graph of value >= d.
+The function `cut()` creates a copy of the input graph in which all connections of value >= `d` are eliminated.
 
-	cut(digraph<N>, d) -> digraph<N>
+	cut(const digraph<N>&, d) -> digraph<N>
 
+### Split graph
+
+The function `splitgraph()` splits a graph `G` into two subgraphs `L` and `R` according to a predicate `left()`. The nodes satisfying the predicate are copied into `L`, the others into `R`. The connections are kept, unless they concern nodes that are not in the same subgraph.
+
+	splitgraph(const digraph<N>& G, function<bool(const N&)> left, digraph<N>& L, digraph<N>& R)
