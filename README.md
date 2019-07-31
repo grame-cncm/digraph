@@ -61,8 +61,18 @@ A partition of a digraph into strongly connected components can be obtained usin
 
 The Tarjan class has essentially two methods:
 
-- `partition()` returns the partition of the graph into strongly connected components. The result is a set of set on nodes.  Each set of nodes represent a strongly connected component of the graph.
-- `cycles()` returns the number of cycles of the graph.
+#### Partition
+
+The method `partition()` returns the partition of the graph into strongly connected components. 
+
+	partition() -> set<set<N>>&
+
+The result is a set of set on nodes.  Each set of nodes represents a strongly connected component of the graph.
+  
+#### Cycles
+The method `cycles()` returns the number of cycles of the graph.
+
+	cycles() -> int
 
 ### Number of cycles
 The function `cycles(mygraph)` return the number of cycles of a graph. It uses internally `Tarjan`.
