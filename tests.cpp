@@ -222,7 +222,49 @@ bool check4()
     return ok;
 }
 
-void test7()
+// Test separation of graphs
+void test5(ostream& ss)
+{
+    digraph<char> g1, g2, g3;
+
+    g1.add('A', 'Z');
+    g1.add('A', 'B');
+    g1.add('B', 'C');
+    g1.add('C', 'A', 1);
+
+    g1.add('Z', 'W');
+    g1.add('W', 'Z', 1);
+
+    g1.add('A', 'Z');
+    g1.add('W', 'C', 1);
+
+    splitgraph<char>(g1, [](const char& c) { return c < 'K'; }, g2, g3);
+
+    ss << "test5: g1 = " << g1 << "; g2 = " << g2 << "; g3 = " << g3;
+}
+
+string res5()
+{
+    return "test5: g1 = Graph {A->B, A->Z, B->C, C-1->A, W-1->C, W-1->Z, Z->W}; g2 = Graph {A->B, "
+           "B->C, C-1->A}; g3 = Graph {W-1->Z, Z->W}";
+};
+
+bool check5()
+{
+    stringstream ss;
+    test5(ss);
+    bool ok = (0 == ss.str().compare(res5()));
+    if (ok) {
+        cout << "test5 OK " << endl;
+    } else {
+        cout << "test5 FAIL " << endl;
+        cout << "We got     \"" << ss.str() << '"' << endl;
+        cout << "instead of \"" << res5() << '"' << endl;
+    }
+    return ok;
+}
+
+void test7(ostream& ss)
 {
     digraph<char> g;
     g.add('A', 'B')
@@ -243,13 +285,54 @@ void test7()
     auto p = parallelize(h);  //
     auto s = serialize(h);    //
 
-    cout << "test7:        g = " << g << endl;
-    cout << "number of cycles: " << cycles(g) << endl;
-    cout << "0-cycles        : " << cycles(cut(g, 1)) << endl;
-    cout << "graph2dag(g)    = " << h << endl;
-    cout << "parallelize(h)  = " << p << endl;
-    cout << "serialize(h)    = " << s << endl;
+    ss << "test7:        g = " << g << "; ";
+    ss << "number of cycles: " << cycles(g) << "; ";
+    ss << "0-cycles        : " << cycles(cut(g, 1)) << "; ";
+    ss << "graph2dag(g)    = " << h << "; ";
+    ss << "parallelize(h)  = " << p << "; ";
+    ss << "serialize(h)    = " << s << "; ";
 
-    dotfile(cout, g);
-    dotfile(cout, h);
+    dotfile(ss, g);
+}
+
+string res7()
+{
+    return "test7:        g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, "
+           "G-1->F, H->E, H->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; graph2dag(g)    "
+           "= Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, "
+           "Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph "
+           "{H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}; parallelize(h)  "
+           "= vector {vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, vector {Graph "
+           "{D-1->E, E->D}}, vector {Graph {H-1->H}}}; serialize(h)    = vector {Graph {A->B, "
+           "B-1->C, C->A}, Graph {F->G, G-1->F}, Graph {D-1->E, E->D}, Graph {H-1->H}}; digraph "
+           "mygraph {"
+           "\n\t\"A\"->\"B\";"
+           "\n\t\"B\"->\"C\" [label=\"1\"];"
+           "\n\t\"C\"->\"A\";"
+           "\n\t\"D\"->\"B\";"
+           "\n\t\"D\"->\"C\";"
+           "\n\t\"D\"->\"E\" [label=\"1\"];"
+           "\n\t\"E\"->\"D\";"
+           "\n\t\"E\"->\"F\";"
+           "\n\t\"F\"->\"G\";"
+           "\n\t\"G\"->\"F\" [label=\"1\"];"
+           "\n\t\"H\"->\"E\";"
+           "\n\t\"H\"->\"G\";"
+           "\n\t\"H\"->\"H\" [label=\"1\"];"
+           "\n}\n";
+}
+
+bool check7()
+{
+    stringstream ss;
+    test7(ss);
+    bool ok = (0 == ss.str().compare(res7()));
+    if (ok) {
+        cout << "test7 OK " << endl;
+    } else {
+        cout << "test7 FAIL " << endl;
+        cout << "We got     \"" << ss.str() << '"' << endl;
+        cout << "instead of \"" << res7() << '"' << endl;
+    }
+    return ok;
 }

@@ -36,6 +36,12 @@ void   test4(ostream& ss);
 string res4();
 bool   check4();
 
-void test7();
+void   test5(ostream& ss);
+string res5();
+bool   check5();
+
+void   test7(ostream& ss);
+string res7();
+bool   check7();
 
 #endif /* tests_hpp */
