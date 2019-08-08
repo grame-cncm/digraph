@@ -12,7 +12,7 @@
 #ifndef digraph_hh
 #define digraph_hh
 
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -122,9 +122,7 @@ class digraph
     {
         for (auto& n : g.nodes()) {
             add(n);
-            for (auto& c : g.connections(n)) {
-                add(n, c.first, c.second);
-            }
+            for (auto& c : g.connections(n)) { add(n, c.first, c.second); }
         }
         return *this;
     }
