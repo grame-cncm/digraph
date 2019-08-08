@@ -29,7 +29,7 @@
 template <typename N>
 class digraph
 {
-   protected:
+   private:
     //--------------------------------------------------------------------------
     // Real/internal structure of a graph. A graph is a set of nodes
     // and a set of connections between theses nodes. These connections
