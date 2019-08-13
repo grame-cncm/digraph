@@ -336,3 +336,90 @@ bool check7()
     }
     return ok;
 }
+
+void test8(ostream& ss)
+{
+    digraph<char> g;
+    g.add('A', 'B')
+        .add('B', 'C')
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E')
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F')
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H');
+
+    set<char>     S{'C', 'F'};
+    digraph<char> r = subgraph(g, S);
+    ss << "Subgraph(" << g << ", " << S << ") = " << r;
+}
+
+string res8()
+{
+    return "Subgraph(Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, F->G, G->F, H->E, "
+           "H->G, H->H}, set {C, F}) = Graph {A->B, B->C, C->A, F->G, G->F}";
+}
+
+bool check8()
+{
+    stringstream ss;
+    test8(ss);
+    bool ok = (0 == ss.str().compare(res8()));
+    if (ok) {
+        cout << "test8 OK " << endl;
+    } else {
+        cout << "test8 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res8() << endl;
+    }
+    return ok;
+}
+
+void test9(ostream& ss)
+{
+    digraph<char> g;
+    g.add('A', 'B')
+        .add('B', 'C')
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E')
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F')
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H');
+
+    set<char>     S{'H'};
+    digraph<char> r = subgraph(g, S);
+    ss << "Subgraph(" << g << ", " << S << ") = " << r;
+}
+
+string res9()
+{
+    return "Subgraph(Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, F->G, G->F, H->E, "
+           "H->G, H->H}, set {H}) = Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, F->G, "
+           "G->F, H->E, H->G, H->H}";
+}
+
+bool check9()
+{
+    stringstream ss;
+    test9(ss);
+    bool ok = (0 == ss.str().compare(res9()));
+    if (ok) {
+        cout << "test9 OK " << endl;
+    } else {
+        cout << "test9 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res9() << endl;
+    }
+    return ok;
+}

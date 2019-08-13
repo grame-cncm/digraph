@@ -94,7 +94,7 @@ class Tarjan
     }
 
    public:
-    Tarjan(const digraph<N>& g) : fGraph(g), fGroup(0), fCycleCount(0)
+    explicit Tarjan(const digraph<N>& g) : fGraph(g), fGroup(0), fCycleCount(0)
     {
         for (const auto& n : fGraph.nodes()) {
             if (fAux.find(n) == fAux.end()) { visit(n); }
@@ -326,6 +326,43 @@ void splitgraph(const digraph<N>& G, function<bool(const N&)> left, digraph<N>& 
 
 //===========================================================
 //===========================================================
+// subgraph(G, S)
+//===========================================================
+//===========================================================
+
+/**
+ * @brief extract a subgraph of G according to a set of nodes S.
+ *
+ * @tparam N the type of nodes
+ * @param G the input graph
+ * @param S the set of nodes to keep with their dependencies
+ * @return the resulting subgraph
+ */
+template <typename N>
+digraph<N> subgraph(const digraph<N>& G, const set<N>& S)
+{
+    digraph<N> R;     // the (R)esulting graph
+    set<N>     W{S};  // nodes (W)aiting to be processed
+    set<N>     P;     // nodes already (P)rocessed
+    while (!W.empty()) {
+        set<N> M;  // (M)ore nodes to process at next iteration
+        for (auto n : W) {
+            R.add(n);     // add n to the resulting graph
+            P.insert(n);  // mark n as processed
+            for (const auto& a : G.connections(n)) {
+                R.add(n, a.first, a.second);       // add its adjacent nodes
+                if (P.find(a.first) == P.end()) {  // is it new ?
+                    M.insert(a.first);             // we will have to process it
+                }
+            }
+        }
+        W = M;
+    }
+    return R;
+}
+
+//===========================================================
+//===========================================================
 // cut(g,d) -> g'
 // cuts all the connections of graph g of weight >= d
 //===========================================================
@@ -334,7 +371,7 @@ void splitgraph(const digraph<N>& G, function<bool(const N&)> left, digraph<N>& 
 template <typename N>
 inline digraph<N> cut(const digraph<N>& G, int dm)
 {
-    return mapconnections<N>(G, [dm](const N& n1, const N& n2, int d) -> bool { return d < dm; });
+    return mapconnections<N>(G, [dm](const N&, const N&, int d) -> bool { return d < dm; });
 }
 
 /*******************************************************************************
@@ -440,6 +477,25 @@ inline ostream& operator<<(ostream& file, const vector<N>& V)
 
     file << "vector {";
     for (const N& e : V) {
+        file << sep << e;
+        sep = ", ";
+    }
+    return file << "}";
+}
+
+//===========================================================
+//===========================================================
+// file << set : print a set on a stream
+//===========================================================
+//===========================================================
+
+template <typename N>
+inline ostream& operator<<(ostream& file, const set<N>& S)
+{
+    string sep = "";
+
+    file << "set {";
+    for (const N& e : S) {
         file << sep << e;
         sep = ", ";
     }

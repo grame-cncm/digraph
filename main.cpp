@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int main(int argc, const char* argv[])
+int main(int, const char**)
 {
     cout << "Tests digraph library\n";
 
@@ -24,7 +24,8 @@ int main(int argc, const char* argv[])
     r &= check4();
     r &= check5();
     r &= check7();
-    // test7();
+    r &= check8();
+    r &= check9();
 
     return (r) ? 0 : -1;
 }
