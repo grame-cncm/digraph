@@ -3,7 +3,7 @@
 //  graphlib
 //
 //  Created by Yann Orlarey on 31/01/2017.
-//  Copyright © 2017 Yann Orlarey. All rights reserved.
+//  Copyright © 2017-2019 GRAME. All rights reserved.
 //
 
 #include <iostream>

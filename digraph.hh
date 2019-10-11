@@ -9,8 +9,7 @@
  *******************************************************************************
  ******************************************************************************/
 
-#ifndef digraph_hh
-#define digraph_hh
+#pragma once
 
 #include <cstdio>
 #include <iostream>
@@ -164,5 +163,3 @@ class digraph
         return p1.fContent == p2.fContent;
     }
 };
-
-#endif /* digraph_hpp */
