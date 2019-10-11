@@ -1,7 +1,7 @@
 ANALYSIS="-*,cert-*,clang-analyzer-*,modernize-*,performance-*,cppcoreguidelines-*,google-*,bugprone-*,misc-*"
 
 
-all : *.cpp *.hh
+testdigraph : *.cpp *.hh
 	${CXX} --std=c++11 *.cpp -o testdigraph
 
 format :
