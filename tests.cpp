@@ -137,7 +137,7 @@ bool check2()
     return ok;
 }
 
-void test3(ostream& cout)
+void test3(ostream& ss)
 {
     digraph<char> g;
     g.add('A', 'B')
@@ -158,7 +158,7 @@ void test3(ostream& cout)
     auto h2 = graph2dag(h1);  // find cycles
     auto h3 = mapnodes<digraph<char>, digraph<char>>(
         h2, [](const digraph<char>& g) -> digraph<char> { return cut(g, 1); });
-    cout << "test3: h3= " << h3;
+    ss << "test3: h3= " << h3;
 }
 
 string res3()
@@ -283,6 +283,7 @@ void test7(ostream& ss)
 
     auto h = graph2dag(g);    // on fait un dag dont les noeuds sont les cycles du graphe g
     auto p = parallelize(h);  //
+    auto rp = rparallelize(h);  //
     auto s = serialize(h);    //
 
     ss << "test7:        g = " << g << "; ";
@@ -290,6 +291,7 @@ void test7(ostream& ss)
     ss << "0-cycles        : " << cycles(cut(g, 1)) << "; ";
     ss << "graph2dag(g)    = " << h << "; ";
     ss << "parallelize(h)  = " << p << "; ";
+    ss << "rparallelize(h)  = " << rp << "; ";
     ss << "serialize(h)    = " << s << "; ";
 
     dotfile(ss, g);
@@ -297,15 +299,7 @@ void test7(ostream& ss)
 
 string res7()
 {
-    return "test7:        g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, "
-           "G-1->F, H->E, H->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; graph2dag(g)    "
-           "= Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, "
-           "Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph "
-           "{H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}; parallelize(h)  "
-           "= vector {vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, vector {Graph "
-           "{D-1->E, E->D}}, vector {Graph {H-1->H}}}; serialize(h)    = vector {Graph {A->B, "
-           "B-1->C, C->A}, Graph {F->G, G-1->F}, Graph {D-1->E, E->D}, Graph {H-1->H}}; digraph "
-           "mygraph {"
+    return "test7:        g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, G-1->F, H->E, H->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; graph2dag(g)    = Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph {H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}; parallelize(h)  = vector {vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, vector {Graph {D-1->E, E->D}}, vector {Graph {H-1->H}}}; rparallelize(h)  = vector {vector {Graph {H-1->H}}, vector {Graph {D-1->E, E->D}}, vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}}; serialize(h)    = vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}, Graph {D-1->E, E->D}, Graph {H-1->H}}; digraph mygraph {"
            "\n\t\"A\"->\"B\";"
            "\n\t\"B\"->\"C\" [label=\"1\"];"
            "\n\t\"C\"->\"A\";"

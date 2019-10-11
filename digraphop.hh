@@ -210,6 +210,19 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
     return v;
 }
 
+
+template <typename N>
+inline vector<vector<N>> rparallelize(const digraph<N>& G)
+{
+    vector<vector<N>> P = parallelize(G);
+    int i = 0;
+    int j = P.size() - 1;
+
+    while (i < j) { swap(P[i], P[j]); ++i; --j; }
+
+    return P;
+}
+
 //===========================================================
 //===========================================================
 // serialize : transfoms a DAG into a sequence of nodes
@@ -218,7 +231,7 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
 //===========================================================
 
 template <typename N>
-inline vector<N> serialize(const digraph<N>& g)
+inline vector<N> serialize(const digraph<N>& G)
 {
     //------------------------------------------------------------------------
     // visit : a local function (simulated using a lambda) to visit a graph
@@ -238,7 +251,7 @@ inline vector<N> serialize(const digraph<N>& g)
 
     vector<N> S;
     set<N>    V;
-    for (const N& n : g.nodes()) { visit(g, n, V, S); }
+    for (const N& n : G.nodes()) { visit(G, n, V, S); }
     return S;
 }
 
