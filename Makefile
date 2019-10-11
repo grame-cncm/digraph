@@ -8,7 +8,7 @@ format :
 	clang-format -i -style=file *.cpp *.hh
 
 clean :
-	rm *.orig *.plist
+	rm -f testdigraph *.orig *.plist
 
 analyze :
 	clang-tidy-8 --extra-arg="--std=c++11" -checks=${ANALYSIS} -header-filter=.* *.cpp
