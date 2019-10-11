@@ -6,8 +6,7 @@
 //  Copyright © 2017 Yann Orlarey. All rights reserved.
 //
 
-#ifndef tests_hh
-#define tests_hh
+#pragma once
 
 #include <iostream>
 #include <sstream>
@@ -51,5 +50,3 @@ bool   check8();
 void   test9(ostream& ss);
 string res9();
 bool   check9();
-
-#endif /* tests_hpp */
