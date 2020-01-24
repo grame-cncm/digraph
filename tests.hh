@@ -56,3 +56,7 @@ bool check10();
 void   test11(ostream& ss);
 string res11();
 bool   check11();
+
+void   test12(ostream& ss);
+string res12();
+bool   check12();

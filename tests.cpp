@@ -475,13 +475,14 @@ void test11(ostream& ss)
     g.add('A', 'B').add('B', 'C', 3).add('C', 'D').add('D', 'E');
     g.add('A', 'I').add('I', 'J', 4).add('J', 'E', 5);
 
-    digraph<char> r = chain(g);
-    ss << "chain(" << g << ") = " << r;
+    digraph<char> r = chain(g, false);
+    ss << "chain(" << g << ", false) = " << r;
 }
 
 string res11()
 {
-    return "chain(Graph {A->B, A->I, B-3->C, C->D, D->E, E, I-4->J, J-5->E}) = Graph {A, B-3->C, "
+    return "chain(Graph {A->B, A->I, B-3->C, C->D, D->E, E, I-4->J, J-5->E}, false) = Graph {A, "
+           "B-3->C, "
            "C->D, D, E, I-4->J, J}";
 }
 
@@ -496,6 +497,37 @@ bool check11()
         cout << "test11 FAIL " << endl;
         cout << "We got     " << ss.str() << endl;
         cout << "instead of " << res9() << endl;
+    }
+    return ok;
+}
+
+void test12(ostream& ss)
+{
+    digraph<char> g;
+    g.add('A', 'B').add('B', 'C', 3).add('C', 'D').add('D', 'E');
+    g.add('A', 'I').add('I', 'J', 4).add('J', 'E', 5);
+
+    digraph<char> r = chain(g, true);
+    ss << "chain(" << g << ", true) = " << r;
+}
+
+string res12()
+{
+    return "chain(Graph {A->B, A->I, B-3->C, C->D, D->E, E, I-4->J, J-5->E}, true) = Graph "
+           "{B-3->C, C->D, D, I-4->J, J}";
+}
+
+bool check12()
+{
+    stringstream ss;
+    test12(ss);
+    bool ok = (0 == ss.str().compare(res12()));
+    if (ok) {
+        cout << "test12 OK " << endl;
+    } else {
+        cout << "test12 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res12() << endl;
     }
     return ok;
 }

@@ -419,12 +419,12 @@ inline digraph<N> cut(const digraph<N>& G, int dm)
 //===========================================================
 
 template <typename N>
-inline digraph<N> chain(const digraph<N>& g, bool strict = false)
+inline digraph<N> chain(const digraph<N>& g, bool strict)
 {
     const digraph<N> h = reverse(g);
     digraph<N>       r;
     for (const auto& n : g.nodes()) {
-        r.add(n);
+        if (!strict) r.add(n);
         if (g.connections(n).size() == 1) {
             for (const auto& m : g.connections(n)) {
                 if (h.connections(m.first).size() == 1) { r.add(n, m.first, m.second); }
