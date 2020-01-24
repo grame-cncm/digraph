@@ -26,6 +26,11 @@ int main(int, const char**)
     r &= check7();
     r &= check8();
     r &= check9();
+    r &= check10();
+    r &= check11();
+
+    // test11(std::cout);
+    //
 
     return (r) ? 0 : -1;
 }

@@ -210,15 +210,18 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
     return v;
 }
 
-
 template <typename N>
 inline vector<vector<N>> rparallelize(const digraph<N>& G)
 {
     vector<vector<N>> P = parallelize(G);
-    int i = 0;
-    int j = P.size() - 1;
+    int               i = 0;
+    int               j = P.size() - 1;
 
-    while (i < j) { swap(P[i], P[j]); ++i; --j; }
+    while (i < j) {
+        swap(P[i], P[j]);
+        ++i;
+        --j;
+    }
 
     return P;
 }
@@ -277,6 +280,26 @@ inline digraph<M> mapnodes(const digraph<N>& g, function<M(const N&)> foo)
     // copy the connections
     for (const auto& n : g.nodes()) {
         for (const auto& cnx : g.connections(n)) { r.add(cache[n], cache[cnx.first], cnx.second); }
+    }
+    return r;
+}
+
+//===========================================================
+//===========================================================
+// reverse(g) : reverse all the connections of a graph. The
+// connections keep their value.
+// Property : reverse(reverse(g)) = g;
+//===========================================================
+//===========================================================
+
+template <typename N>
+inline digraph<N> reverse(const digraph<N>& g)
+{
+    digraph<N> r;
+    // copy the connections
+    for (const auto& n : g.nodes()) {
+        r.add(n);
+        for (const auto& cnx : g.connections(n)) { r.add(cnx.first, n, cnx.second); }
     }
     return r;
 }
@@ -384,6 +407,31 @@ template <typename N>
 inline digraph<N> cut(const digraph<N>& G, int dm)
 {
     return mapconnections<N>(G, [dm](const N&, const N&, int d) -> bool { return d < dm; });
+}
+
+//===========================================================
+//===========================================================
+// chain(g) -> g'
+// Keep only the chain connections, that is connections
+// (n1 -d-> n2) such that dst(n1) == {n2} && src(n2) == {n1}
+// If strict is true, only the node part of a chain are kept.
+//===========================================================
+//===========================================================
+
+template <typename N>
+inline digraph<N> chain(const digraph<N>& g, bool strict = false)
+{
+    const digraph<N> h = reverse(g);
+    digraph<N>       r;
+    for (const auto& n : g.nodes()) {
+        r.add(n);
+        if (g.connections(n).size() == 1) {
+            for (const auto& m : g.connections(n)) {
+                if (h.connections(m.first).size() == 1) { r.add(n, m.first, m.second); }
+            }
+        }
+    }
+    return r;
 }
 
 /*******************************************************************************

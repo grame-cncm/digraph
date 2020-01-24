@@ -281,10 +281,10 @@ void test7(ostream& ss)
         .add('H', 'E')
         .add('H', 'H', 1);
 
-    auto h = graph2dag(g);    // on fait un dag dont les noeuds sont les cycles du graphe g
-    auto p = parallelize(h);  //
+    auto h  = graph2dag(g);     // on fait un dag dont les noeuds sont les cycles du graphe g
+    auto p  = parallelize(h);   //
     auto rp = rparallelize(h);  //
-    auto s = serialize(h);    //
+    auto s  = serialize(h);     //
 
     ss << "test7:        g = " << g << "; ";
     ss << "number of cycles: " << cycles(g) << "; ";
@@ -299,7 +299,16 @@ void test7(ostream& ss)
 
 string res7()
 {
-    return "test7:        g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, G-1->F, H->E, H->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; graph2dag(g)    = Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph {H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}; parallelize(h)  = vector {vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, vector {Graph {D-1->E, E->D}}, vector {Graph {H-1->H}}}; rparallelize(h)  = vector {vector {Graph {H-1->H}}, vector {Graph {D-1->E, E->D}}, vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}}; serialize(h)    = vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}, Graph {D-1->E, E->D}, Graph {H-1->H}}; digraph mygraph {"
+    return "test7:        g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, "
+           "G-1->F, H->E, H->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; graph2dag(g)    "
+           "= Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, "
+           "Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph "
+           "{H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}; parallelize(h)  "
+           "= vector {vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, vector {Graph "
+           "{D-1->E, E->D}}, vector {Graph {H-1->H}}}; rparallelize(h)  = vector {vector {Graph "
+           "{H-1->H}}, vector {Graph {D-1->E, E->D}}, vector {Graph {A->B, B-1->C, C->A}, Graph "
+           "{F->G, G-1->F}}}; serialize(h)    = vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, "
+           "G-1->F}, Graph {D-1->E, E->D}, Graph {H-1->H}}; digraph mygraph {"
            "\n\t\"A\"->\"B\";"
            "\n\t\"B\"->\"C\" [label=\"1\"];"
            "\n\t\"C\"->\"A\";"
@@ -412,6 +421,79 @@ bool check9()
         cout << "test9 OK " << endl;
     } else {
         cout << "test9 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res9() << endl;
+    }
+    return ok;
+}
+
+template <typename N>
+bool equiv(const digraph<N>& g, const digraph<N>& h)
+{
+    if (g.nodes() != h.nodes()) {
+        return false;
+    } else {
+        for (const auto& n : g.nodes()) {
+            if (g.connections(n) != h.connections(n)) return false;
+        }
+        return true;
+    }
+}
+
+bool check10()
+{
+    digraph<char> g;
+    g.add('A', 'B')
+        .add('B', 'C', 1)
+        .add('C', 'A')
+        .add('D', 'B')
+        .add('D', 'C')
+        .add('D', 'E', 1)
+        .add('E', 'D')
+        .add('E', 'F')
+        .add('F', 'G')
+        .add('G', 'F', 1)
+        .add('H', 'G')
+        .add('H', 'E')
+        .add('H', 'H', 1);
+
+    digraph<char> r = reverse(reverse(g));
+    if (equiv(g, r)) {
+        cout << "test10 OK " << endl;
+        return true;
+    } else {
+        cout << "test10 FAIL " << endl;
+        cout << "We got      " << r << endl;
+        cout << "Instead of  " << g << endl;
+        return false;
+    }
+}
+
+void test11(ostream& ss)
+{
+    digraph<char> g;
+    g.add('A', 'B').add('B', 'C', 3).add('C', 'D').add('D', 'E');
+    g.add('A', 'I').add('I', 'J', 4).add('J', 'E', 5);
+
+    digraph<char> r = chain(g);
+    ss << "chain(" << g << ") = " << r;
+}
+
+string res11()
+{
+    return "chain(Graph {A->B, A->I, B-3->C, C->D, D->E, E, I-4->J, J-5->E}) = Graph {A, B-3->C, "
+           "C->D, D, E, I-4->J, J}";
+}
+
+bool check11()
+{
+    stringstream ss;
+    test11(ss);
+    bool ok = (0 == ss.str().compare(res11()));
+    if (ok) {
+        cout << "test11 OK " << endl;
+    } else {
+        cout << "test11 FAIL " << endl;
         cout << "We got     " << ss.str() << endl;
         cout << "instead of " << res9() << endl;
     }

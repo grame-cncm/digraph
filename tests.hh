@@ -50,3 +50,9 @@ bool   check8();
 void   test9(ostream& ss);
 string res9();
 bool   check9();
+
+bool check10();
+
+void   test11(ostream& ss);
+string res11();
+bool   check11();
