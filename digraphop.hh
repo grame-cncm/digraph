@@ -127,26 +127,32 @@ inline int cycles(const digraph<N>& g)
 
 //===========================================================
 //===========================================================
-// graph2dag : transfoms a graph into a dag of supernodes, ie
-// strongly connected components.
+// graph2dag : transfoms a graph into a dag of supernodes,
+// ie strongly connected components. The connection value
+// between two supernodes A and B is the smallest value of all
+// the connections between nodes of A and nodes of B.
 //===========================================================
 //===========================================================
 
 template <typename N>
 inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
 {
-    Tarjan<N>           T(g);
-    map<N, digraph<N>>  M;
-    digraph<digraph<N>> sg;
+    Tarjan<N>           T(g);  // the partition of g
+    map<N, digraph<N>>  M;     // mapping between nodes and supernodes
+    digraph<digraph<N>> sg;    // the resulting supergraph
 
     // build the graph of supernodes
+
+    // For each set s of the partition, create the corresponding graph sn
+    // create also a mapping in order to retrieve the supernode a node
+    /// belongs to.
     for (const auto& s : T.partition()) {
-        digraph<N> sn;
-        for (const N& n : s) {
-            M.insert(make_pair(n, sn));
-            sn.add(n);
+        digraph<N> sn;                   // the supernode graph
+        for (const N& n : s) {           // for each node of a cycle
+            M.insert(make_pair(n, sn));  // remember its supernode
+            sn.add(n);                   // and add it to the super node
         }
-        sg.add(sn);
+        sg.add(sn);  // and add the super node to the super graph
     }
 
     // compute the connections between the supernodes
@@ -159,10 +165,62 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
                 sn1.add(n1, c.first, c.second);
             } else {
                 // the connection is between supernodes
-                sg.add(sn1, sn2, c.second);
+                sg.add(sn1, sn2, c.second);  // exploit the fact that add will keep the mini
             }
         }
     }
+
+    return sg;
+}
+
+//===========================================================
+//===========================================================
+// graph2dag2 : transfoms a graph into a dag of supernodes,
+// ie strongly connected components. The connection value
+// between two supernodes A and B is the number of existing
+// connections between nodes of A and nodes of B.
+//===========================================================
+//===========================================================
+
+template <typename N>
+inline digraph<digraph<N>> graph2dag2(const digraph<N>& g)
+{
+    Tarjan<N>                              T(g);  // the partition of g
+    map<N, digraph<N>>                     M;     // mapping between nodes and supernodes
+    digraph<digraph<N>>                    sg;    // the resulting supergraph
+    map<pair<digraph<N>, digraph<N>>, int> CC;    // count of connections between supernodes
+
+    // build the graph of supernodes
+
+    // for each set s of the partition, create the corresponding graph sn
+    // create also a mapping in order to retrieve the supernode a node
+    /// belongs to.
+    for (const auto& s : T.partition()) {
+        digraph<N> sn;                   // the supernode graph
+        for (const N& n : s) {           // for each node of a cycle
+            M.insert(make_pair(n, sn));  // remember its supernode
+            sn.add(n);                   // and add it to the super node
+        }
+        sg.add(sn);  // and add the super node to the super graph
+    }
+
+    // compute the number of connections between the supernodes
+    for (const auto& n1 : g.nodes()) {             // for each node n1
+        digraph<N> sn1(M[n1]);                     // retrieve the supernode
+        for (const auto& c : g.connections(n1)) {  // for each destination of n
+            digraph<N> sn2(M[c.first]);
+            if (sn1 == sn2) {
+                // the connection is inside the same supernode
+                sn1.add(n1, c.first, c.second);
+            } else {
+                // We count the external connections between two supernodes
+                CC[make_pair(sn1, sn2)] += 1;
+            }
+        }
+    }
+
+    // we connect the super nodes using the count of external connections
+    for (const auto& entry : CC) { sg.add(entry.first.first, entry.first.second, entry.second); }
 
     return sg;
 }
@@ -481,7 +539,7 @@ inline ostream& operator<<(ostream& file, const digraph<N>& g)
 //===========================================================
 
 template <typename N>
-inline ostream& dotfile(ostream& file, const digraph<N>& g)
+inline ostream& dotfile(ostream& file, const digraph<N>& g, bool clusters = false)
 {
     file << "digraph mygraph {" << endl;
     for (const N& n : g.nodes()) {
@@ -500,6 +558,18 @@ inline ostream& dotfile(ostream& file, const digraph<N>& g)
             }
         }
         if (!hascnx) { file << "\t" << sn.str() << ";" << endl; }
+    }
+
+    if (clusters) {
+        Tarjan<N> T(g);
+        int       ccount = 0;  // cluster count
+        for (const auto& s : T.partition()) {
+            file << "\t"
+                 << "subgraph cluster" << ccount++ << " { " << endl;
+            for (const N& n : s) { file << "\t\t" << '"' << n << '"' << ";" << endl; }
+            file << "\t"
+                 << "}" << endl;
+        }
     }
 
     return file << "}" << endl;
