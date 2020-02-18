@@ -6,6 +6,7 @@
 //  Copyright © 2017-2019 GRAME. All rights reserved.
 //
 
+#include <fstream>
 #include <iostream>
 #include <list>
 #include "tests.hh"
@@ -31,7 +32,21 @@ int main(int, const char**)
     r &= check12();
 
     // test11(std::cout);
-    //
 
-    return (r) ? 0 : -1;
+    // // Faust test
+    // digraph<char> g;
+    // g.add('A', 'B').add('B', 'C', 3).add('C', 'A');  // cycle 1
+    // g.add('U', 'V').add('V', 'W', 4).add('W', 'U');  // cycle 2
+
+    // g.add('A', 'U', 2).add('B', 'V', 3).add('C', 'W', 1);
+
+    // cout << "graph    : " << g << endl;
+    // cout << "digraph  : " << graph2dag(g) << endl;
+    // cout << "digraph2 : " << graph2dag2(g) << endl;
+
+    // std::ofstream outfile("foo.dot");
+
+    // dotfile(outfile, g, true);
+
+    // outfile.close();
 }
