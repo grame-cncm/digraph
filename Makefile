@@ -1,8 +1,18 @@
 ANALYSIS="-*,cert-*,clang-analyzer-*,modernize-*,performance-*,cppcoreguidelines-*,google-*,bugprone-*,misc-*"
 
 
-testdigraph : *.cpp *.hh
+compile : *.cpp *.hh
 	${CXX} --std=c++11 *.cpp -o testdigraph
+
+
+test: testdigraph
+	./testdigraph
+
+help:
+	@echo "make [compile] : compile testdigraph"
+	@echo "make test      : compile and run testdigraph"
+	@echo "make format    : compile and run testdigraph"
+	@echo "make analyze   : clang-tidy code analysis"
 
 format :
 	clang-format -i -style=file *.cpp *.hh
