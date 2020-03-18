@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "digraph.hh"
+#include "schedule.hh"
 
 using namespace std;
 
@@ -100,15 +101,9 @@ class Tarjan
         }
     }
 
-    const set<set<N>>& partition() const
-    {
-        return fPartition;
-    }
+    const set<set<N>>& partition() const { return fPartition; }
 
-    int cycles() const
-    {
-        return fCycleCount;
-    }
+    int cycles() const { return fCycleCount; }
 };
 
 //===========================================================
@@ -242,15 +237,15 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
     //		level(n -> {})			= 0
     //		level(n -> {m1,m2,...})	= 1 + max(level(mi))
     //-----------------------------------------------------------
-    using Levelfun = function<int(const digraph<N>&, const N&, map<N, int>&)>;
+    using Levelfun = function<int(const N&, map<N, int>&)>;
 
-    Levelfun level = [&level](const digraph<N>& g, const N& n1, map<N, int>& levelcache) -> int {
+    Levelfun level = [&g, &level](const N& n1, map<N, int>& levelcache) -> int {
         auto p = levelcache.find(n1);
         if (p != levelcache.end()) {
             return p->second;
         } else {
             int l = -1;
-            for (const auto& e : g.connections(n1)) { l = max(l, level(g, e.first, levelcache)); }
+            for (const auto& e : g.connections(n1)) { l = max(l, level(e.first, levelcache)); }
             return levelcache[n1] = l + 1;
         }
     };
@@ -258,7 +253,7 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
     map<N, int> levelcache;
     // compute the level of each node in the graph
     int l = -1;
-    for (const N& n : g.nodes()) { l = max(l, level(g, n, levelcache)); }
+    for (const N& n : g.nodes()) { l = max(l, level(n, levelcache)); }
     // create a graph for each level and place
     // each node in the appropriate level
     vector<vector<N>> v;
@@ -492,6 +487,30 @@ inline digraph<N> chain(const digraph<N>& g, bool strict)
     return r;
 }
 
+template <typename N>
+inline vector<N> roots(const digraph<N>& G)
+{
+    map<N, int> R;
+    for (const N& n : G.nodes()) {
+        for (const auto& c : G.connections(n)) { R[c.first]++; }
+    }
+    vector<N> V;
+    for (const N& n : G.nodes()) {
+        if (R[n] == 0) V.push_back(n);
+    }
+    return V;
+}
+
+template <typename N>
+inline vector<N> leaves(const digraph<N>& G)
+{
+    vector<N> L;
+    for (const N& n : G.nodes()) {
+        if (G.connections(n).size() == 0) { L.push_back(n); }
+    }
+    return L;
+}
+
 /*******************************************************************************
 ********************************************************************************
 
@@ -509,12 +528,10 @@ inline digraph<N> chain(const digraph<N>& g, bool strict)
 template <typename N>
 inline ostream& operator<<(ostream& file, const digraph<N>& g)
 {
-    string sep      = "";
-    bool   hasnodes = false;
+    string sep = "";
 
     file << "Graph {";
     for (const N& n : g.nodes()) {
-        hasnodes    = true;
         bool hascnx = false;
         for (const auto& c : g.connections(n)) {
             hascnx = true;
