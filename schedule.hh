@@ -10,7 +10,7 @@
  ******************************************************************************/
 
 #pragma once
-
+#include <cassert>
 #include <functional>
 #include <iostream>
 #include <list>

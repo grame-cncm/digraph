@@ -157,7 +157,7 @@ void test3(ostream& ss)
     auto h1 = cut(g, 64);     // cut vectorsize connections
     auto h2 = graph2dag(h1);  // find cycles
     auto h3 = mapnodes<digraph<char>, digraph<char>>(
-        h2, [](const digraph<char>& g) -> digraph<char> { return cut(g, 1); });
+        h2, [](const digraph<char>& gr) -> digraph<char> { return cut(gr, 1); });
     ss << "test3: h3= " << h3;
 }
 
@@ -238,7 +238,8 @@ void test5(ostream& ss)
     g1.add('A', 'Z');
     g1.add('W', 'C', 1);
 
-    splitgraph<char>(g1, [](const char& c) { return c < 'K'; }, g2, g3);
+    splitgraph<char>(
+        g1, [](const char& c) { return c < 'K'; }, g2, g3);
 
     ss << "test5: g1 = " << g1 << "; g2 = " << g2 << "; g3 = " << g3;
 }
@@ -501,6 +502,8 @@ bool check11()
     return ok;
 }
 
+//=====================================================================
+
 void test12(ostream& ss)
 {
     digraph<char> g;
@@ -528,6 +531,46 @@ bool check12()
         cout << "test12 FAIL " << endl;
         cout << "We got     " << ss.str() << endl;
         cout << "instead of " << res12() << endl;
+    }
+    return ok;
+}
+
+//=====================================================================
+
+void test13(ostream& ss)
+{
+    // roots and leaves
+    digraph<char> h;
+    h.add('A', 'B').add('B', 'C').add('C', 'D').add('B', 'G');
+    h.add('E', 'F').add('F', 'G').add('G', 'H');  //.add('F', 'C');
+
+    ss << "graph h   : " << h << endl;
+    ss << "roots(h)  : " << roots(h) << endl;
+    ss << "leafs(h)  : " << leaves(h) << endl;
+    ss << dfschedule(h) << ", cost: " << schedulingcost(h, dfschedule(h)) << endl;
+    ss << bfschedule(h) << ", cost: " << schedulingcost(h, bfschedule(h)) << endl;
+}
+
+string res13()
+{
+    return "graph h   : Graph {A->B, B->C, B->G, C->D, D, E->F, F->G, G->H, H}\n"
+           "roots(h)  : vector {A, E}\n"
+           "leafs(h)  : vector {D, H}\n"
+           "Schedule {1:D, 2:C, 3:H, 4:G, 5:B, 6:A, 7:F, 8:E}, cost: 11\n"
+           "Schedule {1:D, 2:H, 3:C, 4:G, 5:B, 6:F, 7:A, 8:E}, cost: 13\n";
+}
+
+bool check13()
+{
+    stringstream ss;
+    test13(ss);
+    bool ok = (0 == ss.str().compare(res13()));
+    if (ok) {
+        cout << "test13 OK " << endl;
+    } else {
+        cout << "test13 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res13() << endl;
     }
     return ok;
 }
