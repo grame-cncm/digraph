@@ -574,3 +574,71 @@ bool check13()
     }
     return ok;
 }
+
+//=====================================================================
+
+void test14(ostream& ss)
+{
+    // roots and leaves
+    digraph<char> h;
+    h.add('A', 'B').add('B', 'C').add('C', 'D').add('B', 'G', 1).add('C', 'B', 1);
+    h.add('E', 'F').add('F', 'G').add('G', 'H').add('G', 'F', 2);
+
+    ss << "graph h   : " << h << endl;
+    ss << dfcyclesschedule(h) << ", cost: " << schedulingcost(h, dfcyclesschedule(h)) << endl;
+}
+
+string res14()
+{
+    return "graph h   : Graph {A->B, B->C, B-1->G, C-1->B, C->D, D, E->F, F->G, G-2->F, G->H, H}\n"
+           "Schedule {1:H, 2:G, 3:F, 4:E, 5:D, 6:C, 7:B, 8:A}, cost: 17\n";
+}
+
+bool check14()
+{
+    stringstream ss;
+    test14(ss);
+    bool ok = (0 == ss.str().compare(res14()));
+    if (ok) {
+        cout << "test14 OK " << endl;
+    } else {
+        cout << "test14 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res14() << endl;
+    }
+    return ok;
+}
+
+//=====================================================================
+
+void test15(ostream& ss)
+{
+    // roots and leaves
+    digraph<char> h;
+    h.add('A', 'B').add('B', 'C').add('C', 'D').add('B', 'G', 1).add('C', 'B', 1);
+    h.add('E', 'F').add('F', 'G').add('G', 'H').add('G', 'F', 2);
+
+    ss << "graph h   : " << h << endl;
+    ss << bfcyclesschedule(h) << ", cost: " << schedulingcost(h, bfcyclesschedule(h)) << endl;
+}
+
+string res15()
+{
+    return "graph h   : Graph {A->B, B->C, B-1->G, C-1->B, C->D, D, E->F, F->G, G-2->F, G->H, H}\n"
+           "Schedule {1:D, 2:H, 3:G, 4:F, 5:C, 6:B, 7:E, 8:A}, cost: 17\n";
+}
+
+bool check15()
+{
+    stringstream ss;
+    test15(ss);
+    bool ok = (0 == ss.str().compare(res15()));
+    if (ok) {
+        cout << "test15 OK " << endl;
+    } else {
+        cout << "test15 FAIL " << endl;
+        cout << "We got     " << ss.str() << endl;
+        cout << "instead of " << res15() << endl;
+    }
+    return ok;
+}

@@ -64,3 +64,11 @@ bool   check12();
 void   test13(ostream& ss);
 string res13();
 bool   check13();
+
+void   test14(ostream& ss);
+string res14();
+bool   check14();
+
+void   test15(ostream& ss);
+string res15();
+bool   check15();

@@ -2,7 +2,7 @@ ANALYSIS="-*,cert-*,clang-analyzer-*,modernize-*,performance-*,cppcoreguidelines
 
 
 testdigraph : *.cpp *.hh
-	${CXX} -Wall -Wshadow --std=c++11 *.cpp -o testdigraph
+	${CXX} -Wall -Wshadow -O1 -g --std=c++11 *.cpp -o testdigraph
 
 
 test: testdigraph
