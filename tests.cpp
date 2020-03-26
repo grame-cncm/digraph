@@ -163,9 +163,9 @@ void test3(std::ostream& ss)
 
 std::string res3()
 {
-    return "test3: h3= Graph {Graph {D, E->D}->Graph {F->G, G}, Graph {D, E->D}->Graph {A->B, B, "
-           "C->A}, Graph {F->G, G}, Graph {A->B, B, C->A}, Graph {H}->Graph {D, E->D}, Graph "
-           "{H}->Graph {F->G, G}}";
+    return "test3: h3= Graph {Graph {F->G, G}, Graph {H}->Graph {F->G, G}, Graph {H}->Graph {D, "
+           "E->D}, Graph {A->B, B, C->A}, Graph {D, E->D}->Graph {F->G, G}, Graph {D, E->D}->Graph "
+           "{A->B, B, C->A}}";
 }
 
 bool check3()
@@ -302,14 +302,15 @@ std::string res7()
 {
     return "test7:        g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, "
            "G-1->F, H->E, H->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; graph2dag(g)    "
-           "= Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, "
-           "Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph "
-           "{H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}; parallelize(h)  "
-           "= vector {vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, vector {Graph "
-           "{D-1->E, E->D}}, vector {Graph {H-1->H}}}; rparallelize(h)  = vector {vector {Graph "
-           "{H-1->H}}, vector {Graph {D-1->E, E->D}}, vector {Graph {A->B, B-1->C, C->A}, Graph "
-           "{F->G, G-1->F}}}; serialize(h)    = vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, "
-           "G-1->F}, Graph {D-1->E, E->D}, Graph {H-1->H}}; digraph mygraph {"
+           "= Graph {Graph {H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}, "
+           "Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, "
+           "G-1->F}, Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}; parallelize(h)  = "
+           "std::vector {std::vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, "
+           "std::vector {Graph {D-1->E, E->D}}, std::vector {Graph {H-1->H}}}; rparallelize(h)  = "
+           "std::vector {std::vector {Graph {H-1->H}}, std::vector {Graph {D-1->E, E->D}}, "
+           "std::vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}}; serialize(h)    = "
+           "std::vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}, Graph {D-1->E, E->D}, "
+           "Graph {H-1->H}}; digraph mygraph {"
            "\n\t\"A\"->\"B\";"
            "\n\t\"B\"->\"C\" [label=\"1\"];"
            "\n\t\"C\"->\"A\";"
@@ -409,7 +410,7 @@ void test9(std::ostream& ss)
 std::string res9()
 {
     return "Subgraph(Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, F->G, G->F, H->E, "
-           "H->G, H->H}, std::set {H}) = Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, "
+           "H->G, H->H}, set {H}) = Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, "
            "F->G, "
            "G->F, H->E, H->G, H->H}";
 }
@@ -632,7 +633,7 @@ std::string res15()
     return "graph h   : Graph {A->B, B->C, B-1->G, C-1->B, C->D, D->U, E->F, F->G, G-2->F, G->H, "
            "H, U-1->D}\n"
            "deep-first    : Schedule {1:U, 2:D, 3:H, 4:G, 5:F, 6:C, 7:B, 8:A, 9:E}, cost: 16\n"
-           "breadth-first : Schedule {1:U, 2:D, 3:H, 4:G, 5:F, 6:E, 7:C, 8:B, 9:A}, cost: 20\n";
+           "breadth-first : Schedule {1:H, 2:U, 3:D, 4:G, 5:F, 6:E, 7:C, 8:B, 9:A}, cost: 19\n";
 }
 
 bool check15()
