@@ -1,7 +1,7 @@
 /*******************************************************************************
 ********************************************************************************
 
-    digraphop : a std::set of operations on directed graphes
+    digraphop : a set of operations on directed graphs
 
     Created by Yann Orlarey on 31/01/2017.
     Copyright © 2017 Grame. All rights reserved.
@@ -426,7 +426,7 @@ void splitgraph(const digraph<N>& G, std::function<bool(const N&)> left, digraph
  *
  * @tparam N the type of nodes
  * @param G the input graph
- * @param S the std::set of nodes to keep with their dependencies
+ * @param S the set of nodes to keep with their dependencies
  * @return the resulting subgraph
  */
 template <typename N>
@@ -644,7 +644,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
 {
     std::string sep = "";
 
-    file << "std::set {";
+    file << "set {";
     for (const N& e : S) {
         file << sep << e;
         sep = ", ";
