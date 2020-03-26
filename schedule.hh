@@ -133,7 +133,7 @@ inline schedule<N> bfschedule(const digraph<N>& G)
     std::vector<std::vector<N>> P = parallelize(G);
     schedule<N>                 S;
 
-    for (unsigned int i = 0; i < P.size(); i++) {
+    for (uint64_t i = 0; i < P.size(); i++) {
         for (const N& n : P[i]) S.append(n);
     }
     return S;

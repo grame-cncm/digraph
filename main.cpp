@@ -9,14 +9,11 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
-#include <list>
 #include "tests.hh"
-
-using namespace std;
 
 int main(int, const char**)
 {
-    cout << "Tests digraph library\n";
+    std::cout << "Tests digraph library\n";
 
     bool r = true;
     r &= check0();
@@ -34,4 +31,6 @@ int main(int, const char**)
     r &= check13();
     r &= check14();
     r &= check15();
+
+    return (r) ? 0 : 1;
 }

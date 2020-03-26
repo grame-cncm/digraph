@@ -1,7 +1,7 @@
 /*******************************************************************************
 ********************************************************************************
 
-    digraphop : a set of operations on directed graphes
+    digraphop : a std::set of operations on directed graphes
 
     Created by Yann Orlarey on 31/01/2017.
     Copyright © 2017 Grame. All rights reserved.
@@ -19,8 +19,6 @@
 
 #include "digraph.hh"
 #include "schedule.hh"
-
-using namespace std;
 
 //===========================================================
 //===========================================================
@@ -41,17 +39,17 @@ class Tarjan
         int  fNum2    = 0;
     };
 
-    const digraph<N>& fGraph;
-    int               fGroup;
-    stack<N>          fStack;
-    map<N, tarjanAux> fAux;
-    set<set<N>>       fPartition;
-    int               fCycleCount;
+    const digraph<N>&      fGraph;
+    int                    fGroup;
+    std::stack<N>          fStack;
+    std::map<N, tarjanAux> fAux;
+    std::set<std::set<N>>  fPartition;
+    int                    fCycleCount;
 
     // visit a specific node n of the graph
     void visit(const N& v)
     {
-        // cout << "start (first) visit of " << v << endl;
+        // std::cout << "start (first) visit of " << v << std::endl;
         auto& x = fAux[v];
         fStack.push(v);
         x.fStacked = true;
@@ -59,27 +57,29 @@ class Tarjan
         x.fNum1 = x.fNum2 = fGroup;
         ++fGroup;
 
-        // cout << "visit all nodes connected to " << v << endl;
+        // std::cout << "visit all nodes connected to " << v << std::endl;
         for (const auto& p : fGraph.connections(v)) {
-            // cout << "we have a connection " << v << "-" << p.second << "->" << p.first << endl;
+            // std::cout << "we have a connection " << v << "-" << p.second << "->" << p.first <<
+            // std::endl;
             const N& w = p.first;
             auto&    y = fAux[w];
             if (!y.fVisited) {
                 visit(w);
-                x.fNum2 = min(x.fNum2, y.fNum2);
+                x.fNum2 = std::min(x.fNum2, y.fNum2);
             } else {
                 if (y.fStacked) {
-                    // cout << "the node " << w << " is already in the stack" << endl;
-                    x.fNum2 = min(x.fNum2, y.fNum1);
+                    // std::cout << "the node " << w << " is already in the std::stack" <<
+                    // std::endl;
+                    x.fNum2 = std::min(x.fNum2, y.fNum1);
                 }
             }
         }
 
         if (x.fNum1 == x.fNum2) {
-            // cout << "the node " << v << " is the root of a cycle" << endl;
+            // std::cout << "the node " << v << " is the root of a cycle" << std::endl;
 
-            set<N> cycle;
-            bool   finished = false;
+            std::set<N> cycle;
+            bool        finished = false;
             do {
                 const N& w = fStack.top();
                 fStack.pop();
@@ -90,7 +90,7 @@ class Tarjan
             fPartition.insert(cycle);
             if ((cycle.size() > 1) || fGraph.areConnected(v, v)) { fCycleCount++; }
         }
-        // cout << "end (first) visit of " << v << endl;
+        // std::cout << "end (first) visit of " << v << std::endl;
     }
 
    public:
@@ -101,7 +101,7 @@ class Tarjan
         }
     }
 
-    const set<set<N>>& partition() const { return fPartition; }
+    const std::set<std::set<N>>& partition() const { return fPartition; }
 
     int cycles() const { return fCycleCount; }
 };
@@ -132,20 +132,20 @@ inline int cycles(const digraph<N>& g)
 template <typename N>
 inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
 {
-    Tarjan<N>           T(g);  // the partition of g
-    map<N, digraph<N>>  M;     // mapping between nodes and supernodes
-    digraph<digraph<N>> sg;    // the resulting supergraph
+    Tarjan<N>               T(g);  // the partition of g
+    std::map<N, digraph<N>> M;     // std::mapping between nodes and supernodes
+    digraph<digraph<N>>     sg;    // the resulting supergraph
 
     // build the graph of supernodes
 
-    // For each set s of the partition, create the corresponding graph sn
-    // create also a mapping in order to retrieve the supernode a node
+    // For each std::set s of the partition, create the corresponding graph sn
+    // create also a std::mapping in order to retrieve the supernode a node
     /// belongs to.
     for (const auto& s : T.partition()) {
-        digraph<N> sn;                   // the supernode graph
-        for (const N& n : s) {           // for each node of a cycle
-            M.insert(make_pair(n, sn));  // remember its supernode
-            sn.add(n);                   // and add it to the super node
+        digraph<N> sn;                        // the supernode graph
+        for (const N& n : s) {                // for each node of a cycle
+            M.insert(std::make_pair(n, sn));  // remember its supernode
+            sn.add(n);                        // and add it to the super node
         }
         sg.add(sn);  // and add the super node to the super graph
     }
@@ -180,21 +180,21 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
 template <typename N>
 inline digraph<digraph<N>> graph2dag2(const digraph<N>& g)
 {
-    Tarjan<N>                              T(g);  // the partition of g
-    map<N, digraph<N>>                     M;     // mapping between nodes and supernodes
-    digraph<digraph<N>>                    sg;    // the resulting supergraph
-    map<pair<digraph<N>, digraph<N>>, int> CC;    // count of connections between supernodes
+    Tarjan<N>               T(g);  // the partition of g
+    std::map<N, digraph<N>> M;     // std::mapping between nodes and supernodes
+    digraph<digraph<N>>     sg;    // the resulting supergraph
+    std::map<std::pair<digraph<N>, digraph<N>>, int> CC;  // count of connections between supernodes
 
     // build the graph of supernodes
 
-    // for each set s of the partition, create the corresponding graph sn
-    // create also a mapping in order to retrieve the supernode a node
+    // for each std::set s of the partition, create the corresponding graph sn
+    // create also a std::mapping in order to retrieve the supernode a node
     /// belongs to.
     for (const auto& s : T.partition()) {
-        digraph<N> sn;                   // the supernode graph
-        for (const N& n : s) {           // for each node of a cycle
-            M.insert(make_pair(n, sn));  // remember its supernode
-            sn.add(n);                   // and add it to the super node
+        digraph<N> sn;                        // the supernode graph
+        for (const N& n : s) {                // for each node of a cycle
+            M.insert(std::make_pair(n, sn));  // remember its supernode
+            sn.add(n);                        // and add it to the super node
         }
         sg.add(sn);  // and add the super node to the super graph
     }
@@ -209,7 +209,7 @@ inline digraph<digraph<N>> graph2dag2(const digraph<N>& g)
                 sn1.add(n1, c.first, c.second);
             } else {
                 // We count the external connections between two supernodes
-                CC[make_pair(sn1, sn2)] += 1;
+                CC[std::make_pair(sn1, sn2)] += 1;
             }
         }
     }
@@ -223,40 +223,40 @@ inline digraph<digraph<N>> graph2dag2(const digraph<N>& g)
 //===========================================================
 //===========================================================
 //
-// parallelize : transfoms a DAG into a sequential vector
+// parallelize : transfoms a DAG into a sequential std::vector
 // of parallel vectors of nodes using a topological sort.
 //
 //===========================================================
 //===========================================================
 
 template <typename N>
-inline vector<vector<N>> parallelize(const digraph<N>& g)
+inline std::vector<std::vector<N>> parallelize(const digraph<N>& g)
 {
     //-----------------------------------------------------------
     // Find the level of a node n -> {m1,m2,...} such that
     //		level(n -> {})			= 0
-    //		level(n -> {m1,m2,...})	= 1 + max(level(mi))
+    //		level(n -> {m1,m2,...})	= 1 + std::max(level(mi))
     //-----------------------------------------------------------
-    using Levelfun = function<int(const N&, map<N, int>&)>;
+    using Levelfun = std::function<int(const N&, std::map<N, int>&)>;
 
-    Levelfun level = [&g, &level](const N& n1, map<N, int>& levelcache) -> int {
+    Levelfun level = [&g, &level](const N& n1, std::map<N, int>& levelcache) -> int {
         auto p = levelcache.find(n1);
         if (p != levelcache.end()) {
             return p->second;
         } else {
             int l = -1;
-            for (const auto& e : g.connections(n1)) { l = max(l, level(e.first, levelcache)); }
+            for (const auto& e : g.connections(n1)) { l = std::max(l, level(e.first, levelcache)); }
             return levelcache[n1] = l + 1;
         }
     };
 
-    map<N, int> levelcache;
+    std::map<N, int> levelcache;
     // compute the level of each node in the graph
     int l = -1;
-    for (const N& n : g.nodes()) { l = max(l, level(n, levelcache)); }
+    for (const N& n : g.nodes()) { l = std::max(l, level(n, levelcache)); }
     // create a graph for each level and place
     // each node in the appropriate level
-    vector<vector<N>> v;
+    std::vector<std::vector<N>> v;
     v.resize(l + 1);
     for (const N& n : g.nodes()) { v[levelcache[n]].push_back(n); }
 
@@ -264,11 +264,11 @@ inline vector<vector<N>> parallelize(const digraph<N>& g)
 }
 
 template <typename N>
-inline vector<vector<N>> rparallelize(const digraph<N>& G)
+inline std::vector<std::vector<N>> rparallelize(const digraph<N>& G)
 {
-    vector<vector<N>> P = parallelize(G);
-    int               i = 0;
-    int               j = P.size() - 1;
+    std::vector<std::vector<N>> P = parallelize(G);
+    int                         i = 0;
+    int                         j = P.size() - 1;
 
     while (i < j) {
         swap(P[i], P[j]);
@@ -287,17 +287,18 @@ inline vector<vector<N>> rparallelize(const digraph<N>& G)
 //===========================================================
 
 template <typename N>
-inline vector<N> serialize(const digraph<N>& G)
+inline std::vector<N> serialize(const digraph<N>& G)
 {
     //------------------------------------------------------------------------
-    // visit : a local function (simulated using a lambda) to visit a graph
+    // visit : a local std::function (simulated using a lambda) to visit a graph
     // g : the graph
     // n : the node
-    // V : set of already visited nodes
-    // S : serialized vector of nodes
+    // V : std::set of already visited nodes
+    // S : serialized std::vector of nodes
     //------------------------------------------------------------------------
-    using Visitfun = function<void(const digraph<N>&, const N&, set<N>&, vector<N>&)>;
-    Visitfun visit = [&visit](const digraph<N>& g, const N& n, set<N>& V, vector<N>& S) {
+    using Visitfun =
+        std::function<void(const digraph<N>&, const N&, std::set<N>&, std::vector<N>&)>;
+    Visitfun visit = [&visit](const digraph<N>& g, const N& n, std::set<N>& V, std::vector<N>& S) {
         if (V.find(n) == V.end()) {
             V.insert(n);
             for (const auto& p : g.connections(n)) { visit(g, p.first, V, S); }
@@ -305,29 +306,29 @@ inline vector<N> serialize(const digraph<N>& G)
         }
     };
 
-    vector<N> S;
-    set<N>    V;
+    std::vector<N> S;
+    std::set<N>    V;
     for (const N& n : G.nodes()) { visit(G, n, V, S); }
     return S;
 }
 
 //===========================================================
 //===========================================================
-// mapgraph(foo) : transfoms a graph  by applying foo:N->M
+// std::mapgraph(foo) : transfoms a graph  by applying foo:N->M
 // to each node of graph. The connections are preserved.
 //===========================================================
 //===========================================================
 
 template <typename N, typename M>
-inline digraph<M> mapnodes(const digraph<N>& g, function<M(const N&)> foo)
+inline digraph<M> mapnodes(const digraph<N>& g, std::function<M(const N&)> foo)
 {
-    digraph<M> r;
-    map<N, M>  cache;
+    digraph<M>     r;
+    std::map<N, M> cache;
     // create a new graph with the transformed nodes
     for (const auto& n1 : g.nodes()) {
         M n2 = foo(n1);
         r.add(n2);
-        cache.insert(make_pair(n1, n2));
+        cache.insert(std::make_pair(n1, n2));
     }
 
     // copy the connections
@@ -360,14 +361,15 @@ inline digraph<N> reverse(const digraph<N>& g)
 //===========================================================
 //===========================================================
 // mapconnections(g, keep) -> g' : transfoms a graph by
-// applying the function keep to each connection. If keep
+// applying the std::function keep to each connection. If keep
 // returns true the connection is maintained, otherwise it
 // is removed.
 //===========================================================
 //===========================================================
 
 template <typename N>
-inline digraph<N> mapconnections(const digraph<N>& G, function<bool(const N&, const N&, int)> keep)
+inline digraph<N> mapconnections(const digraph<N>&                            G,
+                                 std::function<bool(const N&, const N&, int)> keep)
 {
     digraph<N> R;
     for (const N& n : G.nodes()) {
@@ -395,7 +397,8 @@ inline digraph<N> mapconnections(const digraph<N>& G, function<bool(const N&, co
  * @param R resulting graph of right nodes
  */
 template <typename N>
-void splitgraph(const digraph<N>& G, function<bool(const N&)> left, digraph<N>& L, digraph<N>& R)
+void splitgraph(const digraph<N>& G, std::function<bool(const N&)> left, digraph<N>& L,
+                digraph<N>& R)
 {
     for (auto n : G.nodes()) {
         if (left(n)) {
@@ -419,21 +422,21 @@ void splitgraph(const digraph<N>& G, function<bool(const N&)> left, digraph<N>& 
 //===========================================================
 
 /**
- * @brief extract a subgraph of G according to a set of nodes S.
+ * @brief extract a subgraph of G according to a std::set of nodes S.
  *
  * @tparam N the type of nodes
  * @param G the input graph
- * @param S the set of nodes to keep with their dependencies
+ * @param S the std::set of nodes to keep with their dependencies
  * @return the resulting subgraph
  */
 template <typename N>
-digraph<N> subgraph(const digraph<N>& G, const set<N>& S)
+digraph<N> subgraph(const digraph<N>& G, const std::set<N>& S)
 {
-    digraph<N> R;     // the (R)esulting graph
-    set<N>     W{S};  // nodes (W)aiting to be processed
-    set<N>     P;     // nodes already (P)rocessed
+    digraph<N>  R;     // the (R)esulting graph
+    std::set<N> W{S};  // nodes (W)aiting to be processed
+    std::set<N> P;     // nodes already (P)rocessed
     while (!W.empty()) {
-        set<N> M;  // (M)ore nodes to process at next iteration
+        std::set<N> M;  // (M)ore nodes to process at next iteration
         for (auto n : W) {
             R.add(n);     // add n to the resulting graph
             P.insert(n);  // mark n as processed
@@ -488,13 +491,13 @@ inline digraph<N> chain(const digraph<N>& g, bool strict)
 }
 
 template <typename N>
-inline vector<N> roots(const digraph<N>& G)
+inline std::vector<N> roots(const digraph<N>& G)
 {
-    map<N, int> R;
+    std::map<N, int> R;
     for (const N& n : G.nodes()) {
         for (const auto& c : G.connections(n)) { R[c.first]++; }
     }
-    vector<N> V;
+    std::vector<N> V;
     for (const N& n : G.nodes()) {
         if (R[n] == 0) V.push_back(n);
     }
@@ -502,9 +505,9 @@ inline vector<N> roots(const digraph<N>& G)
 }
 
 template <typename N>
-inline vector<N> leaves(const digraph<N>& G)
+inline std::vector<N> leaves(const digraph<N>& G)
 {
-    vector<N> L;
+    std::vector<N> L;
     for (const N& n : G.nodes()) {
         if (G.connections(n).size() == 0) { L.push_back(n); }
     }
@@ -514,7 +517,7 @@ inline vector<N> leaves(const digraph<N>& G)
 /*******************************************************************************
 ********************************************************************************
 
-                                        VARIOUS PRINTING FUNCTIONS
+                                        VARIOUS PRINTING std::functionS
 
  *******************************************************************************
  ******************************************************************************/
@@ -526,9 +529,9 @@ inline vector<N> leaves(const digraph<N>& G)
 //===========================================================
 
 template <typename N>
-inline ostream& operator<<(ostream& file, const digraph<N>& g)
+inline std::ostream& operator<<(std::ostream& file, const digraph<N>& g)
 {
-    string sep = "";
+    std::string sep = "";
 
     file << "Graph {";
     for (const N& n : g.nodes()) {
@@ -556,25 +559,25 @@ inline ostream& operator<<(ostream& file, const digraph<N>& g)
 //===========================================================
 
 template <typename N>
-inline ostream& dotfile(ostream& file, const digraph<N>& g, bool clusters = false)
+inline std::ostream& dotfile(std::ostream& file, const digraph<N>& g, bool clusters = false)
 {
-    file << "digraph mygraph {" << endl;
+    file << "digraph mygraph {" << std::endl;
     for (const N& n : g.nodes()) {
-        stringstream sn;
+        std::stringstream sn;
         sn << '"' << n << '"';
         bool hascnx = false;
         for (const auto& c : g.connections(n)) {
-            stringstream sm;
+            std::stringstream sm;
             sm << '"' << c.first << '"';
             hascnx = true;
             if (c.second == 0) {
-                file << "\t" << sn.str() << "->" << sm.str() << ";" << endl;
+                file << "\t" << sn.str() << "->" << sm.str() << ";" << std::endl;
             } else {
                 file << "\t" << sn.str() << "->" << sm.str() << " [label=\"" << c.second << "\"];"
-                     << endl;
+                     << std::endl;
             }
         }
-        if (!hascnx) { file << "\t" << sn.str() << ";" << endl; }
+        if (!hascnx) { file << "\t" << sn.str() << ";" << std::endl; }
     }
 
     if (clusters) {
@@ -582,28 +585,28 @@ inline ostream& dotfile(ostream& file, const digraph<N>& g, bool clusters = fals
         int       ccount = 0;  // cluster count
         for (const auto& s : T.partition()) {
             file << "\t"
-                 << "subgraph cluster" << ccount++ << " { " << endl;
-            for (const N& n : s) { file << "\t\t" << '"' << n << '"' << ";" << endl; }
+                 << "subgraph cluster" << ccount++ << " { " << std::endl;
+            for (const N& n : s) { file << "\t\t" << '"' << n << '"' << ";" << std::endl; }
             file << "\t"
-                 << "}" << endl;
+                 << "}" << std::endl;
         }
     }
 
-    return file << "}" << endl;
+    return file << "}" << std::endl;
 }
 
 //===========================================================
 //===========================================================
-// file << list : print a list on a stream
+// file << std::list : print a std::list on a stream
 //===========================================================
 //===========================================================
 
 template <typename N>
-inline ostream& operator<<(ostream& file, const list<N>& L)
+inline std::ostream& operator<<(std::ostream& file, const std::list<N>& L)
 {
-    string sep = "";
+    std::string sep = "";
 
-    file << "list {";
+    file << "std::list {";
     for (const N& e : L) {
         file << sep << e;
         sep = ", ";
@@ -613,16 +616,16 @@ inline ostream& operator<<(ostream& file, const list<N>& L)
 
 //===========================================================
 //===========================================================
-// file << vector : print a vector on a stream
+// file << std::vector : print a std::vector on a stream
 //===========================================================
 //===========================================================
 
 template <typename N>
-inline ostream& operator<<(ostream& file, const vector<N>& V)
+inline std::ostream& operator<<(std::ostream& file, const std::vector<N>& V)
 {
-    string sep = "";
+    std::string sep = "";
 
-    file << "vector {";
+    file << "std::vector {";
     for (const N& e : V) {
         file << sep << e;
         sep = ", ";
@@ -632,16 +635,16 @@ inline ostream& operator<<(ostream& file, const vector<N>& V)
 
 //===========================================================
 //===========================================================
-// file << set : print a set on a stream
+// file << std::set : print a std::set on a stream
 //===========================================================
 //===========================================================
 
 template <typename N>
-inline ostream& operator<<(ostream& file, const set<N>& S)
+inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
 {
-    string sep = "";
+    std::string sep = "";
 
-    file << "set {";
+    file << "std::set {";
     for (const N& e : S) {
         file << sep << e;
         sep = ", ";
@@ -651,12 +654,12 @@ inline ostream& operator<<(ostream& file, const set<N>& S)
 
 //===========================================================
 //===========================================================
-// file << pair : print a pair on a stream
+// file << std::pair : print a std::pair on a stream
 //===========================================================
 //===========================================================
 
 template <typename N, typename M>
-inline ostream& operator<<(ostream& file, const pair<N, M>& V)
+inline std::ostream& operator<<(std::ostream& file, const std::pair<N, M>& V)
 {
-    return file << "pair {" << V.first << ", " << V.second << "}";
+    return file << "std::pair {" << V.first << ", " << V.second << "}";
 }
