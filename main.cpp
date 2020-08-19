@@ -11,6 +11,8 @@
 #include <iostream>
 #include "tests.hh"
 
+using namespace std;
+
 int main(int, const char**)
 {
     std::cout << "Tests digraph library\n";
