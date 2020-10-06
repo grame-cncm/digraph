@@ -21,7 +21,7 @@ clean :
 	rm -f testdigraph *.orig *.plist
 
 analyze :
-	clang-tidy-8 --extra-arg="--std=c++11" -checks=${ANALYSIS} -header-filter=.* *.cpp
+	clang-tidy --extra-arg="--std=c++11" -checks=${ANALYSIS} -header-filter=.* *.cpp
 
 fix :
-	clang-tidy-8 --extra-arg="--std=c++11" -checks=${ANALYSIS} -header-filter=.* *.cpp -fix
+	clang-tidy --extra-arg="--std=c++11" -checks=${ANALYSIS} -header-filter=.* *.cpp -fix
