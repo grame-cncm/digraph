@@ -217,7 +217,7 @@ bool check4()
     } else {
         std::cout << "test4 FAIL " << std::endl;
         std::cout << "We got     \"" << ss.str() << '"' << std::endl;
-        std::cout << "instead of \"" << res3() << '"' << std::endl;
+        std::cout << "instead of \"" << res4() << '"' << std::endl;
     }
     return ok;
 }
