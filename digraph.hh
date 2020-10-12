@@ -39,7 +39,7 @@ struct arrow_traits<int> {
 template <typename N, typename A = int>
 class digraph
 {
-    typedef arrow_traits<A> policy;
+    using policy = arrow_traits<A>;
 
    private:
     //--------------------------------------------------------------------------
