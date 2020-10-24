@@ -33,7 +33,40 @@ class arrow_traits
 template <>
 struct arrow_traits<int> {
     static int zero() { return 0; }
-    static int combine(int x, int y) { return (x < y) ? y : x; }
+    static int combine(int x, int y) { return (x < y) ? x : y; }
+};
+
+using multidep = std::map<std::string, int>;
+
+template <>
+struct arrow_traits<multidep> {
+    static multidep zero() { return multidep{}; }
+    static multidep combine(const multidep& X, const multidep& Y)
+    {
+        multidep M;
+        auto     itx = X.begin();
+        auto     ity = Y.begin();
+        while ((itx != X.end()) && (ity != Y.end())) {
+            if (itx->first < ity->first) {
+                M[itx->first] = itx->second;
+            } else if (itx->first > ity->first) {
+                M[ity->first] = ity->second;
+            } else {
+                M[ity->first] = std::min(itx->second, ity->second);
+            }
+            itx++;
+            ity++;
+        }
+        while (itx != X.end()) {
+            M[itx->first] = itx->second;
+            itx++;
+        }
+        while (ity != Y.end()) {
+            M[ity->first] = ity->second;
+            ity++;
+        }
+        return M;
+    }
 };
 
 template <typename N, typename A = int>

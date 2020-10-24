@@ -11,6 +11,13 @@
 #include <iostream>
 #include "tests.hh"
 
+void newtest()
+{
+    digraph<char, multidep> g;
+    g.add('A', 'B');
+    // std::cout << "g = " << g << std::endl;
+}
+
 int main(int, const char**)
 {
     std::cout << "Tests digraph library\n";
