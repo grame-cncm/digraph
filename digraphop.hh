@@ -540,11 +540,7 @@ inline std::ostream& operator<<(std::ostream& file, const digraph<N, A>& g)
         bool hascnx = false;
         for (const auto& c : g.connections(n)) {
             hascnx = true;
-            if (c.second == 0) {
-                file << sep << n << "->" << (c.first);
-            } else {
-                file << sep << n << '-' << c.second << "->" << (c.first);
-            }
+            file << sep << n << '-' << c.second << "->" << (c.first);
             sep = ", ";
         }
         if (!hascnx) { file << sep << n; }
@@ -572,12 +568,8 @@ inline std::ostream& dotfile(std::ostream& file, const digraph<N, A>& g, bool cl
             std::stringstream sm;
             sm << '"' << c.first << '"';
             hascnx = true;
-            if (c.second == 0) {
-                file << "\t" << sn.str() << "->" << sm.str() << ";" << std::endl;
-            } else {
-                file << "\t" << sn.str() << "->" << sm.str() << " [label=\"" << c.second << "\"];"
-                     << std::endl;
-            }
+            file << "\t" << sn.str() << "->" << sm.str() << " [label=\"" << c.second << "\"];"
+                 << std::endl;
         }
         if (!hascnx) { file << "\t" << sn.str() << ";" << std::endl; }
     }
@@ -648,6 +640,25 @@ inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
 
     file << "set {";
     for (const N& e : S) {
+        file << sep << e;
+        sep = ", ";
+    }
+    return file << "}";
+}
+
+//===========================================================
+//===========================================================
+// file << std::map : print a std::map on a stream
+//===========================================================
+//===========================================================
+
+template <typename N, typename A = int>
+inline std::ostream& operator<<(std::ostream& file, const std::map<N, A>& S)
+{
+    std::string sep = "";
+
+    file << "map {";
+    for (const auto& e : S) {
         file << sep << e;
         sep = ", ";
     }

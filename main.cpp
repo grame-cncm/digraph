@@ -9,18 +9,20 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include "tests.hh"
 
 void newtest()
 {
     digraph<char, multidep> g;
-    g.add('A', 'B');
-    // std::cout << "g = " << g << std::endl;
+    g.add('A', 'B', {{"VecA", 2}, {"VecB", 0}});
+    std::cout << "g = " << g << std::endl;
 }
 
 int main(int, const char**)
 {
     std::cout << "Tests digraph library\n";
+    newtest();
 
     bool r = true;
     r &= check0();

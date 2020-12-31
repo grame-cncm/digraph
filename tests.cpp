@@ -11,18 +11,18 @@
 void test0(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B')
+    g.add('A', 'B', 0)
         .add('B', 'C', 1)
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
         .add('D', 'E', 1)
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
         .add('G', 'F', 1)
-        .add('H', 'G')
-        .add('H', 'E')
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
         .add('H', 'H', 1);
 
     ss << "g = " << g;
@@ -30,8 +30,9 @@ void test0(std::ostream& ss)
 
 std::string res0()
 {
-    return "g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, G-1->F, H->E, "
-           "H->G, H-1->H}";
+    return "g = Graph {A-0->B, B-1->C, C-0->A, D-0->B, D-0->C, D-1->E, E-0->D, E-0->F, F-0->G, "
+           "G-1->F, H-0->E, "
+           "H-0->G, H-1->H}";
 }
 
 bool check0()
@@ -52,19 +53,19 @@ bool check0()
 void test1(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B')
-        .add('B', 'C')
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
-        .add('D', 'E')
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
-        .add('G', 'F')
-        .add('H', 'G')
-        .add('H', 'E')
-        .add('H', 'H');
+    g.add('A', 'B', 0)
+        .add('B', 'C', 0)
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
+        .add('D', 'E', 0)
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
+        .add('G', 'F', 0)
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
+        .add('H', 'H', 0);
 
     ss << "Tarjan partition of g = ";
     Tarjan<char> tarj(g);
@@ -98,18 +99,18 @@ bool check1()
 void test2(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B')
+    g.add('A', 'B', 0)
         .add('B', 'C', 1)
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
         .add('D', 'E', 1)
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
         .add('G', 'F', 1)
-        .add('H', 'G')
-        .add('H', 'E')
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
         .add('H', 'H', 1);
 
     ss << "dag of g = " << graph2dag(g);
@@ -117,9 +118,11 @@ void test2(std::ostream& ss)
 
 std::string res2()
 {
-    return "dag of g = Graph {Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {A->B, "
-           "B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, G-1->F}, Graph {F->G, G-1->F}, Graph "
-           "{H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}}";
+    return "dag of g = Graph {Graph {A-0->B, B-1->C, C-0->A}, Graph {D-1->E, E-0->D}-0->Graph "
+           "{A-0->B, "
+           "B-1->C, C-0->A}, Graph {D-1->E, E-0->D}-0->Graph {F-0->G, G-1->F}, Graph {F-0->G, "
+           "G-1->F}, Graph "
+           "{H-1->H}-0->Graph {D-1->E, E-0->D}, Graph {H-1->H}-0->Graph {F-0->G, G-1->F}}";
 }
 
 bool check2()
@@ -140,18 +143,18 @@ bool check2()
 void test3(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B')
+    g.add('A', 'B', 0)
         .add('B', 'C', 1)
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
         .add('D', 'E', 1)
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
         .add('G', 'F', 1)
-        .add('H', 'G')
-        .add('H', 'E')
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
         .add('H', 'H', 1);
 
     auto h1 = cut(g, 64);     // cut vectorsize connections
@@ -163,9 +166,12 @@ void test3(std::ostream& ss)
 
 std::string res3()
 {
-    return "test3: h3= Graph {Graph {F->G, G}, Graph {H}->Graph {F->G, G}, Graph {H}->Graph {D, "
-           "E->D}, Graph {A->B, B, C->A}, Graph {D, E->D}->Graph {F->G, G}, Graph {D, E->D}->Graph "
-           "{A->B, B, C->A}}";
+    return "test3: h3= Graph {Graph {F-0->G, G}, Graph {H}-0->Graph {F-0->G, G}, Graph "
+           "{H}-0->Graph "
+           "{D, "
+           "E-0->D}, Graph {A-0->B, B, C-0->A}, Graph {D, E-0->D}-0->Graph {F-0->G, G}, Graph {D, "
+           "E-0->D}-0->Graph "
+           "{A-0->B, B, C-0->A}}";
 }
 
 bool check3()
@@ -204,7 +210,7 @@ void test4(std::ostream& ss)
 
 std::string res4()
 {
-    return "test4: g3.add(g1).add(g2) = Graph {A-2->A, A->B, A->C, A-1->D, B-1->B, C, D}";
+    return "test4: g3.add(g1).add(g2) = Graph {A-2->A, A-0->B, A-0->C, A-1->D, B-1->B, C, D}";
 };
 
 bool check4()
@@ -227,15 +233,15 @@ void test5(std::ostream& ss)
 {
     digraph<char> g1, g2, g3;
 
-    g1.add('A', 'Z');
-    g1.add('A', 'B');
-    g1.add('B', 'C');
+    g1.add('A', 'Z', 0);
+    g1.add('A', 'B', 0);
+    g1.add('B', 'C', 0);
     g1.add('C', 'A', 1);
 
-    g1.add('Z', 'W');
+    g1.add('Z', 'W', 0);
     g1.add('W', 'Z', 1);
 
-    g1.add('A', 'Z');
+    g1.add('A', 'Z', 0);
     g1.add('W', 'C', 1);
 
     splitgraph<char>(
@@ -246,8 +252,9 @@ void test5(std::ostream& ss)
 
 std::string res5()
 {
-    return "test5: g1 = Graph {A->B, A->Z, B->C, C-1->A, W-1->C, W-1->Z, Z->W}; g2 = Graph {A->B, "
-           "B->C, C-1->A}; g3 = Graph {W-1->Z, Z->W}";
+    return "test5: g1 = Graph {A-0->B, A-0->Z, B-0->C, C-1->A, W-1->C, W-1->Z, Z-0->W}; g2 = Graph "
+           "{A-0->B, "
+           "B-0->C, C-1->A}; g3 = Graph {W-1->Z, Z-0->W}";
 };
 
 bool check5()
@@ -268,18 +275,18 @@ bool check5()
 void test7(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B')
+    g.add('A', 'B', 0)
         .add('B', 'C', 1)
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
         .add('D', 'E', 1)
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
         .add('G', 'F', 1)
-        .add('H', 'G')
-        .add('H', 'E')
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
         .add('H', 'H', 1);
 
     auto h  = graph2dag(g);     // on fait un dag dont les noeuds sont les cycles du graphe g
@@ -300,29 +307,37 @@ void test7(std::ostream& ss)
 
 std::string res7()
 {
-    return "test7:        g = Graph {A->B, B-1->C, C->A, D->B, D->C, D-1->E, E->D, E->F, F->G, "
-           "G-1->F, H->E, H->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; graph2dag(g)    "
-           "= Graph {Graph {H-1->H}->Graph {D-1->E, E->D}, Graph {H-1->H}->Graph {F->G, G-1->F}, "
-           "Graph {D-1->E, E->D}->Graph {A->B, B-1->C, C->A}, Graph {D-1->E, E->D}->Graph {F->G, "
-           "G-1->F}, Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}; parallelize(h)  = "
-           "std::vector {std::vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}, "
-           "std::vector {Graph {D-1->E, E->D}}, std::vector {Graph {H-1->H}}}; rparallelize(h)  = "
-           "std::vector {std::vector {Graph {H-1->H}}, std::vector {Graph {D-1->E, E->D}}, "
-           "std::vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}}}; serialize(h)    = "
-           "std::vector {Graph {A->B, B-1->C, C->A}, Graph {F->G, G-1->F}, Graph {D-1->E, E->D}, "
+    return "test7:        g = Graph {A-0->B, B-1->C, C-0->A, D-0->B, D-0->C, D-1->E, E-0->D, "
+           "E-0->F, F-0->G, "
+           "G-1->F, H-0->E, H-0->G, H-1->H}; number of cycles: 4; 0-cycles        : 0; "
+           "graph2dag(g)    "
+           "= Graph {Graph {H-1->H}-0->Graph {D-1->E, E-0->D}, Graph {H-1->H}-0->Graph {F-0->G, "
+           "G-1->F}, "
+           "Graph {D-1->E, E-0->D}-0->Graph {A-0->B, B-1->C, C-0->A}, Graph {D-1->E, "
+           "E-0->D}-0->Graph "
+           "{F-0->G, "
+           "G-1->F}, Graph {A-0->B, B-1->C, C-0->A}, Graph {F-0->G, G-1->F}}; parallelize(h)  = "
+           "std::vector {std::vector {Graph {A-0->B, B-1->C, C-0->A}, Graph {F-0->G, G-1->F}}, "
+           "std::vector {Graph {D-1->E, E-0->D}}, std::vector {Graph {H-1->H}}}; rparallelize(h)  "
+           "= "
+           "std::vector {std::vector {Graph {H-1->H}}, std::vector {Graph {D-1->E, E-0->D}}, "
+           "std::vector {Graph {A-0->B, B-1->C, C-0->A}, Graph {F-0->G, G-1->F}}}; serialize(h)    "
+           "= "
+           "std::vector {Graph {A-0->B, B-1->C, C-0->A}, Graph {F-0->G, G-1->F}, Graph {D-1->E, "
+           "E-0->D}, "
            "Graph {H-1->H}}; digraph mygraph {"
-           "\n\t\"A\"->\"B\";"
+           "\n\t\"A\"->\"B\" [label=\"0\"];"
            "\n\t\"B\"->\"C\" [label=\"1\"];"
-           "\n\t\"C\"->\"A\";"
-           "\n\t\"D\"->\"B\";"
-           "\n\t\"D\"->\"C\";"
+           "\n\t\"C\"->\"A\" [label=\"0\"];"
+           "\n\t\"D\"->\"B\" [label=\"0\"];"
+           "\n\t\"D\"->\"C\" [label=\"0\"];"
            "\n\t\"D\"->\"E\" [label=\"1\"];"
-           "\n\t\"E\"->\"D\";"
-           "\n\t\"E\"->\"F\";"
-           "\n\t\"F\"->\"G\";"
+           "\n\t\"E\"->\"D\" [label=\"0\"];"
+           "\n\t\"E\"->\"F\" [label=\"0\"];"
+           "\n\t\"F\"->\"G\" [label=\"0\"];"
            "\n\t\"G\"->\"F\" [label=\"1\"];"
-           "\n\t\"H\"->\"E\";"
-           "\n\t\"H\"->\"G\";"
+           "\n\t\"H\"->\"E\" [label=\"0\"];"
+           "\n\t\"H\"->\"G\" [label=\"0\"];"
            "\n\t\"H\"->\"H\" [label=\"1\"];"
            "\n}\n";
 }
@@ -345,19 +360,19 @@ bool check7()
 void test8(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B')
-        .add('B', 'C')
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
-        .add('D', 'E')
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
-        .add('G', 'F')
-        .add('H', 'G')
-        .add('H', 'E')
-        .add('H', 'H');
+    g.add('A', 'B', 0)
+        .add('B', 'C', 0)
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
+        .add('D', 'E', 0)
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
+        .add('G', 'F', 0)
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
+        .add('H', 'H', 0);
 
     std::set<char> S{'C', 'F'};
     digraph<char>  r = subgraph(g, S);
@@ -366,8 +381,9 @@ void test8(std::ostream& ss)
 
 std::string res8()
 {
-    return "Subgraph(Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, F->G, G->F, H->E, "
-           "H->G, H->H}, set {C, F}) = Graph {A->B, B->C, C->A, F->G, G->F}";
+    return "Subgraph(Graph {A-0->B, B-0->C, C-0->A, D-0->B, D-0->C, D-0->E, E-0->D, E-0->F, "
+           "F-0->G, G-0->F, H-0->E, "
+           "H-0->G, H-0->H}, set {C, F}) = Graph {A-0->B, B-0->C, C-0->A, F-0->G, G-0->F}";
 }
 
 bool check8()
@@ -388,19 +404,19 @@ bool check8()
 void test9(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B')
-        .add('B', 'C')
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
-        .add('D', 'E')
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
-        .add('G', 'F')
-        .add('H', 'G')
-        .add('H', 'E')
-        .add('H', 'H');
+    g.add('A', 'B', 0)
+        .add('B', 'C', 0)
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
+        .add('D', 'E', 0)
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
+        .add('G', 'F', 0)
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
+        .add('H', 'H', 0);
 
     std::set<char> S{'H'};
     digraph<char>  r = subgraph(g, S);
@@ -409,10 +425,12 @@ void test9(std::ostream& ss)
 
 std::string res9()
 {
-    return "Subgraph(Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, F->G, G->F, H->E, "
-           "H->G, H->H}, set {H}) = Graph {A->B, B->C, C->A, D->B, D->C, D->E, E->D, E->F, "
-           "F->G, "
-           "G->F, H->E, H->G, H->H}";
+    return "Subgraph(Graph {A-0->B, B-0->C, C-0->A, D-0->B, D-0->C, D-0->E, E-0->D, E-0->F, "
+           "F-0->G, G-0->F, H-0->E, "
+           "H-0->G, H-0->H}, set {H}) = Graph {A-0->B, B-0->C, C-0->A, D-0->B, D-0->C, D-0->E, "
+           "E-0->D, E-0->F, "
+           "F-0->G, "
+           "G-0->F, H-0->E, H-0->G, H-0->H}";
 }
 
 bool check9()
@@ -446,18 +464,18 @@ bool equiv(const digraph<N>& g, const digraph<N>& h)
 bool check10()
 {
     digraph<char> g;
-    g.add('A', 'B')
+    g.add('A', 'B', 0)
         .add('B', 'C', 1)
-        .add('C', 'A')
-        .add('D', 'B')
-        .add('D', 'C')
+        .add('C', 'A', 0)
+        .add('D', 'B', 0)
+        .add('D', 'C', 0)
         .add('D', 'E', 1)
-        .add('E', 'D')
-        .add('E', 'F')
-        .add('F', 'G')
+        .add('E', 'D', 0)
+        .add('E', 'F', 0)
+        .add('F', 'G', 0)
         .add('G', 'F', 1)
-        .add('H', 'G')
-        .add('H', 'E')
+        .add('H', 'G', 0)
+        .add('H', 'E', 0)
         .add('H', 'H', 1);
 
     digraph<char> r = reverse(reverse(g));
@@ -475,8 +493,8 @@ bool check10()
 void test11(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B').add('B', 'C', 3).add('C', 'D').add('D', 'E');
-    g.add('A', 'I').add('I', 'J', 4).add('J', 'E', 5);
+    g.add('A', 'B', 0).add('B', 'C', 3).add('C', 'D', 0).add('D', 'E', 0);
+    g.add('A', 'I', 0).add('I', 'J', 4).add('J', 'E', 5);
 
     digraph<char> r = chain(g, false);
     ss << "chain(" << g << ", false) = " << r;
@@ -484,9 +502,10 @@ void test11(std::ostream& ss)
 
 std::string res11()
 {
-    return "chain(Graph {A->B, A->I, B-3->C, C->D, D->E, E, I-4->J, J-5->E}, false) = Graph {A, "
+    return "chain(Graph {A-0->B, A-0->I, B-3->C, C-0->D, D-0->E, E, I-4->J, J-5->E}, false) = "
+           "Graph {A, "
            "B-3->C, "
-           "C->D, D, E, I-4->J, J}";
+           "C-0->D, D, E, I-4->J, J}";
 }
 
 bool check11()
@@ -509,8 +528,8 @@ bool check11()
 void test12(std::ostream& ss)
 {
     digraph<char> g;
-    g.add('A', 'B').add('B', 'C', 3).add('C', 'D').add('D', 'E');
-    g.add('A', 'I').add('I', 'J', 4).add('J', 'E', 5);
+    g.add('A', 'B', 0).add('B', 'C', 3).add('C', 'D', 0).add('D', 'E', 0);
+    g.add('A', 'I', 0).add('I', 'J', 4).add('J', 'E', 5);
 
     digraph<char> r = chain(g, true);
     ss << "chain(" << g << ", true) = " << r;
@@ -518,8 +537,8 @@ void test12(std::ostream& ss)
 
 std::string res12()
 {
-    return "chain(Graph {A->B, A->I, B-3->C, C->D, D->E, E, I-4->J, J-5->E}, true) = Graph "
-           "{B-3->C, C->D, D, I-4->J, J}";
+    return "chain(Graph {A-0->B, A-0->I, B-3->C, C-0->D, D-0->E, E, I-4->J, J-5->E}, true) = Graph "
+           "{B-3->C, C-0->D, D, I-4->J, J}";
 }
 
 bool check12()
@@ -543,8 +562,8 @@ void test13(std::ostream& ss)
 {
     // roots and leaves
     digraph<char> h;
-    h.add('A', 'B').add('B', 'C').add('C', 'D').add('B', 'G');
-    h.add('E', 'F').add('F', 'G').add('G', 'H');  //.add('F', 'C');
+    h.add('A', 'B', 0).add('B', 'C', 0).add('C', 'D', 0).add('B', 'G', 0);
+    h.add('E', 'F', 0).add('F', 'G', 0).add('G', 'H', 0);  //.add('F', 'C', 0);
 
     ss << "graph h   : " << h << std::endl;
     ss << "roots(h)  : " << roots(h) << std::endl;
@@ -555,7 +574,7 @@ void test13(std::ostream& ss)
 
 std::string res13()
 {
-    return "graph h   : Graph {A->B, B->C, B->G, C->D, D, E->F, F->G, G->H, H}\n"
+    return "graph h   : Graph {A-0->B, B-0->C, B-0->G, C-0->D, D, E-0->F, F-0->G, G-0->H, H}\n"
            "roots(h)  : std::vector {A, E}\n"
            "leafs(h)  : std::vector {D, H}\n"
            "Schedule {1:D, 2:C, 3:H, 4:G, 5:B, 6:A, 7:F, 8:E}, cost: 11\n"
@@ -583,8 +602,8 @@ void test14(std::ostream& ss)
 {
     // roots and leaves
     digraph<char> h;
-    h.add('A', 'B').add('B', 'C').add('C', 'D').add('B', 'G', 1).add('C', 'B', 1);
-    h.add('E', 'F').add('F', 'G').add('G', 'H').add('G', 'F', 2);
+    h.add('A', 'B', 0).add('B', 'C', 0).add('C', 'D', 0).add('B', 'G', 1).add('C', 'B', 1);
+    h.add('E', 'F', 0).add('F', 'G', 0).add('G', 'H', 0).add('G', 'F', 2);
 
     ss << "graph h   : " << h << std::endl;
     ss << dfcyclesschedule(h) << ", cost: " << schedulingcost(h, dfcyclesschedule(h)) << std::endl;
@@ -592,7 +611,8 @@ void test14(std::ostream& ss)
 
 std::string res14()
 {
-    return "graph h   : Graph {A->B, B->C, B-1->G, C-1->B, C->D, D, E->F, F->G, G-2->F, G->H, H}\n"
+    return "graph h   : Graph {A-0->B, B-0->C, B-1->G, C-1->B, C-0->D, D, E-0->F, F-0->G, G-2->F, "
+           "G-0->H, H}\n"
            "Schedule {1:H, 2:G, 3:F, 4:E, 5:D, 6:C, 7:B, 8:A}, cost: 17\n";
 }
 
@@ -617,9 +637,9 @@ void test15(std::ostream& ss)
 {
     // roots and leaves
     digraph<char> h;
-    h.add('A', 'B').add('B', 'C').add('C', 'D').add('B', 'G', 1).add('C', 'B', 1);
-    h.add('D', 'U').add('U', 'D', 1);
-    h.add('E', 'F').add('F', 'G').add('G', 'H').add('G', 'F', 2);
+    h.add('A', 'B', 0).add('B', 'C', 0).add('C', 'D', 0).add('B', 'G', 1).add('C', 'B', 1);
+    h.add('D', 'U', 0).add('U', 'D', 1);
+    h.add('E', 'F', 0).add('F', 'G', 0).add('G', 'H', 0).add('G', 'F', 2);
 
     ss << "graph h   : " << h << std::endl;
     ss << "deep-first    : " << dfcyclesschedule(h)
@@ -630,7 +650,8 @@ void test15(std::ostream& ss)
 
 std::string res15()
 {
-    return "graph h   : Graph {A->B, B->C, B-1->G, C-1->B, C->D, D->U, E->F, F->G, G-2->F, G->H, "
+    return "graph h   : Graph {A-0->B, B-0->C, B-1->G, C-1->B, C-0->D, D-0->U, E-0->F, F-0->G, "
+           "G-2->F, G-0->H, "
            "H, U-1->D}\n"
            "deep-first    : Schedule {1:U, 2:D, 3:H, 4:G, 5:F, 6:C, 7:B, 8:A, 9:E}, cost: 16\n"
            "breadth-first : Schedule {1:H, 2:U, 3:D, 4:G, 5:F, 6:E, 7:C, 8:B, 9:A}, cost: 19\n";
