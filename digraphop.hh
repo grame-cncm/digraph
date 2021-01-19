@@ -568,8 +568,8 @@ inline std::ostream& dotfile(std::ostream& file, const digraph<N, A>& g, bool cl
             std::stringstream sm;
             sm << '"' << c.first << '"';
             hascnx = true;
-            file << "\t" << sn.str() << "->" << sm.str() << " [label=\"" << c.second << "\"];"
-                 << std::endl;
+            file << "\t" << sn.str() << "->" << sm.str() << " [label=\""
+                 << arrow_traits<A>::label(c.second) << "\"];" << std::endl;
         }
         if (!hascnx) { file << "\t" << sn.str() << ";" << std::endl; }
     }
@@ -600,7 +600,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::list<N>& L)
 {
     std::string sep = "";
 
-    file << "std::list {";
+    file << "std::list{";
     for (const N& e : L) {
         file << sep << e;
         sep = ", ";
@@ -619,7 +619,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::vector<N>& V)
 {
     std::string sep = "";
 
-    file << "std::vector {";
+    file << "std::vector{";
     for (const N& e : V) {
         file << sep << e;
         sep = ", ";
@@ -638,7 +638,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
 {
     std::string sep = "";
 
-    file << "set {";
+    file << "std::set{";
     for (const N& e : S) {
         file << sep << e;
         sep = ", ";
@@ -657,7 +657,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::map<N, A>& S)
 {
     std::string sep = "";
 
-    file << "map {";
+    file << "std::map{";
     for (const auto& e : S) {
         file << sep << e;
         sep = ", ";
@@ -674,5 +674,5 @@ inline std::ostream& operator<<(std::ostream& file, const std::map<N, A>& S)
 template <typename N, typename M>
 inline std::ostream& operator<<(std::ostream& file, const std::pair<N, M>& V)
 {
-    return file << "std::pair {" << V.first << ", " << V.second << "}";
+    return file << "std::pair{" << V.first << ", " << V.second << "}";
 }

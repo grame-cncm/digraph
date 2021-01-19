@@ -10,13 +10,15 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include "mtests.hh"
 #include "tests.hh"
 
 void newtest()
 {
     digraph<char, multidep> g;
-    g.add('A', 'B', {{"VecA", 2}, {"VecB", 0}});
+    g.add('A', 'B', {{{"M", 2}, {"N", 0}}, 0});
     std::cout << "g = " << g << std::endl;
+    dotfile(std::cout, g);
 }
 
 int main(int, const char**)
@@ -25,21 +27,24 @@ int main(int, const char**)
     newtest();
 
     bool r = true;
-    r &= check0();
-    r &= check1();
-    r &= check2();
-    r &= check3();
-    r &= check4();
-    r &= check5();
-    r &= check7();
-    r &= check8();
-    r &= check9();
-    r &= check10();
-    r &= check11();
-    r &= check12();
-    r &= check13();
-    r &= check14();
-    r &= check15();
+    r &= mcheck0();
+    r &= mcheck1();
+    r &= mcheck2();
+    r &= mcheck3();
+    // r &= check1();
+    // r &= check2();
+    // r &= check3();
+    // r &= check4();
+    // r &= check5();
+    // r &= check7();
+    // r &= check8();
+    // r &= check9();
+    // r &= check10();
+    // r &= check11();
+    // r &= check12();
+    // r &= check13();
+    // r &= check14();
+    // r &= check15();
 
     return (r) ? 0 : 1;
 }
