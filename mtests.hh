@@ -21,3 +21,4 @@ bool        mcheck0();
 bool        mcheck1();
 bool        mcheck2();
 bool        mcheck3();
+bool        mcheck4();

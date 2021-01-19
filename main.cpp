@@ -31,6 +31,7 @@ int main(int, const char**)
     r &= mcheck1();
     r &= mcheck2();
     r &= mcheck3();
+    r &= mcheck4();
     // r &= check1();
     // r &= check2();
     // r &= check3();
