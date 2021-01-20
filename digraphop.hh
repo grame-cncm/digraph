@@ -15,6 +15,7 @@
 #include <iostream>
 #include <list>
 #include <sstream>
+#include <utility>
 #include <vector>
 
 #include "digraph.hh"
@@ -538,9 +539,9 @@ inline std::ostream& operator<<(std::ostream& file, const digraph<N, A>& g)
     file << "Graph {";
     for (const N& n : g.nodes()) {
         bool hascnx = false;
-        for (const auto& c : g.connections(n)) {
+        for (const std::pair<N, A>& c : g.connections(n)) {
             hascnx = true;
-            file << sep << n << '-' << c.second << "->" << (c.first);
+            file << sep << n << '-' << (c.second) << "->" << (c.first);
             sep = ", ";
         }
         if (!hascnx) { file << sep << n; }
@@ -606,73 +607,4 @@ inline std::ostream& operator<<(std::ostream& file, const std::list<N>& L)
         sep = ", ";
     }
     return file << "}";
-}
-
-//===========================================================
-//===========================================================
-// file << std::vector : print a std::vector on a stream
-//===========================================================
-//===========================================================
-
-template <typename N, typename A = int>
-inline std::ostream& operator<<(std::ostream& file, const std::vector<N>& V)
-{
-    std::string sep = "";
-
-    file << "std::vector{";
-    for (const N& e : V) {
-        file << sep << e;
-        sep = ", ";
-    }
-    return file << "}";
-}
-
-//===========================================================
-//===========================================================
-// file << std::set : print a std::set on a stream
-//===========================================================
-//===========================================================
-
-template <typename N, typename A = int>
-inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
-{
-    std::string sep = "";
-
-    file << "std::set{";
-    for (const N& e : S) {
-        file << sep << e;
-        sep = ", ";
-    }
-    return file << "}";
-}
-
-//===========================================================
-//===========================================================
-// file << std::map : print a std::map on a stream
-//===========================================================
-//===========================================================
-
-template <typename N, typename A = int>
-inline std::ostream& operator<<(std::ostream& file, const std::map<N, A>& S)
-{
-    std::string sep = "";
-
-    file << "std::map{";
-    for (const auto& e : S) {
-        file << sep << e;
-        sep = ", ";
-    }
-    return file << "}";
-}
-
-//===========================================================
-//===========================================================
-// file << std::pair : print a std::pair on a stream
-//===========================================================
-//===========================================================
-
-template <typename N, typename M>
-inline std::ostream& operator<<(std::ostream& file, const std::pair<N, M>& V)
-{
-    return file << "std::pair{" << V.first << ", " << V.second << "}";
 }

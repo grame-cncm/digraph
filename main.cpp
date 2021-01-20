@@ -24,7 +24,7 @@ void newtest()
 int main(int, const char**)
 {
     std::cout << "Tests digraph library\n";
-    newtest();
+    // newtest();
 
     bool r = true;
     r &= mcheck0();
@@ -32,9 +32,9 @@ int main(int, const char**)
     r &= mcheck2();
     r &= mcheck3();
     r &= mcheck4();
-    // r &= check1();
-    // r &= check2();
-    // r &= check3();
+    r &= check1();
+    r &= check2();
+    r &= check3();
     // r &= check4();
     // r &= check5();
     // r &= check7();

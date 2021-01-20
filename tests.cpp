@@ -118,11 +118,11 @@ void test2(std::ostream& ss)
 
 std::string res2()
 {
-    return "dag of g = Graph {Graph {A-0->B, B-1->C, C-0->A}, Graph {D-1->E, E-0->D}-0->Graph "
-           "{A-0->B, "
-           "B-1->C, C-0->A}, Graph {D-1->E, E-0->D}-0->Graph {F-0->G, G-1->F}, Graph {F-0->G, "
-           "G-1->F}, Graph "
-           "{H-1->H}-0->Graph {D-1->E, E-0->D}, Graph {H-1->H}-0->Graph {F-0->G, G-1->F}}";
+    return "dag of g = Graph {Graph {H-1->H}-0->Graph {F-0->G, G-1->F}, Graph {H-1->H}-0->Graph "
+           "{D-1->E, "
+           "E-0->D}, Graph {F-0->G, G-1->F}, Graph {D-1->E, E-0->D}-0->Graph {F-0->G, G-1->F}, "
+           "Graph {D-1->E, E-0->D}-0->Graph {A-0->B, B-1->C, C-0->A}, Graph {A-0->B, B-1->C, "
+           "C-0->A}}";
 }
 
 bool check2()
@@ -166,12 +166,9 @@ void test3(std::ostream& ss)
 
 std::string res3()
 {
-    return "test3: h3= Graph {Graph {F-0->G, G}, Graph {H}-0->Graph {F-0->G, G}, Graph "
-           "{H}-0->Graph "
-           "{D, "
-           "E-0->D}, Graph {A-0->B, B, C-0->A}, Graph {D, E-0->D}-0->Graph {F-0->G, G}, Graph {D, "
-           "E-0->D}-0->Graph "
-           "{A-0->B, B, C-0->A}}";
+    return "test3: h3= Graph {Graph {A-0->B, B, C-0->A}, Graph {D, E-0->D}-0->Graph {A-0->B, B, "
+           "C-0->A}, Graph {D, E-0->D}-0->Graph {F-0->G, G}, Graph {H}-0->Graph {D, E-0->D}, Graph "
+           "{H}-0->Graph {F-0->G, G}, Graph {F-0->G, G}}";
 }
 
 bool check3()
