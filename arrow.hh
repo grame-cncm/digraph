@@ -1,108 +1,47 @@
 #pragma once
 
-#include <cstdio>
+//===========================================================
+//===========================================================
+//                      arrow.hh
+//
+// Arrows are connections between the nodes of a graph
+//
+//===========================================================
+//===========================================================
+
 #include <functional>
 #include <iostream>
 #include <limits>
-#include <list>
 #include <map>
 #include <memory>
 #include <set>
 #include <sstream>
-#include <stack>
 #include <utility>
-#include <vector>
 
-template <typename N, typename M>
-inline std::ostream& operator<<(std::ostream& file, const std::pair<N, M>& V);
-
-template <typename N>
-inline std::ostream& operator<<(std::ostream& file, const std::vector<N>& V);
-
-template <typename N>
-inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S);
-
-template <typename N, typename A>
-inline std::ostream& operator<<(std::ostream& file, const std::map<N, A>& S);
+#include "stdprinting.hh"
 
 //===========================================================
+//                      arrow_traits
+//
+// Common operations on arrows
+//
 //===========================================================
-// file << std::pair : print a std::pair on a stream
-//===========================================================
-//===========================================================
-
-template <typename N, typename M>
-inline std::ostream& operator<<(std::ostream& file, const std::pair<N, M>& V)
-{
-    return file << "std::pair{" << V.first << ", " << V.second << "}";
-}
-
-//===========================================================
-//===========================================================
-// file << std::vector : print a std::vector on a stream
-//===========================================================
-//===========================================================
-
-template <typename N>
-inline std::ostream& operator<<(std::ostream& file, const std::vector<N>& V)
-{
-    std::string sep = "";
-
-    file << "std::vector{";
-    for (const N& e : V) {
-        file << sep << e;
-        sep = ", ";
-    }
-    return file << "}";
-}
-
-//===========================================================
-//===========================================================
-// file << std::set : print a std::set on a stream
-//===========================================================
-//===========================================================
-
-template <typename N>
-inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
-{
-    std::string sep = "";
-
-    file << "std::set{";
-    for (const N& e : S) {
-        file << sep << e;
-        sep = ", ";
-    }
-    return file << "}";
-}
-
-//===========================================================
-//===========================================================
-// file << std::map : print a std::map on a stream
-//===========================================================
-//===========================================================
-
-template <typename N, typename A>
-inline std::ostream& operator<<(std::ostream& file, const std::map<N, A>& S)
-{
-    std::string sep = "";
-
-    file << "std::map{";
-    for (const std::pair<N, A>& e : S) {
-        file << sep << e;
-        sep = ", ";
-    }
-    return file << "}";
-}
 
 template <typename A>
-class arrow_traits
-{
-    static int         combine(int x, int y);
-    static int         empty();
-    static bool        isEmpty(int d);
-    static int         mindist(int d);
-    static std::string label(int d);
+struct arrow_traits {
+    static A           combine(const A& x, const A& y);
+    static A           empty();
+    static bool        isEmpty(const A& x);
+    static int         mindist(const A& x);
+    static std::string label(const A& x);
 };
+
+//===========================================================
+//                      int arrows
+//
+// Arrows carrying only a time dependency between nodes
+//
+//===========================================================
 
 template <>
 struct arrow_traits<int> {
@@ -112,6 +51,18 @@ struct arrow_traits<int> {
     static int         mindist(int d) { return d; }
     static std::string label(int d) { return std::to_string(d); }
 };
+
+//===========================================================
+//                      multidep arrow
+//
+// More sophisticated arrows with multiple communications
+// channels. Each channel is associated with a time
+// dependency. This association is represented by a map.
+// A global minimal time dependency is also stored. It
+// represents the minimal time dependecy associated with
+// a communication channel.
+//
+//===========================================================
 
 using multidep = std::pair<std::map<std::string, int>, int>;
 

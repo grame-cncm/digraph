@@ -531,7 +531,7 @@ inline std::vector<N> leaves(const digraph<N, A>& G)
 //===========================================================
 //===========================================================
 
-template <typename N, typename A = int>
+template <typename N, typename A>
 inline std::ostream& operator<<(std::ostream& file, const digraph<N, A>& g)
 {
     std::string sep = "";
@@ -557,7 +557,7 @@ inline std::ostream& operator<<(std::ostream& file, const digraph<N, A>& g)
 //===========================================================
 //===========================================================
 
-template <typename N, typename A = int>
+template <typename N, typename A>
 inline std::ostream& dotfile(std::ostream& file, const digraph<N, A>& g, bool clusters = false)
 {
     file << "digraph mygraph {" << std::endl;
@@ -588,23 +588,4 @@ inline std::ostream& dotfile(std::ostream& file, const digraph<N, A>& g, bool cl
     }
 
     return file << "}" << std::endl;
-}
-
-//===========================================================
-//===========================================================
-// file << std::list : print a std::list on a stream
-//===========================================================
-//===========================================================
-
-template <typename N, typename A = int>
-inline std::ostream& operator<<(std::ostream& file, const std::list<N>& L)
-{
-    std::string sep = "";
-
-    file << "std::list{";
-    for (const N& e : L) {
-        file << sep << e;
-        sep = ", ";
-    }
-    return file << "}";
 }

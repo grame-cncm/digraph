@@ -21,6 +21,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+
 #include "digraph.hh"
 #include "digraphop.hh"
 
