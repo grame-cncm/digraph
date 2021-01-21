@@ -7,7 +7,10 @@
 //
 
 #include "mtests.hh"
-#include "arrow.hh"
+#include "dglib/arrow.hh"
+#include "dglib/digraph.hh"
+#include "dglib/digraphop.hh"
+#include "dglib/stdprinting.hh"
 
 bool mcheck(const std::string& testname, const std::string& testvalue,
             const std::string& expectedvalue)

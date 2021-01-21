@@ -2,19 +2,21 @@
 
 **Digraph** is a very simple, C++ 11 template-based, directed graph library. It is not designed to be general, but to suit the needs of the (next) Faust compiler.
 
-It is made of two files:
+It is made of four files:
 
-- `digraph.hh` the digraph class
-- `digraphop.hh` some operations on digraphs
+- `stdprinting.hh` printing operators for pairs, vectors, maps, etc.
+- `arrow.hh` arrows between nodes
+- `digraph.hh` directed graphs made of nodes and arrows
+- `digraphop.hh` basic operations on directed graphs
 
 ## Building a digraph
-A **digraph** is a directed graph. It is composed of a set of nodes `{n_1,n_2,...}` and a set of connections (i.e. arrows) between these nodes `{(n_i -d-> n_j),...}`.
+A **digraph** is a directed graph. It is composed of a set of nodes `{n_1,n_2,...}` and a set of connections (i.e. arrows) between these nodes `{(n_i -a-> n_j),...}`.
 
-For a connection `(n_i -d-> n_j)`, the node `n_i` is the source of the connection, the node `n_j` is the destination of the connections, and the integer `d` is the value of the connection. When the value is not specified its is by default 0.
+For a connection `(n_i -a-> n_j)`, the node `n_i` is the source of the connection, the node `n_j` is the destination of the connections, and `a` is the value of the connection. 
 
 The API to create a graph is very simple. You start by creating an empty graph:
 
-	digraph<char> g;
+	digraph<char,int> g;
 
 Then you add nodes and connections to the graph:
 

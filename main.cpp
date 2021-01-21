@@ -10,6 +10,10 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include "dglib/arrow.hh"
+#include "dglib/digraph.hh"
+#include "dglib/digraphop.hh"
+#include "dglib/stdprinting.hh"
 #include "mtests.hh"
 #include "tests.hh"
 

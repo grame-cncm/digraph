@@ -8,6 +8,9 @@
 
 #include "tests.hh"
 
+#include "dglib/digraph.hh"
+#include "dglib/digraphop.hh"
+
 void test0(std::ostream& ss)
 {
     digraph<char> g;

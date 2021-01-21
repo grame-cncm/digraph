@@ -12,8 +12,6 @@
 #include <sstream>
 #include <string>
 
-#include "digraph.hh"
-#include "digraphop.hh"
 //
 void        test0(std::ostream& cout);
 std::string res0();
