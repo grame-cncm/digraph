@@ -24,7 +24,7 @@ Then you add nodes and connections to the graph:
 
 The method `add()` can be used to add individual nodes like in `add('D')` or connections `add('A','B')`. In this case, the involved nodes are automatically added to the graph. There is no need to add them individually.
 
-By default the value of the connection is 0. To create a connection with a different value use: `add('A','B',3)`. If multiple connections between two nodes are created, only the connection with the smallest value is kept.
+By default, the value of the connection is 0. To create a connection with a different value use: `add('A','B',3)`. If multiple connections between two nodes are created, only the connection with the smallest value is kept.
 
 It is also possible to `add()` a whole graph with all its nodes and connections. For example if `g1` and `g2` are two graphs, then:
 
