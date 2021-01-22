@@ -539,7 +539,7 @@ inline std::ostream& operator<<(std::ostream& file, const digraph<N, A>& g)
     file << "Graph {";
     for (const N& n : g.nodes()) {
         bool hascnx = false;
-        for (const std::pair<N, A>& c : g.connections(n)) {
+        for (const auto& c : g.connections(n)) {
             hascnx = true;
             file << sep << n << '-' << (c.second) << "->" << (c.first);
             sep = ", ";

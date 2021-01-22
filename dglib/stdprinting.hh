@@ -83,7 +83,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::map<N, A>& S)
     std::string sep = "";
 
     file << "std::map{";
-    for (const std::pair<N, A>& e : S) {
+    for (const auto& e : S) {
         file << sep << e;
         sep = ", ";
     }
