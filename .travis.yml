@@ -1,9 +1,0 @@
-sudo: false
-dist: trusty
-language: cpp
-
-branches:
-  only:
-  - master
-
-script: make && ./testdigraph
