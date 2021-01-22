@@ -1,4 +1,4 @@
-# Digraph library [![Build Status](https://travis-ci.org/grame-cncm/digraph.svg?branch=master)](https://travis-ci.org/grame-cncm/digraph)[![Build GH Status](https://github.com/grame-cncm/digraph/workflows/compile-test/badge.svg)
+# Digraph library [![Build Status](https://travis-ci.org/grame-cncm/digraph.svg?branch=master)](https://travis-ci.org/grame-cncm/digraph)![Build GH Status](https://github.com/grame-cncm/digraph/workflows/compile-test/badge.svg)
 
 **Digraph** is a very simple, C++ 11 template-based, directed graph library. It is not designed to be general, but to suit the needs of the (next) Faust compiler.
 
