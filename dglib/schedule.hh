@@ -98,11 +98,12 @@ inline std::ostream& operator<<(std::ostream& file, const schedule<N>& S)
  * @brief Deep-first scheduling of a DAG G
  *
  * @tparam N the type of nodes of G
+ * @tparam A the type of arrows of G
  * @param G the graph we want to schedule
  * @return schedule<N> the deep first schedule of G
  */
-template <typename N>
-inline schedule<N> dfschedule(const digraph<N>& G)
+template <typename N, typename A>
+inline schedule<N> dfschedule(const digraph<N, A>& G)
 {
     schedule<N> S;
     std::set<N> V;  // set of visited nodes
@@ -125,12 +126,13 @@ inline schedule<N> dfschedule(const digraph<N>& G)
  * @brief Breadth-first scheduling of G
  *
  * @tparam N the type of the nodes of G
+ * @tparam A the type of arrows of G
  * @param G the graph we want to schedule
  * @return schedule<N> the breadth first schedule of G
  */
 
-template <typename N>
-inline schedule<N> bfschedule(const digraph<N>& G)
+template <typename N, typename A>
+inline schedule<N> bfschedule(const digraph<N, A>& G)
 {
     std::vector<std::vector<N>> P = parallelize(G);
     schedule<N>                 S;
@@ -148,12 +150,13 @@ inline schedule<N> bfschedule(const digraph<N>& G)
  * is the better it is.
  *
  * @tparam N
+ * @tparam A the type of arrows of G
  * @param G
  * @param S
  * @return int
  */
-template <typename N>
-inline int schedulingcost(const digraph<N>& G, const schedule<N>& S)
+template <typename N, typename A>
+inline int schedulingcost(const digraph<N, A>& G, const schedule<N>& S)
 {
     int cost = 0;
     for (const N& n : G.nodes()) {
@@ -171,16 +174,17 @@ inline int schedulingcost(const digraph<N>& G, const schedule<N>& S)
  * @brief Deep-first scheduling of a directed graph G with cycles
  *
  * @tparam N the type of nodes of G
+ * @tparam A the type of arrows of G
  * @param G the graph we want to schedule
  * @return schedule<N> the deep first schedule of G
  */
-template <typename N>
-inline schedule<N> dfcyclesschedule(const digraph<N>& G)
+template <typename N, typename A>
+inline schedule<N> dfcyclesschedule(const digraph<N, A>& G)
 {
-    digraph<digraph<N>>  H  = graph2dag(G);
-    schedule<digraph<N>> SH = dfschedule(H);
-    schedule<N>          S;
-    for (const digraph<N>& n : SH.elements()) { S.append(dfschedule(cut(n, 1))); }
+    digraph<digraph<N, A>, A> H  = graph2dag(G);
+    schedule<digraph<N, A>>   SH = dfschedule(H);
+    schedule<N>               S;
+    for (const digraph<N, A>& n : SH.elements()) { S.append(dfschedule(cut(n, 1))); }
     return S;
 }
 
@@ -188,15 +192,16 @@ inline schedule<N> dfcyclesschedule(const digraph<N>& G)
  * @brief Breadth-first scheduling of a directed graph G with cycles
  *
  * @tparam N the type of nodes of G
+ * @tparam A the type of arrows of G
  * @param G the graph we want to schedule
  * @return schedule<N> the deep first schedule of G
  */
-template <typename N>
-inline schedule<N> bfcyclesschedule(const digraph<N>& G)
+template <typename N, typename A>
+inline schedule<N> bfcyclesschedule(const digraph<N, A>& G)
 {
-    digraph<digraph<N>>  H  = graph2dag(G);
-    schedule<digraph<N>> SH = bfschedule(H);
-    schedule<N>          S;
-    for (const digraph<N>& n : SH.elements()) { S.append(dfschedule(cut(n, 1))); }
+    digraph<digraph<N, A>>  H  = graph2dag(G);
+    schedule<digraph<N, A>> SH = bfschedule(H);
+    schedule<N>             S;
+    for (const digraph<N, A>& n : SH.elements()) { S.append(dfschedule(cut(n, 1))); }
     return S;
 }

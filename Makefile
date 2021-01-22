@@ -1,7 +1,7 @@
 ANALYSIS="-*,cert-*,clang-analyzer-*,modernize-*,performance-*,cppcoreguidelines-*,google-*,bugprone-*,misc-*,-google-runtime-references,-cppcoreguidelines-avoid-magic-numbers,-modernize-use-trailing-return-type"
 
 
-testdigraph : *.cpp *.hh
+testdigraph : *.cpp *.hh dglib/*.hh
 	${CXX} -Wall -Wshadow -O1 -g --std=c++11 *.cpp -o testdigraph
 
 

@@ -10,6 +10,7 @@
 
 #include "dglib/digraph.hh"
 #include "dglib/digraphop.hh"
+#include "dglib/schedule.hh"
 
 void test0(std::ostream& ss)
 {
