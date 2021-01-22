@@ -325,7 +325,7 @@ inline std::vector<N> serialize(const digraph<N, A>& G)
 template <typename N, typename M, typename A = int>
 inline digraph<M, A> mapnodes(const digraph<N, A>& g, std::function<M(const N&)> foo)
 {
-    digraph<M>     r;
+    digraph<M, A>  r;
     std::map<N, M> cache;
     // create a new graph with the transformed nodes
     for (const auto& n1 : g.nodes()) {

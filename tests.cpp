@@ -439,8 +439,8 @@ bool check9()
     return ok;
 }
 
-template <typename N>
-bool equiv(const digraph<N>& g, const digraph<N>& h)
+template <typename N, typename A>
+bool equiv(const digraph<N, A>& g, const digraph<N, A>& h)
 {
     if (g.nodes() != h.nodes()) {
         return false;
