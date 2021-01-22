@@ -14,7 +14,7 @@
 
 void test0(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 1)
         .add('C', 'A', 0)
@@ -56,7 +56,7 @@ bool check0()
 
 void test1(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 0)
         .add('C', 'A', 0)
@@ -72,7 +72,7 @@ void test1(std::ostream& ss)
         .add('H', 'H', 0);
 
     ss << "Tarjan partition of g = ";
-    Tarjan<char> tarj(g);
+    Tarjan<char, int> tarj(g);
     for (const auto& cycle : tarj.partition()) {
         ss << "group{ ";
         for (const auto& n : cycle) { ss << n << " "; }
@@ -102,7 +102,7 @@ bool check1()
 
 void test2(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 1)
         .add('C', 'A', 0)
@@ -146,7 +146,7 @@ bool check2()
 
 void test3(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 1)
         .add('C', 'A', 0)
@@ -163,8 +163,8 @@ void test3(std::ostream& ss)
 
     auto h1 = cut(g, 64);     // cut vectorsize connections
     auto h2 = graph2dag(h1);  // find cycles
-    auto h3 = mapnodes<digraph<char>, digraph<char>>(
-        h2, [](const digraph<char>& gr) -> digraph<char> { return cut(gr, 1); });
+    auto h3 = mapnodes<digraph<char, int>, digraph<char, int>>(
+        h2, [](const digraph<char, int>& gr) -> digraph<char, int> { return cut(gr, 1); });
     ss << "test3: h3= " << h3;
 }
 
@@ -192,7 +192,7 @@ bool check3()
 
 void test4(std::ostream& ss)
 {
-    digraph<char> g1, g2, g3;
+    digraph<char, int> g1, g2, g3;
     g1.add('A', 'A', 2);
     g1.add('A', 'D', 1);
     g1.add('A', 'B', 0);
@@ -232,7 +232,7 @@ bool check4()
 // Test separation of graphs
 void test5(std::ostream& ss)
 {
-    digraph<char> g1, g2, g3;
+    digraph<char, int> g1, g2, g3;
 
     g1.add('A', 'Z', 0);
     g1.add('A', 'B', 0);
@@ -275,7 +275,7 @@ bool check5()
 
 void test7(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 1)
         .add('C', 'A', 0)
@@ -353,7 +353,7 @@ bool check7()
 
 void test8(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 0)
         .add('C', 'A', 0)
@@ -368,8 +368,8 @@ void test8(std::ostream& ss)
         .add('H', 'E', 0)
         .add('H', 'H', 0);
 
-    std::set<char> S{'C', 'F'};
-    digraph<char>  r = subgraph(g, S);
+    std::set<char>     S{'C', 'F'};
+    digraph<char, int> r = subgraph(g, S);
     ss << "Subgraph(" << g << ", " << S << ") = " << r;
 }
 
@@ -397,7 +397,7 @@ bool check8()
 
 void test9(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 0)
         .add('C', 'A', 0)
@@ -412,8 +412,8 @@ void test9(std::ostream& ss)
         .add('H', 'E', 0)
         .add('H', 'H', 0);
 
-    std::set<char> S{'H'};
-    digraph<char>  r = subgraph(g, S);
+    std::set<char>     S{'H'};
+    digraph<char, int> r = subgraph(g, S);
     ss << "Subgraph(" << g << ", " << S << ") = " << r;
 }
 
@@ -454,7 +454,7 @@ bool equiv(const digraph<N, A>& g, const digraph<N, A>& h)
 
 bool check10()
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0)
         .add('B', 'C', 1)
         .add('C', 'A', 0)
@@ -469,7 +469,7 @@ bool check10()
         .add('H', 'E', 0)
         .add('H', 'H', 1);
 
-    digraph<char> r = reverse(reverse(g));
+    digraph<char, int> r = reverse(reverse(g));
     if (equiv(g, r)) {
         std::cout << "test10 OK " << std::endl;
         return true;
@@ -483,11 +483,11 @@ bool check10()
 
 void test11(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0).add('B', 'C', 3).add('C', 'D', 0).add('D', 'E', 0);
     g.add('A', 'I', 0).add('I', 'J', 4).add('J', 'E', 5);
 
-    digraph<char> r = chain(g, false);
+    digraph<char, int> r = chain(g, false);
     ss << "chain(" << g << ", false) = " << r;
 }
 
@@ -518,11 +518,11 @@ bool check11()
 
 void test12(std::ostream& ss)
 {
-    digraph<char> g;
+    digraph<char, int> g;
     g.add('A', 'B', 0).add('B', 'C', 3).add('C', 'D', 0).add('D', 'E', 0);
     g.add('A', 'I', 0).add('I', 'J', 4).add('J', 'E', 5);
 
-    digraph<char> r = chain(g, true);
+    digraph<char, int> r = chain(g, true);
     ss << "chain(" << g << ", true) = " << r;
 }
 
@@ -552,7 +552,7 @@ bool check12()
 void test13(std::ostream& ss)
 {
     // roots and leaves
-    digraph<char> h;
+    digraph<char, int> h;
     h.add('A', 'B', 0).add('B', 'C', 0).add('C', 'D', 0).add('B', 'G', 0);
     h.add('E', 'F', 0).add('F', 'G', 0).add('G', 'H', 0);  //.add('F', 'C', 0);
 
@@ -592,7 +592,7 @@ bool check13()
 void test14(std::ostream& ss)
 {
     // roots and leaves
-    digraph<char> h;
+    digraph<char, int> h;
     h.add('A', 'B', 0).add('B', 'C', 0).add('C', 'D', 0).add('B', 'G', 1).add('C', 'B', 1);
     h.add('E', 'F', 0).add('F', 'G', 0).add('G', 'H', 0).add('G', 'F', 2);
 
@@ -627,7 +627,7 @@ bool check14()
 void test15(std::ostream& ss)
 {
     // roots and leaves
-    digraph<char> h;
+    digraph<char, int> h;
     h.add('A', 'B', 0).add('B', 'C', 0).add('C', 'D', 0).add('B', 'G', 1).add('C', 'B', 1);
     h.add('D', 'U', 0).add('U', 'D', 1);
     h.add('E', 'F', 0).add('F', 'G', 0).add('G', 'H', 0).add('G', 'F', 2);
