@@ -15,7 +15,7 @@ help:
 	@echo "make analyze       : clang-tidy code analysis"
 
 format :
-	clang-format -i -style=file *.cpp *.hh
+	clang-format -i -style=file *.cpp *.hh dglib/*
 
 clean :
 	rm -f testdigraph *.orig *.plist

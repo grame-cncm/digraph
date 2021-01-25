@@ -12,8 +12,7 @@
 #include "dglib/digraphop.hh"
 #include "dglib/stdprinting.hh"
 
-bool mcheck(const std::string& testname, const std::string& testvalue,
-            const std::string& expectedvalue)
+bool mcheck(const std::string& testname, const std::string& testvalue, const std::string& expectedvalue)
 {
     bool ok = (0 == expectedvalue.compare(testvalue));
     if (ok) {
@@ -61,7 +60,10 @@ std::string mres0()
            "1}->H}";
 }
 
-bool mcheck0() { return mcheck("mtest0", mtest0(), mres0()); }
+bool mcheck0()
+{
+    return mcheck("mtest0", mtest0(), mres0());
+}
 
 //===================================================================================
 
@@ -87,7 +89,9 @@ std::string mtest1()
     Tarjan<char, multidep> tarj(g);
     for (const auto& cycle : tarj.partition()) {
         ss << "group{ ";
-        for (const auto& n : cycle) { ss << n << " "; }
+        for (const auto& n : cycle) {
+            ss << n << " ";
+        }
         ss << "} ";
     }
     return ss.str();
@@ -98,7 +102,10 @@ std::string mres1()
     return "Tarjan partition of g = group{ A B C } group{ D E } group{ F G } group{ H } ";
 }
 
-bool mcheck1() { return mcheck("mtest1", mtest1(), mres1()); }
+bool mcheck1()
+{
+    return mcheck("mtest1", mtest1(), mres1());
+}
 
 //===================================================================================
 
@@ -139,7 +146,10 @@ std::string mres2()
            "0}->H}";
 }
 
-bool mcheck2() { return mcheck("mtest2", mtest2(), mres2()); }
+bool mcheck2()
+{
+    return mcheck("mtest2", mtest2(), mres2());
+}
 
 //===================================================================================
 
@@ -169,7 +179,10 @@ std::string mres3()
            "E-std::pair{std::map{std::pair{N, 1}}, 1}->D}";
 }
 
-bool mcheck3() { return mcheck("mtest3", mtest3(), mres3()); }
+bool mcheck3()
+{
+    return mcheck("mtest3", mtest3(), mres3());
+}
 
 //===================================================================================
 
@@ -203,4 +216,7 @@ std::string mres4()
            "0}->A}}";
 }
 
-bool mcheck4() { return mcheck("mtest4", mtest4(), mres4()); }
+bool mcheck4()
+{
+    return mcheck("mtest4", mtest4(), mres4());
+}

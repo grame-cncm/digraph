@@ -75,7 +75,9 @@ void test1(std::ostream& ss)
     Tarjan<char, int> tarj(g);
     for (const auto& cycle : tarj.partition()) {
         ss << "group{ ";
-        for (const auto& n : cycle) { ss << n << " "; }
+        for (const auto& n : cycle) {
+            ss << n << " ";
+        }
         ss << "} ";
     }
 }
@@ -633,10 +635,10 @@ void test15(std::ostream& ss)
     h.add('E', 'F', 0).add('F', 'G', 0).add('G', 'H', 0).add('G', 'F', 2);
 
     ss << "graph h   : " << h << std::endl;
-    ss << "deep-first    : " << dfcyclesschedule(h)
-       << ", cost: " << schedulingcost(h, dfcyclesschedule(h)) << std::endl;
-    ss << "breadth-first : " << bfcyclesschedule(h)
-       << ", cost: " << schedulingcost(h, bfcyclesschedule(h)) << std::endl;
+    ss << "deep-first    : " << dfcyclesschedule(h) << ", cost: " << schedulingcost(h, dfcyclesschedule(h))
+       << std::endl;
+    ss << "breadth-first : " << bfcyclesschedule(h) << ", cost: " << schedulingcost(h, bfcyclesschedule(h))
+       << std::endl;
 }
 
 std::string res15()
