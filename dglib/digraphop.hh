@@ -171,7 +171,7 @@ inline digraph<digraph<N, A>, A> graph2dag(const digraph<N, A>& g)
 
     return sg;
 }
-
+#if 0
 //===========================================================
 //===========================================================
 // graph2dag2 : transfoms a graph into a dag of supernodes,
@@ -182,7 +182,7 @@ inline digraph<digraph<N, A>, A> graph2dag(const digraph<N, A>& g)
 //===========================================================
 
 template <typename N, typename A>
-inline digraph<digraph<N, A>, A> graph2dag2(const digraph<N, A>& g)
+inline digraph<digraph<N, A>, int> graph2dag2(const digraph<N, A>& g)
 {
     Tarjan<N, A>                                           T(g);  // the partition of g
     std::map<N, digraph<N, A>>                             M;     // std::mapping between nodes and supernodes
@@ -225,6 +225,7 @@ inline digraph<digraph<N, A>, A> graph2dag2(const digraph<N, A>& g)
 
     return sg;
 }
+#endif
 
 //===========================================================
 //===========================================================
@@ -387,7 +388,7 @@ inline digraph<N, A> reverse(const digraph<N, A>& g)
 //===========================================================
 
 template <typename N, typename A>
-inline digraph<N, A> mapconnections(const digraph<N, A>& G, std::function<bool(const N&, const N&, int)> keep)
+inline digraph<N, A> mapconnections(const digraph<N, A>& G, std::function<bool(const N&, const N&, const A&)> keep)
 {
     digraph<N, A> R;
     for (const N& n : G.nodes()) {
@@ -481,11 +482,11 @@ digraph<N, A> subgraph(const digraph<N, A>& G, const std::set<N>& S)
 // cuts all the connections of graph g of weight >= d
 //===========================================================
 //===========================================================
-
 template <typename N, typename A>
 inline digraph<N, A> cut(const digraph<N, A>& G, int dm)
 {
-    return mapconnections<N>(G, [dm](const N&, const N&, int d) -> bool { return d < dm; });
+    return mapconnections<N, A>(
+        G, [dm](const N&, const N&, const A& a) -> bool { return arrow_traits<A>::mindist(a) < dm; });
 }
 
 //===========================================================
