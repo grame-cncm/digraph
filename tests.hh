@@ -3,7 +3,7 @@
 //  graphlib
 //
 //  Created by Yann Orlarey on 06/02/2017.
-//  Copyright © 2017 Yann Orlarey. All rights reserved.
+//  Copyright © 2017-2021 GRAME. All rights reserved.
 //
 
 #pragma once

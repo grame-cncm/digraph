@@ -3,7 +3,7 @@
 //  graphlib
 //
 //  Created by Yann Orlarey on 06/02/2017.
-//  Copyright © 2017 Yann Orlarey. All rights reserved.
+//  Copyright © 2017 GRAME. All rights reserved.
 //
 
 #include "mtests.hh"
@@ -16,7 +16,7 @@ bool mcheck(const std::string& testname, const std::string& testvalue, const std
 {
     bool ok = (0 == expectedvalue.compare(testvalue));
     if (ok) {
-        std::cout << testname << " SUCCEDED " << std::endl;
+        std::cout << testname << " SUCCESS " << std::endl;
     } else {
         std::cout << testname << " FAILED " << std::endl;
         std::cout << "We got     [[" << testvalue << "]]" << std::endl;
@@ -219,4 +219,52 @@ std::string mres4()
 bool mcheck4()
 {
     return mcheck("mtest4", mtest4(), mres4());
+}
+
+//===================================================================================
+
+std::string mtest5()
+{
+    digraph<char, multidep> g;
+    g.add('A', 'B', mdep("Y", 1))
+        .add('A', 'B', mdep("Y", 2))
+        .add('B', 'C', mdep("Q"))
+        .add('C', 'A', mdep("X"))
+        .add('D', 'B', mdep("M"))
+        .add('D', 'C', mdep("W", 2))
+        .add('D', 'E', mdep("M"))
+        .add('E', 'D', mdep("N", 1))
+        .add('G', 'A', mdep("init", 1))
+        .add('E', 'H', mdep("end", 0));
+
+    // inline std::pair<std::map<N, A>, std::map<N, A>> arrows(const digraph<N, A>& G)
+    std::pair<std::map<char, multidep>, std::map<char, multidep>> PM = arrows(g);
+
+    std::stringstream ss;
+
+    for (char c : g.nodes()) {
+        ss << c << ": incoming " << PM.first[c] << ", outcoming: " << PM.second[c] << std::endl;
+    }
+    return ss.str();
+}
+
+std::string mres5()
+{
+    return "A: incoming std::pair{std::map{std::pair{X, 0}, std::pair{init, 1}}, 0}, outcoming: "
+           "std::pair{std::map{std::pair{Y, 1}}, 1}\n"
+           "B: incoming std::pair{std::map{std::pair{M, 0}, std::pair{Y, 1}}, 0}, outcoming: "
+           "std::pair{std::map{std::pair{Q, 0}}, 0}\n"
+           "C: incoming std::pair{std::map{std::pair{Q, 0}, std::pair{W, 2}}, 0}, outcoming: "
+           "std::pair{std::map{std::pair{X, 0}}, 0}\n"
+           "D: incoming std::pair{std::map{std::pair{N, 1}}, 1}, outcoming: std::pair{std::map{std::pair{M, 0}, "
+           "std::pair{W, 2}}, 0}\n"
+           "E: incoming std::pair{std::map{std::pair{M, 0}}, 0}, outcoming: std::pair{std::map{std::pair{N, 1}, "
+           "std::pair{end, 0}}, 0}\n"
+           "G: incoming std::pair{std::map{}, 2147483647}, outcoming: std::pair{std::map{std::pair{init, 1}}, 1}\n"
+           "H: incoming std::pair{std::map{std::pair{end, 0}}, 0}, outcoming: std::pair{std::map{}, 2147483647}\n";
+}
+
+bool mcheck5()
+{
+    return mcheck("mtest5", mtest5(), mres5());
 }

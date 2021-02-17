@@ -3,7 +3,7 @@
 //  graphlib
 //
 //  Created by Yann Orlarey on 31/01/2017.
-//  Copyright © 2017-2019 GRAME. All rights reserved.
+//  Copyright © 2017-2021 GRAME. All rights reserved.
 //
 
 #include <cassert>
@@ -36,6 +36,7 @@ int main(int, const char**)
     r &= mcheck2();
     r &= mcheck3();
     r &= mcheck4();
+    r &= mcheck5();
     r &= check1();
     r &= check2();
     r &= check3();
