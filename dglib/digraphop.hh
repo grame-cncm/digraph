@@ -622,3 +622,65 @@ inline std::ostream& dotfile(std::ostream& file, const digraph<N, A>& g, bool cl
 
     return file << "}" << std::endl;
 }
+
+//===========================================================
+//===========================================================
+//  PartitionMaker M(P); creates a PartitionMaker from an
+//  existing partition P
+//  M.group(n,m); group nodes n and m
+//  P' = M.partition(); // get the resulting partition
+//===========================================================
+//===========================================================
+
+/**
+ * @brief PartitionMaker helps to create partitions
+ *
+ * @tparam N the type of nodes
+ */
+
+template <typename N>
+class PartitionMaker {
+    std::map<N, std::set<N>> fGroupOf;  ///< the group associated to each node
+
+    void ensureGroup(const N& n)  ///< make sure a node has an associated group (at least itself)
+    {
+        fGroupOf[n].insert(n);
+    }
+
+   public:
+    explicit PartitionMaker(const std::set<N>& S)  ///< create a PartitionMaker from a set of nodes
+    {
+        for (const N& n : S) {
+            fGroupOf[n].insert(n);
+        }
+    }
+
+    explicit PartitionMaker(const std::set<std::set<N>>& P)  ///< Create a PartitionMaker from an existing partition P
+    {
+        for (const std::set<N>& s : P) {
+            for (const N& n : s) {
+                fGroupOf[n] = s;
+            }
+        }
+    }
+
+    void group(const N& n, const N& m)  ///< group together n and m and their respective groups
+    {
+        ensureGroup(n);
+        ensureGroup(m);
+        // because we group n and m, we group also the nodes they are grouped with
+        std::set<N> r = std::set_union(fGroupOf[n], fGroupOf[m]);
+        for (const N& q : r) {
+            fGroupOf[q] = r;  // we make sure each node of the group is associated to the new group
+        }
+    }
+
+    std::set<N, std::set<N>> partition()  ///< get the resulting partition
+    {
+        std::set<std::set<N>> P;
+        for (const auto& p : fGroupOf) {
+            P.insert(p.second);
+        }
+        return P;
+    }
+};
