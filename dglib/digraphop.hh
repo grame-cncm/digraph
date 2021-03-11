@@ -17,6 +17,7 @@
 #include <sstream>
 #include <utility>
 #include <vector>
+#include <algorithm>
 
 #include "digraph.hh"
 //#include "schedule.hh"
