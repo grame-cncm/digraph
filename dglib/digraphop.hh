@@ -11,13 +11,13 @@
 
 #pragma once
 
+#include <algorithm>
 #include <functional>
 #include <iostream>
 #include <list>
 #include <sstream>
 #include <utility>
 #include <vector>
-#include <algorithm>
 
 #include "digraph.hh"
 //#include "schedule.hh"
