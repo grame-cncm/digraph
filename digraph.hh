@@ -26,15 +26,13 @@
 //===========================================================
 
 template <typename N>
-class digraph
-{
+class digraph {
    private:
     //--------------------------------------------------------------------------
     // Real/internal structure of a graph. A graph is a set of nodes
     // and a set of connections between theses nodes. These connections
     // have an integer value attached.
-    class internalgraph
-    {
+    class internalgraph {
        private:
         std::set<N>                   fNodes;        // {n1,n2,...}
         std::map<N, std::map<N, int>> fConnections;  // {(ni -d-> nj),...}
@@ -113,7 +111,9 @@ class digraph
     {
         for (auto& n : g.nodes()) {
             add(n);
-            for (auto& c : g.connections(n)) { add(n, c.first, c.second); }
+            for (auto& c : g.connections(n)) {
+                add(n, c.first, c.second);
+            }
         }
         return *this;
     }
@@ -129,20 +129,11 @@ class digraph
     const std::set<N>&      nodes() const { return fContent->nodes(); }
     const std::map<N, int>& connections(const N& n) const { return fContent->connections(n); }
 
-    bool areConnected(const N& n1, const N& n2, int& d) const
-    {
-        return fContent->areConnected(n1, n2, d);
-    }
+    bool areConnected(const N& n1, const N& n2, int& d) const { return fContent->areConnected(n1, n2, d); }
     bool areConnected(const N& n1, const N& n2) const { return fContent->areConnected(n1, n2); }
 
     // compare graphs for maps and other containers
 
-    friend bool operator<(const digraph& p1, const digraph& p2)
-    {
-        return p1.fContent < p2.fContent;
-    }
-    friend bool operator==(const digraph& p1, const digraph& p2)
-    {
-        return p1.fContent == p2.fContent;
-    }
+    friend bool operator<(const digraph& p1, const digraph& p2) { return p1.fContent < p2.fContent; }
+    friend bool operator==(const digraph& p1, const digraph& p2) { return p1.fContent == p2.fContent; }
 };

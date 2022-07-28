@@ -31,11 +31,10 @@
  * @tparam N
  */
 template <typename N>
-class schedule
-{
+class schedule {
    private:
     std::vector<N>   fElements;  // ordered set of elements
-    std::map<N, int> fOrder;  // order of each element (starting at 1, 0 indicates not in schedule)
+    std::map<N, int> fOrder;     // order of each element (starting at 1, 0 indicates not in schedule)
 
    public:
     // number of elements in the schedule
@@ -109,7 +108,9 @@ inline schedule<N> dfschedule(const digraph<N>& G)
     std::function<void(const N&)> dfvisit = [&](const N& n) {
         if (V.find(n) == V.end()) {
             V.insert(n);
-            for (const auto& p : G.connections(n)) { dfvisit(p.first); }
+            for (const auto& p : G.connections(n)) {
+                dfvisit(p.first);
+            }
             S.append(n);
         }
     };
@@ -178,7 +179,9 @@ inline schedule<N> dfcyclesschedule(const digraph<N>& G)
     digraph<digraph<N>>  H  = graph2dag(G);
     schedule<digraph<N>> SH = dfschedule(H);
     schedule<N>          S;
-    for (const digraph<N>& n : SH.elements()) { S.append(dfschedule(cut(n, 1))); }
+    for (const digraph<N>& n : SH.elements()) {
+        S.append(dfschedule(cut(n, 1)));
+    }
     return S;
 }
 
@@ -195,6 +198,8 @@ inline schedule<N> bfcyclesschedule(const digraph<N>& G)
     digraph<digraph<N>>  H  = graph2dag(G);
     schedule<digraph<N>> SH = bfschedule(H);
     schedule<N>          S;
-    for (const digraph<N>& n : SH.elements()) { S.append(dfschedule(cut(n, 1))); }
+    for (const digraph<N>& n : SH.elements()) {
+        S.append(dfschedule(cut(n, 1)));
+    }
     return S;
 }

@@ -70,7 +70,9 @@ void test1(std::ostream& ss)
     Tarjan<char> tarj(g);
     for (const auto& cycle : tarj.partition()) {
         ss << "group{ ";
-        for (const auto& n : cycle) { ss << n << " "; }
+        for (const auto& n : cycle) {
+            ss << n << " ";
+        }
         ss << "} ";
     }
 }
@@ -156,8 +158,8 @@ void test3(std::ostream& ss)
 
     auto h1 = cut(g, 64);     // cut vectorsize connections
     auto h2 = graph2dag(h1);  // find cycles
-    auto h3 = mapnodes<digraph<char>, digraph<char>>(
-        h2, [](const digraph<char>& gr) -> digraph<char> { return cut(gr, 1); });
+    auto h3 =
+        mapnodes<digraph<char>, digraph<char>>(h2, [](const digraph<char>& gr) -> digraph<char> { return cut(gr, 1); });
     ss << "test3: h3= " << h3;
 }
 
@@ -622,10 +624,10 @@ void test15(std::ostream& ss)
     h.add('E', 'F').add('F', 'G').add('G', 'H').add('G', 'F', 2);
 
     ss << "graph h   : " << h << std::endl;
-    ss << "deep-first    : " << dfcyclesschedule(h)
-       << ", cost: " << schedulingcost(h, dfcyclesschedule(h)) << std::endl;
-    ss << "breadth-first : " << bfcyclesschedule(h)
-       << ", cost: " << schedulingcost(h, bfcyclesschedule(h)) << std::endl;
+    ss << "deep-first    : " << dfcyclesschedule(h) << ", cost: " << schedulingcost(h, dfcyclesschedule(h))
+       << std::endl;
+    ss << "breadth-first : " << bfcyclesschedule(h) << ", cost: " << schedulingcost(h, bfcyclesschedule(h))
+       << std::endl;
 }
 
 std::string res15()
