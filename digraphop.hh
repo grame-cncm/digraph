@@ -57,7 +57,7 @@ class Tarjan {
         ++fGroup;
 
         // std::cout << "visit all nodes connected to " << v << std::endl;
-        for (const auto& p : fGraph.connections(v)) {
+        for (const auto& p : fGraph.destinations(v)) {
             // std::cout << "we have a connection " << v << "-" << p.second << "->" << p.first <<
             // std::endl;
             const N& w = p.first;
@@ -128,7 +128,7 @@ inline int cycles(const digraph<N>& g)
 // graph2dag : transfoms a graph into a dag of supernodes,
 // ie strongly connected components. The connection value
 // between two supernodes A and B is the smallest value of all
-// the connections between nodes of A and nodes of B.
+// the destinations between nodes of A and nodes of B.
 //===========================================================
 //===========================================================
 
@@ -153,10 +153,10 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
         sg.add(sn);  // and add the super node to the super graph
     }
 
-    // compute the connections between the supernodes
+    // compute the destinations between the supernodes
     for (const auto& n1 : g.nodes()) {
         digraph<N> sn1(M[n1]);
-        for (const auto& c : g.connections(n1)) {
+        for (const auto& c : g.destinations(n1)) {
             digraph<N> sn2(M[c.first]);
             if (sn1 == sn2) {
                 // the connection is inside the same supernode
@@ -176,7 +176,7 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
 // graph2dag2 : transfoms a graph into a dag of supernodes,
 // ie strongly connected components. The connection value
 // between two supernodes A and B is the number of existing
-// connections between nodes of A and nodes of B.
+// destinations between nodes of A and nodes of B.
 //===========================================================
 //===========================================================
 
@@ -186,7 +186,7 @@ inline digraph<digraph<N>> graph2dag2(const digraph<N>& g)
     Tarjan<N>                                        T(g);  // the partition of g
     std::map<N, digraph<N>>                          M;     // std::mapping between nodes and supernodes
     digraph<digraph<N>>                              sg;    // the resulting supergraph
-    std::map<std::pair<digraph<N>, digraph<N>>, int> CC;    // count of connections between supernodes
+    std::map<std::pair<digraph<N>, digraph<N>>, int> CC;    // count of destinations between supernodes
 
     // build the graph of supernodes
 
@@ -202,22 +202,22 @@ inline digraph<digraph<N>> graph2dag2(const digraph<N>& g)
         sg.add(sn);  // and add the super node to the super graph
     }
 
-    // compute the number of connections between the supernodes
-    for (const auto& n1 : g.nodes()) {             // for each node n1
-        digraph<N> sn1(M[n1]);                     // retrieve the supernode
-        for (const auto& c : g.connections(n1)) {  // for each destination of n
+    // compute the number of destinations between the supernodes
+    for (const auto& n1 : g.nodes()) {              // for each node n1
+        digraph<N> sn1(M[n1]);                      // retrieve the supernode
+        for (const auto& c : g.destinations(n1)) {  // for each destination of n
             digraph<N> sn2(M[c.first]);
             if (sn1 == sn2) {
                 // the connection is inside the same supernode
                 sn1.add(n1, c.first, c.second);
             } else {
-                // We count the external connections between two supernodes
+                // We count the external destinations between two supernodes
                 CC[std::make_pair(sn1, sn2)] += 1;
             }
         }
     }
 
-    // we connect the super nodes using the count of external connections
+    // we connect the super nodes using the count of external destinations
     for (const auto& entry : CC) {
         sg.add(entry.first.first, entry.first.second, entry.second);
     }
@@ -250,7 +250,7 @@ inline std::vector<std::vector<N>> parallelize(const digraph<N>& g)
             return p->second;
         } else {
             int l = -1;
-            for (const auto& e : g.connections(n1)) {
+            for (const auto& e : g.destinations(n1)) {
                 l = std::max(l, level(e.first, levelcache));
             }
             return levelcache[n1] = l + 1;
@@ -311,7 +311,7 @@ inline std::vector<N> serialize(const digraph<N>& G)
     Visitfun visit = [&visit](const digraph<N>& g, const N& n, std::set<N>& V, std::vector<N>& S) {
         if (V.find(n) == V.end()) {
             V.insert(n);
-            for (const auto& p : g.connections(n)) {
+            for (const auto& p : g.destinations(n)) {
                 visit(g, p.first, V, S);
             }
             S.push_back(n);
@@ -329,7 +329,7 @@ inline std::vector<N> serialize(const digraph<N>& G)
 //===========================================================
 //===========================================================
 // std::mapgraph(foo) : transfoms a graph  by applying foo:N->M
-// to each node of graph. The connections are preserved.
+// to each node of graph. The destinations are preserved.
 //===========================================================
 //===========================================================
 
@@ -345,9 +345,9 @@ inline digraph<M> mapnodes(const digraph<N>& g, std::function<M(const N&)> foo)
         cache.insert(std::make_pair(n1, n2));
     }
 
-    // copy the connections
+    // copy the destinations
     for (const auto& n : g.nodes()) {
-        for (const auto& cnx : g.connections(n)) {
+        for (const auto& cnx : g.destinations(n)) {
             r.add(cache[n], cache[cnx.first], cnx.second);
         }
     }
@@ -356,8 +356,8 @@ inline digraph<M> mapnodes(const digraph<N>& g, std::function<M(const N&)> foo)
 
 //===========================================================
 //===========================================================
-// reverse(g) : reverse all the connections of a graph. The
-// connections keep their value.
+// reverse(g) : reverse all the destinations of a graph. The
+// destinations keep their value.
 // Property : reverse(reverse(g)) = g;
 //===========================================================
 //===========================================================
@@ -366,10 +366,10 @@ template <typename N>
 inline digraph<N> reverse(const digraph<N>& g)
 {
     digraph<N> r;
-    // copy the connections
+    // copy the destinations
     for (const auto& n : g.nodes()) {
         r.add(n);
-        for (const auto& cnx : g.connections(n)) {
+        for (const auto& cnx : g.destinations(n)) {
             r.add(cnx.first, n, cnx.second);
         }
     }
@@ -391,7 +391,7 @@ inline digraph<N> mapconnections(const digraph<N>& G, std::function<bool(const N
     digraph<N> R;
     for (const N& n : G.nodes()) {
         R.add(n);
-        for (const auto& c : G.connections(n)) {
+        for (const auto& c : G.destinations(n)) {
             if (keep(n, c.first, c.second)) {
                 R.add(n, c.first, c.second);
             }
@@ -421,14 +421,14 @@ void splitgraph(const digraph<N>& G, std::function<bool(const N&)> left, digraph
     for (auto n : G.nodes()) {
         if (left(n)) {
             L.add(n);
-            for (const auto& c : G.connections(n)) {
+            for (const auto& c : G.destinations(n)) {
                 if (left(c.first)) {
                     L.add(n, c.first, c.second);
                 }
             }
         } else {
             R.add(n);
-            for (const auto& c : G.connections(n)) {
+            for (const auto& c : G.destinations(n)) {
                 if (!left(c.first)) {
                     R.add(n, c.first, c.second);
                 }
@@ -462,7 +462,7 @@ digraph<N> subgraph(const digraph<N>& G, const std::set<N>& S)
         for (auto n : W) {
             R.add(n);     // add n to the resulting graph
             P.insert(n);  // mark n as processed
-            for (const auto& a : G.connections(n)) {
+            for (const auto& a : G.destinations(n)) {
                 R.add(n, a.first, a.second);       // add its adjacent nodes
                 if (P.find(a.first) == P.end()) {  // is it new ?
                     M.insert(a.first);             // we will have to process it
@@ -477,7 +477,7 @@ digraph<N> subgraph(const digraph<N>& G, const std::set<N>& S)
 //===========================================================
 //===========================================================
 // cut(g,d) -> g'
-// cuts all the connections of graph g of weight >= d
+// cuts all the destinations of graph g of weight >= d
 //===========================================================
 //===========================================================
 
@@ -490,7 +490,7 @@ inline digraph<N> cut(const digraph<N>& G, int dm)
 //===========================================================
 //===========================================================
 // chain(g) -> g'
-// Keep only the chain connections, that is connections
+// Keep only the chain destinations, that is destinations
 // (n1 -d-> n2) such that dst(n1) == {n2} && src(n2) == {n1}
 // If strict is true, only the node part of a chain are kept.
 //===========================================================
@@ -503,9 +503,9 @@ inline digraph<N> chain(const digraph<N>& g, bool strict)
     digraph<N>       r;
     for (const auto& n : g.nodes()) {
         if (!strict) r.add(n);
-        if (g.connections(n).size() == 1) {
-            for (const auto& m : g.connections(n)) {
-                if (h.connections(m.first).size() == 1) {
+        if (g.destinations(n).size() == 1) {
+            for (const auto& m : g.destinations(n)) {
+                if (h.destinations(m.first).size() == 1) {
                     r.add(n, m.first, m.second);
                 }
             }
@@ -519,7 +519,7 @@ inline std::vector<N> roots(const digraph<N>& G)
 {
     std::map<N, int> R;
     for (const N& n : G.nodes()) {
-        for (const auto& c : G.connections(n)) {
+        for (const auto& c : G.destinations(n)) {
             R[c.first]++;
         }
     }
@@ -535,7 +535,7 @@ inline std::vector<N> leaves(const digraph<N>& G)
 {
     std::vector<N> L;
     for (const N& n : G.nodes()) {
-        if (G.connections(n).size() == 0) {
+        if (G.destinations(n).size() == 0) {
             L.push_back(n);
         }
     }
@@ -552,38 +552,6 @@ inline std::vector<N> leaves(const digraph<N>& G)
 
 //===========================================================
 //===========================================================
-// file << graph : print graph on a stream
-//===========================================================
-//===========================================================
-
-template <typename N>
-inline std::ostream& operator<<(std::ostream& file, const digraph<N>& g)
-{
-    std::string sep = "";
-
-    file << "Graph {";
-    for (const N& n : g.nodes()) {
-        bool hascnx = false;
-        for (const auto& c : g.connections(n)) {
-            hascnx = true;
-            if (c.second == 0) {
-                file << sep << n << "->" << (c.first);
-            } else {
-                file << sep << n << '-' << c.second << "->" << (c.first);
-            }
-            sep = ", ";
-        }
-        if (!hascnx) {
-            file << sep << n;
-        }
-        sep = ", ";
-    }
-
-    return file << "}";
-}
-
-//===========================================================
-//===========================================================
 // dotfile(file, graph) print graph on a stream in .dot format
 //===========================================================
 //===========================================================
@@ -596,7 +564,7 @@ inline std::ostream& dotfile(std::ostream& file, const digraph<N>& g, bool clust
         std::stringstream sn;
         sn << '"' << n << '"';
         bool hascnx = false;
-        for (const auto& c : g.connections(n)) {
+        for (const auto& c : g.destinations(n)) {
             std::stringstream sm;
             sm << '"' << c.first << '"';
             hascnx = true;
@@ -639,7 +607,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::list<N>& L)
 {
     std::string sep = "";
 
-    file << "std::list {";
+    file << "std::list{";
     for (const N& e : L) {
         file << sep << e;
         sep = ", ";
@@ -658,7 +626,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::vector<N>& V)
 {
     std::string sep = "";
 
-    file << "std::vector {";
+    file << "std::vector{";
     for (const N& e : V) {
         file << sep << e;
         sep = ", ";
@@ -677,7 +645,7 @@ inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
 {
     std::string sep = "";
 
-    file << "set {";
+    file << "set{";
     for (const N& e : S) {
         file << sep << e;
         sep = ", ";
@@ -694,5 +662,33 @@ inline std::ostream& operator<<(std::ostream& file, const std::set<N>& S)
 template <typename N, typename M>
 inline std::ostream& operator<<(std::ostream& file, const std::pair<N, M>& V)
 {
-    return file << "std::pair {" << V.first << ", " << V.second << "}";
+    return file << "std::pair{" << V.first << ", " << V.second << "}";
+}
+
+//===========================================================
+//===========================================================
+// file << graph : print graph on a stream
+//===========================================================
+//===========================================================
+
+template <typename N>
+inline std::ostream& operator<<(std::ostream& file, const digraph<N>& g)
+{
+    std::string sep = "";
+
+    file << "Graph {";
+    for (const N& n : g.nodes()) {
+        bool hascnx = false;
+        for (const auto& c : g.destinations(n)) {
+            hascnx = true;
+            file << sep << n << '-' << c.second << "->" << (c.first);
+            sep = ", ";
+        }
+        if (!hascnx) {
+            file << sep << n;
+        }
+        sep = ", ";
+    }
+
+    return file << "}";
 }

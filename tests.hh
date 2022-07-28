@@ -18,6 +18,7 @@
 void        test0(std::ostream& cout);
 std::string res0();
 bool        check0();
+/*
 //
 void        test1(std::ostream& cout);
 std::string res1();
@@ -72,3 +73,4 @@ bool        check14();
 void        test15(std::ostream& ss);
 std::string res15();
 bool        check15();
+*/
