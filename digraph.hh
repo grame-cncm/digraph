@@ -31,11 +31,11 @@ class digraph {
     //--------------------------------------------------------------------------
     // Real/internal structure of a graph. A graph is a set of nodes
     // and a set of connections between theses nodes. These connections
-    // have an integer value attached.
+    // have integer values attached.
     class internalgraph {
        private:
-        std::set<N>                   fNodes;        // {n1,n2,...}
-        std::map<N, std::map<N, int>> fConnections;  // {(ni -d-> nj),...}
+        std::set<N>                             fNodes;        // {n1,n2,...}
+        std::map<N, std::map<N, std::set<int>>> fConnections;  // {(ni -d-> nj),...}
 
        public:
 #if 0
@@ -50,29 +50,29 @@ class digraph {
         }
 
         // Add the nodes n1 and n2 and the connection (n1 -d-> n2) to the graph.
-        // If a connection (n1 -d'-> n2) already exists, the connection is updated
-        // with the min(d,d')
+        // Multiple connections are allowed. But multiple connections with the same value
+        // are only counted once.
         void add(const N& n1, const N& n2, int d = 0)
         {
             add(n1);
             add(n2);
-            auto& adj = fConnections[n1];
-            auto  cnx = adj.find(n2);
-            if (cnx != adj.end()) {
-                int& d1 = cnx->second;
-                if (d < d1) d1 = d;
-            } else {
-                adj[n2] = d;
-            }
+            fConnections[n1][n2].insert(d);
         }
 
         // returns the set of nodes of the graph
-        const std::set<N>& nodes() const { return fNodes; }
+        const std::set<N>& nodes() const
+        {
+            return fNodes;
+        }
 
-        // returns the connections of node n in the graph
-        const std::map<N, int>& connections(const N& n) const { return fConnections.at(n); }
+        // Returns the connections of node n in the graph
+        const std::map<N, std::set<int>>& connections(const N& n) const
+        {
+            return fConnections.at(n);
+        }
 
-        // tests if two nodes are connected
+        // Tests if two nodes are connected. Returns in d the
+        // smallest connection value.
         bool areConnected(const N& n1, const N& n2, int& d) const
         {
             auto c = fConnections.at(n1);
@@ -96,7 +96,9 @@ class digraph {
     std::shared_ptr<internalgraph> fContent;
 
    public:
-    digraph() : fContent(new internalgraph) {}
+    digraph() : fContent(new internalgraph)
+    {
+    }
 
     // build the graph
 
@@ -126,14 +128,32 @@ class digraph {
 
     // query the graph
 
-    const std::set<N>&      nodes() const { return fContent->nodes(); }
-    const std::map<N, int>& connections(const N& n) const { return fContent->connections(n); }
+    const std::set<N>& nodes() const
+    {
+        return fContent->nodes();
+    }
+    const std::map<N, int>& connections(const N& n) const
+    {
+        return fContent->connections(n);
+    }
 
-    bool areConnected(const N& n1, const N& n2, int& d) const { return fContent->areConnected(n1, n2, d); }
-    bool areConnected(const N& n1, const N& n2) const { return fContent->areConnected(n1, n2); }
+    bool areConnected(const N& n1, const N& n2, int& d) const
+    {
+        return fContent->areConnected(n1, n2, d);
+    }
+    bool areConnected(const N& n1, const N& n2) const
+    {
+        return fContent->areConnected(n1, n2);
+    }
 
     // compare graphs for maps and other containers
 
-    friend bool operator<(const digraph& p1, const digraph& p2) { return p1.fContent < p2.fContent; }
-    friend bool operator==(const digraph& p1, const digraph& p2) { return p1.fContent == p2.fContent; }
+    friend bool operator<(const digraph& p1, const digraph& p2)
+    {
+        return p1.fContent < p2.fContent;
+    }
+    friend bool operator==(const digraph& p1, const digraph& p2)
+    {
+        return p1.fContent == p2.fContent;
+    }
 };

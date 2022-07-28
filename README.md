@@ -122,3 +122,7 @@ The function `cut()` creates a copy of the input graph in which all connections 
 The function `splitgraph()` splits a graph `G` into two subgraphs `L` and `R` according to a predicate `left()`. The nodes satisfying the predicate are copied into `L`, the others into `R`. The connections are kept, unless they concern nodes that are not in the same subgraph.
 
 	splitgraph(const digraph<N>& G, function<bool(const N&)> left, digraph<N>& L, digraph<N>& R)
+
+
+# Simplification
+Instead of a single connection between two nodes, we can have multiple connections between two nodes, provided they carry different values.
