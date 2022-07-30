@@ -1,3 +1,5 @@
 testdigraph
 .vscode/
 Info.plist
+*.o
+*.o.json

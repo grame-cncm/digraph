@@ -18,9 +18,9 @@ int main(int, const char**)
     bool r = true;
 
     r &= check0();
-    /*
     r &= check1();
     r &= check2();
+    /*
     r &= check3();
     r &= check4();
     r &= check5();

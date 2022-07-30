@@ -157,13 +157,15 @@ inline digraph<digraph<N>> graph2dag(const digraph<N>& g)
     for (const auto& n1 : g.nodes()) {
         digraph<N> sn1(M[n1]);
         for (const auto& c : g.destinations(n1)) {
-            digraph<N> sn2(M[c.first]);
+            const N&    n2  = c.first;
+            const auto& W12 = c.second;
+            digraph<N>  sn2(M[n2]);
             if (sn1 == sn2) {
                 // the connection is inside the same supernode
-                sn1.add(n1, c.first, c.second);
+                sn1.add(n1, n2, W12);
             } else {
                 // the connection is between supernodes
-                sg.add(sn1, sn2, c.second);  // exploit the fact that add will keep the mini
+                sg.add(sn1, sn2, W12);  // exploit the fact that add will keep the mini
             }
         }
     }
@@ -678,8 +680,9 @@ inline std::ostream& operator<<(std::ostream& file, const digraph<N>& g)
 
     file << "Graph {";
     for (const N& n : g.nodes()) {
-        bool hascnx = false;
-        for (const auto& c : g.destinations(n)) {
+        bool        hascnx = false;
+        const auto& dst    = g.destinations(n);
+        for (const auto& c : dst) {
             hascnx = true;
             file << sep << n << '-' << c.second << "->" << (c.first);
             sep = ", ";

@@ -50,7 +50,7 @@ bool check0()
     }
     return ok;
 }
-/*
+
 void test1(std::ostream& ss)
 {
     digraph<char> g;
@@ -140,7 +140,7 @@ bool check2()
     }
     return ok;
 }
-
+/*
 void test3(std::ostream& ss)
 {
     digraph<char> g;
