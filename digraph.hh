@@ -29,6 +29,8 @@ class digraph {
     using TWeights      = std::set<int>;
     using TDestinations = std::map<N, TWeights>;
 
+    static inline const TWeights gEmptyWeights;
+
     //--------------------------------------------------------------------------
     // Real/internal structure of a graph. A graph is a set of nodes
     // and a set of connections between theses nodes. These connections
@@ -84,7 +86,13 @@ class digraph {
         {
             assert(fNodes.find(n1) != fNodes.end());
             assert(fNodes.find(n2) != fNodes.end());
-            return fConnections.at(n1).at(n2);
+            auto dst = fConnections.at(n1);
+            auto it  = dst.find(n2);
+            if (it == dst.end()) {
+                return gEmptyWeights;
+            } else {
+                return it->second;
+            }
         }
     };
 
@@ -121,7 +129,7 @@ class digraph {
     {
         for (auto& n : g.nodes()) {
             add(n);
-            for (auto& c : g.connections(n)) {
+            for (auto& c : g.destinations(n)) {
                 add(n, c.first, c.second);
             }
         }

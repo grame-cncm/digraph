@@ -378,6 +378,7 @@ inline digraph<N> reverse(const digraph<N>& g)
     return r;
 }
 
+#if 0
 //===========================================================
 //===========================================================
 // mapconnections(g, keep) -> g' : transfoms a graph by
@@ -388,7 +389,8 @@ inline digraph<N> reverse(const digraph<N>& g)
 //===========================================================
 
 template <typename N>
-inline digraph<N> mapconnections(const digraph<N>& G, std::function<bool(const N&, const N&, int)> keep)
+inline digraph<N> mapconnections(const digraph<N>&                                             G,
+                                 std::function<bool(const N&, const N&, const std::set<int>&)> keep)
 {
     digraph<N> R;
     for (const N& n : G.nodes()) {
@@ -401,6 +403,7 @@ inline digraph<N> mapconnections(const digraph<N>& G, std::function<bool(const N
     }
     return R;
 }
+#endif
 
 //===========================================================
 //===========================================================
@@ -486,7 +489,26 @@ digraph<N> subgraph(const digraph<N>& G, const std::set<N>& S)
 template <typename N>
 inline digraph<N> cut(const digraph<N>& G, int dm)
 {
-    return mapconnections<N>(G, [dm](const N&, const N&, int d) -> bool { return d < dm; });
+    digraph<N> R;
+    for (const auto& n1 : G.nodes()) {
+        R.add(n1);
+        for (const auto& c : G.destinations(n1)) {
+            const auto& n2 = c.first;
+            R.add(n2);
+            // remove the connections with weight >= dm
+            const auto&   wg = c.second;
+            std::set<int> wr;
+            for (int d : wg) {
+                if (d < dm) {
+                    wr.insert(d);
+                }
+            }
+            if (!wr.empty()) {
+                R.add(n1, n2, wr);
+            }
+        }
+    }
+    return R;
 }
 
 //===========================================================
@@ -551,52 +573,6 @@ inline std::vector<N> leaves(const digraph<N>& G)
 
  *******************************************************************************
  ******************************************************************************/
-
-//===========================================================
-//===========================================================
-// dotfile(file, graph) print graph on a stream in .dot format
-//===========================================================
-//===========================================================
-
-template <typename N>
-inline std::ostream& dotfile(std::ostream& file, const digraph<N>& g, bool clusters = false)
-{
-    file << "digraph mygraph {" << std::endl;
-    for (const N& n : g.nodes()) {
-        std::stringstream sn;
-        sn << '"' << n << '"';
-        bool hascnx = false;
-        for (const auto& c : g.destinations(n)) {
-            std::stringstream sm;
-            sm << '"' << c.first << '"';
-            hascnx = true;
-            if (c.second == 0) {
-                file << "\t" << sn.str() << "->" << sm.str() << ";" << std::endl;
-            } else {
-                file << "\t" << sn.str() << "->" << sm.str() << " [label=\"" << c.second << "\"];" << std::endl;
-            }
-        }
-        if (!hascnx) {
-            file << "\t" << sn.str() << ";" << std::endl;
-        }
-    }
-
-    if (clusters) {
-        Tarjan<N> T(g);
-        int       ccount = 0;  // cluster count
-        for (const auto& s : T.partition()) {
-            file << "\t"
-                 << "subgraph cluster" << ccount++ << " { " << std::endl;
-            for (const N& n : s) {
-                file << "\t\t" << '"' << n << '"' << ";" << std::endl;
-            }
-            file << "\t"
-                 << "}" << std::endl;
-        }
-    }
-
-    return file << "}" << std::endl;
-}
 
 //===========================================================
 //===========================================================
@@ -665,6 +641,48 @@ template <typename N, typename M>
 inline std::ostream& operator<<(std::ostream& file, const std::pair<N, M>& V)
 {
     return file << "std::pair{" << V.first << ", " << V.second << "}";
+}
+
+//===========================================================
+//===========================================================
+// dotfile(file, graph) print graph on a stream in .dot format
+//===========================================================
+//===========================================================
+
+template <typename N>
+inline std::ostream& dotfile(std::ostream& file, const digraph<N>& g, bool clusters = false)
+{
+    file << "digraph mygraph {" << std::endl;
+    for (const N& n : g.nodes()) {
+        std::stringstream sn;
+        sn << '"' << n << '"';
+        bool hascnx = false;
+        for (const auto& c : g.destinations(n)) {
+            std::stringstream sm;
+            sm << '"' << c.first << '"';
+            hascnx = true;
+            file << "\t" << sn.str() << "->" << sm.str() << " [label=\"" << c.second << "\"];" << std::endl;
+        }
+        if (!hascnx) {
+            file << "\t" << sn.str() << ";" << std::endl;
+        }
+    }
+
+    if (clusters) {
+        Tarjan<N> T(g);
+        int       ccount = 0;  // cluster count
+        for (const auto& s : T.partition()) {
+            file << "\t"
+                 << "subgraph cluster" << ccount++ << " { " << std::endl;
+            for (const N& n : s) {
+                file << "\t\t" << '"' << n << '"' << ";" << std::endl;
+            }
+            file << "\t"
+                 << "}" << std::endl;
+        }
+    }
+
+    return file << "}" << std::endl;
 }
 
 //===========================================================
