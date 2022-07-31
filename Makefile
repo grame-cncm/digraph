@@ -7,12 +7,13 @@ HDR=$(wildcard *.hh)
 STD=c++17
 INCLUDES=-I . 
 WARNINGS=-Wall -Wextra -Wunused -Wunused-function -Wshadow 
+DEBUG=-g -O1
 
 testdigraph : $(OBJ)
 	$(CXX) $(OBJ) -o $@
 
-%.o : %.cpp
-	$(CXX) -MJ $@.json $(INCLUDES) $(WARNINGS) -std=$(STD) -c $< -o $@
+%.o : %.cpp $(HDR)
+	$(CXX) -MJ $@.json $(INCLUDES) $(WARNINGS) $(DEBUG) -std=$(STD) -c $< -o $@
 
 compile_commands.json :
 	echo '[' > compile_commands.json
