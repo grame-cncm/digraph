@@ -104,9 +104,9 @@ class Tarjan {
         }
     }
 
-    const std::set<std::set<N>>& partition() const { return fPartition; }
+    [[nodiscard]] const std::set<std::set<N>>& partition() const { return fPartition; }
 
-    int cycles() const { return fCycleCount; }
+    [[nodiscard]] int cycles() const { return fCycleCount; }
 };
 
 //===========================================================

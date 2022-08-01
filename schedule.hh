@@ -38,13 +38,13 @@ class schedule {
 
    public:
     // number of elements in the schedule
-    int size() const { return fElements.size(); }
+    [[nodiscard]] int size() const { return fElements.size(); }
 
     // the vector of elements (for iterations)
-    const std::vector<N>& elements() const { return fElements; }
+    [[nodiscard]] const std::vector<N>& elements() const { return fElements; }
 
     // the order of an element in the schedule (starting from 1)
-    int order(const N& n) const
+    [[nodiscard]] int order(const N& n) const
     {
         auto it = fOrder.find(n);
         return (it == fOrder.end()) ? 0 : it->second;

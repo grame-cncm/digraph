@@ -70,20 +70,20 @@ class digraph {
         //----------------------------------------------------------------------
 
         // returns the set of nodes of the graph
-        const std::set<N>& nodes() const
+        [[nodiscard]] const std::set<N>& nodes() const
         {
             return fNodes;
         }
 
         // Returns the destinations of node n in the graph
-        const TDestinations& destinations(const N& n) const
+        [[nodiscard]] const TDestinations& destinations(const N& n) const
         {
             assert(fNodes.find(n) != fNodes.end());
             return fConnections.at(n);
         }
 
         // Returns the weights of the connections between two nodes
-        const TWeights& weights(const N& n1, const N& n2) const
+        [[nodiscard]] const TWeights& weights(const N& n1, const N& n2) const
         {
             assert(fNodes.find(n1) != fNodes.end());
             assert(fNodes.find(n2) != fNodes.end());
@@ -142,19 +142,19 @@ class digraph {
     //--------------------------------------------------------------------------
 
     // returns the set of nodes of the graph
-    const std::set<N>& nodes() const
+    [[nodiscard]] const std::set<N>& nodes() const
     {
         return fContent->nodes();
     }
 
     // returns the destinations of node n in the graph
-    const TDestinations& destinations(const N& n) const
+    [[nodiscard]] const TDestinations& destinations(const N& n) const
     {
         return fContent->destinations(n);
     }
 
     // returns the weights of the connections between two nodes
-    const TWeights& weights(const N& n1, const N& n2) const
+    [[nodiscard]] const TWeights& weights(const N& n1, const N& n2) const
     {
         return fContent->weights(n1, n2);
     }
@@ -164,7 +164,7 @@ class digraph {
     //--------------------------------------------------------------------------
 
     // true is there is any connection between nodes n1 and n2
-    bool areConnected(const N& n1, const N& n2) const
+    [[nodiscard]] bool areConnected(const N& n1, const N& n2) const
     {
         const TWeights& w = weights(n1, n2);
         return !w.empty();
