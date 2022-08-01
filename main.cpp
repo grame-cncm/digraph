@@ -20,7 +20,6 @@ int main(int, const char**)
     r &= check0();
     r &= check1();
     r &= check2();
-    /*
     r &= check3();
     r &= check4();
     r &= check5();
@@ -33,6 +32,6 @@ int main(int, const char**)
     r &= check13();
     r &= check14();
     r &= check15();
-*/
+
     return (r) ? 0 : 1;
 }
