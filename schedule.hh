@@ -108,7 +108,7 @@ inline schedule<N> dfschedule(const digraph<N>& G)
     std::function<void(const N&)> dfvisit = [&](const N& n) {
         if (V.find(n) == V.end()) {
             V.insert(n);
-            for (const auto& p : G.connections(n)) {
+            for (const auto& p : G.destinations(n)) {
                 dfvisit(p.first);
             }
             S.append(n);
@@ -157,7 +157,7 @@ inline int schedulingcost(const digraph<N>& G, const schedule<N>& S)
     int cost = 0;
     for (const N& n : G.nodes()) {
         int t1 = S.order(n);
-        for (const auto& c : G.connections(n)) {
+        for (const auto& c : G.destinations(n)) {
             int t0 = S.order(c.first);
             // assert(t1 > t0);
             cost += std::abs(t1 - t0);  // We may have loops
